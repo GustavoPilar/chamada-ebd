@@ -1,12 +1,37 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\GustavoHenriquePilar\\Aplicativos\\chamada-ebd\\10.Projects\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A822DD68-D288-265D-93BF-3253D347BDCF}|ChamadaEBD.BackEnd\\ChamadaEBD.BackEnd.csproj|c:\\users\\gustavohenriquepilar\\aplicativos\\chamada-ebd\\10.projects\\chamadaebd.backend\\(base)\\(entities)\\entities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A822DD68-D288-265D-93BF-3253D347BDCF}|ChamadaEBD.BackEnd\\ChamadaEBD.BackEnd.csproj|solutionrelative:chamadaebd.backend\\(base)\\(entities)\\entities.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Entities.cs",
+              "DocumentMoniker": "C:\\Users\\GustavoHenriquePilar\\Aplicativos\\chamada-ebd\\10.Projects\\ChamadaEBD.BackEnd\\(Base)\\(Entities)\\Entities.cs",
+              "RelativeDocumentMoniker": "ChamadaEBD.BackEnd\\(Base)\\(Entities)\\Entities.cs",
+              "ToolTip": "C:\\Users\\GustavoHenriquePilar\\Aplicativos\\chamada-ebd\\10.Projects\\ChamadaEBD.BackEnd\\(Base)\\(Entities)\\Entities.cs",
+              "RelativeToolTip": "ChamadaEBD.BackEnd\\(Base)\\(Entities)\\Entities.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAwLUAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-22T19:25:15.59Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
