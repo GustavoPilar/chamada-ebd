@@ -1,0 +1,6 @@
+@ChamadaEBD.BackEnd_HostAddress = http://localhost:5266
+
+GET {{ChamadaEBD.BackEnd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
