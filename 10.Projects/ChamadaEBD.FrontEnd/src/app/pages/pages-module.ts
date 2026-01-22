@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ConfirmationService } from 'primeng/api';
     DialogModule,
     InputTextModule,
     SelectModule,
-    ConfirmDialogModule               
+    ConfirmDialogModule,
+    InputNumberModule
   ],
   providers: [
     ConfirmationService
