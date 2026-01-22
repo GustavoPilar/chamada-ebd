@@ -7,14 +7,15 @@ import { App } from './app';
 // PrimeNG
 import { providePrimeNG } from 'primeng/config';
 import Aura from "@primeuix/themes/aura";
-import { FilterMatchMode } from 'primeng/api';
+import { ConfirmationService, FilterMatchMode } from 'primeng/api';
 import { definePreset } from '@primeuix/themes';
 import { ButtonModule } from 'primeng/button';
-import { ComponentsModule } from './components/components-module';
 import { Menubar } from "primeng/menubar";
-import { PagesModule } from './pages/pages-module';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // Modules
+import { ComponentsModule } from './components/components-module';
+import { PagesModule } from './pages/pages-module';
 
 const myPreset = definePreset(Aura, {
   semantic: {
@@ -46,6 +47,7 @@ const myPreset = definePreset(Aura, {
 
     // PrimeNG
     Menubar,
+    ConfirmDialogModule
 ],
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -68,7 +70,8 @@ const myPreset = definePreset(Aura, {
         cancel: "Cancelar",
         dateFormat: "dd/mm/yyyy"
       },
-    })
+    }),
+    ConfirmationService
   ],
   bootstrap: [App]
 })

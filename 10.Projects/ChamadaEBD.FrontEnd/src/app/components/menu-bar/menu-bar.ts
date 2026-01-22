@@ -18,17 +18,17 @@ export class MenuBar {
       {
         label: "Home",
         icon: PrimeIcons.HOME,
-        command: () => router.navigate(["/home"])
+        command: () => this.router.navigate(["/home"])
       },
       {
         label: "Salas",
         icon: PrimeIcons.OBJECTS_COLUMN,
-        command: () => router.navigate(["/rooms"])
+        command: () => this.router.navigate(["/rooms"])
       },
       {
         label: "Alunos",
         icon: PrimeIcons.USERS,
-        command: () => router.navigate(["/students"])
+        command: () => this.router.navigate(["/students"])
       }
     ]
   }

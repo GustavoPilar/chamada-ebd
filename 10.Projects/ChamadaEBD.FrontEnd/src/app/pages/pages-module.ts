@@ -1,12 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
 import { HomeComponent } from './home/home';
-import { ButtonModule } from 'primeng/button';
 import { SalasComponent } from './salas/salas';
-import { TableModule } from 'primeng/table';
-import { ToolbarModule } from 'primeng/toolbar';
 import { AlunosComponent } from './alunos/alunos';
 
+import { ComponentsModule } from '../components/components-module';
+
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -16,9 +25,19 @@ import { AlunosComponent } from './alunos/alunos';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
+    ComponentsModule,
+
     ButtonModule,
     TableModule,
-    ToolbarModule
+    ToolbarModule,
+    DialogModule,
+    InputTextModule,
+    SelectModule,
+    ConfirmDialogModule               
+  ],
+  providers: [
+    ConfirmationService
   ]
 })
 export class PagesModule { }

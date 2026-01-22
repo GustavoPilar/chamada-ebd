@@ -3,7 +3,7 @@
         <ng-template #caption>
             <p-toolbar>
                 <ng-template #start>
-                    <p-button icon="pi pi-plus"></p-button>
+                    <p-button icon="pi pi-plus" (onClick)="showForm(null)"></p-button>
                 </ng-template>
             </p-toolbar>
         </ng-template>
@@ -17,16 +17,43 @@
         </ng-template>
         <ng-template #body let-result>
             <tr>
-                <td>{{result.code}}</td>
-                <td>{{result.description}}</td>
-                <td>{{result.teacher}}</td>
-                <td>
+                <td class="text-center">{{result.code}}</td>
+                <td class="text-center">{{result.description}}</td>
+                <td class="text-center">{{result.teacher.name}}</td>
+                <td class="text-center">
                     <div class="flex justify-content-evenly">
-                        <p-button icon="pi pi-pencil"></p-button>
-                        <p-button icon="pi pi-trash"></p-button>
+                        <p-button icon="pi pi-pencil" (onClick)="showForm(result)" severity="warn"></p-button>
+                        <p-button icon="pi pi-trash" severity="danger"></p-button>
                     </div>
                 </td>
             </tr>
         </ng-template>
     </p-table>
+    @if (visible) {
+        <p-dialog [modal]="true" [visible]="visible" [closeOnEscape]="false" [closable]="false" class="form-dialog" [draggable]="false">
+            <form [formGroup]="entityForm">
+                <h2 class="border-bottom-3">{{formDescription}}</h2>
+                <div class="grid">
+                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                        <label for="code">Nome da sala</label>
+                        <input pInputText type="text" id="code" placeholder="Nome da sala" formControlName="code" class="w-full"/>
+                    </div>
+                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                        <label for="description">Descrição</label>
+                        <input pInputText type="text" id="description" placeholder="Descrição" formControlName="description" class="w-full"/>
+                    </div>
+                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                        <label for="teacher">Professor</label>
+                        <p-select formControlName="teacher" [options]="teachers" optionLabel="name" dataKey="id" placeholder="Selecione o professor" class="w-full" [showClear]="true" [filter]="true" filterBy="name"  />
+                    </div>
+                </div>
+            </form>
+            <ng-template #footer>
+                <div class="flex justify-content-between w-full">
+                    <p-button [variant]="'text'" label="Cancelar e voltar" icon="pi pi-undo" severity="danger" (onClick)="closeForm()"></p-button>
+                    <p-button label="Salvar" severity="success"></p-button>
+                </div>
+            </ng-template>
+        </p-dialog>
+    }
 </div>
