@@ -1,0 +1,14 @@
+<div class="grid my-2 gap-2">
+    @for (option of options; track $index) {
+        <div class="col-6 grid">
+            <div class="col-3 cursor-pointer" (click)="teste()">
+                <div class="text-center p-3 border-round-sm bg-blue-400 font-bold hover:shadow-8">
+                    <i [class]="option.icon"></i>
+                </div>
+            </div>
+            <div class="col-9 cursor-pointer" (click)="teste()">
+                <div class="text-center p-3 border-round-sm font-bold shadow-2 hover:shadow-5">{{option.label}}</div>
+            </div>
+        </div>
+    }
+</div>
