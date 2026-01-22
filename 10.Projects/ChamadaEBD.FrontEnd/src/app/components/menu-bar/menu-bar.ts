@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 
 @Component({
@@ -10,16 +11,30 @@ import { MenuItem, PrimeIcons } from 'primeng/api';
 export class MenuBar {
   public items: MenuItem[];
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
     this.items = [
       {
         label: "Home",
-        icon: PrimeIcons.HOME
+        icon: PrimeIcons.HOME,
+        command: () => router.navigate(["/home"])
       },
       {
         label: "Salas",
-        icon: PrimeIcons.OBJECTS_COLUMN
+        icon: PrimeIcons.OBJECTS_COLUMN,
+        command: () => router.navigate(["/rooms"])
+      },
+      {
+        label: "Alunos",
+        icon: PrimeIcons.USERS,
+        command: () => router.navigate(["/students"])
       }
     ]
+  }
+
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    element.classList.toggle('my-app-dark');
   }
 }

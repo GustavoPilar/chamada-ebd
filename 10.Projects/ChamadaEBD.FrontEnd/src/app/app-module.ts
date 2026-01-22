@@ -53,7 +53,7 @@ const myPreset = definePreset(Aura, {
       theme: {
         preset: myPreset,
         options: {
-          darkModeSelector: true
+          darkModeSelector: ".my-app-dark"
         }
       },
       ripple: true,

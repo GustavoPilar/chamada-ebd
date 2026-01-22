@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { PrimeIcons } from 'primeng/api';
 
@@ -11,19 +12,17 @@ export class HomeComponent implements OnInit {
 
   options: any[] = [];
 
-  constructor() {
+  constructor(private router: Router) {
     this.options = [
       {
-        label: "Cadastros",
-        icon: PrimeIcons.LIST
-      },
-      {
         label: "Salas",
-        icon: PrimeIcons.OBJECTS_COLUMN
+        icon: PrimeIcons.OBJECTS_COLUMN,
+        target: "rooms"
       },
       {
         label: "Alunos",
-        icon: PrimeIcons.USERS
+        icon: PrimeIcons.LIST,
+        target: "students"
       }
     ]
   }
@@ -32,7 +31,7 @@ export class HomeComponent implements OnInit {
     
   }
 
-  teste(): void {
-    alert("funcionou");
+  public navigateTo(target: string): void {
+    this.router.navigate(["", target]);
   }
 }

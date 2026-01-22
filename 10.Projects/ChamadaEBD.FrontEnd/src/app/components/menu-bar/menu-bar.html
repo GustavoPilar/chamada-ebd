@@ -5,6 +5,9 @@
         </div>
     </ng-template>
     <ng-template #item let-item let-root="root">
-        <p-button [label]="item.label" [icon]="item.icon" [style]="{'color': 'white'}" class="mx-2"></p-button>
+        <p-button [label]="item.label" [icon]="item.icon"></p-button>
+    </ng-template>
+    <ng-template #end>
+        <p-button icon="pi pi-sun" (onClick)="toggleDarkMode()"/>
     </ng-template>
 </p-menubar>
