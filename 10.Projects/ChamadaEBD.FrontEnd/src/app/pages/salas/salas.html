@@ -30,19 +30,19 @@
         </ng-template>
     </p-table>
     @if (visible) {
-        <p-dialog [modal]="true" [visible]="visible" [closeOnEscape]="false" [closable]="false" class="form-dialog" [draggable]="false">
+        <p-dialog [modal]="true" [visible]="visible" [closeOnEscape]="false" [closable]="false" [draggable]="false" [style]="{'width' : '90%', 'height': '90%'}">
             <form [formGroup]="entityForm">
                 <h2 class="border-bottom-3">{{formDescription}}</h2>
                 <div class="grid">
-                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                    <div class="field lg:col-6 md:col-12 col-12">
                         <label for="code">Nome da sala</label>
                         <input pInputText type="text" id="code" placeholder="Nome da sala" formControlName="code" class="w-full"/>
                     </div>
-                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                    <div class="field lg:col-6 md:col-12 col-12">
                         <label for="description">Descrição</label>
                         <input pInputText type="text" id="description" placeholder="Descrição" formControlName="description" class="w-full"/>
                     </div>
-                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                    <div class="field lg:col-6 md:col-12 col-12">
                         <label for="teacher">Professor</label>
                         <p-select formControlName="teacher" [options]="teachers" optionLabel="name" dataKey="id" placeholder="Selecione o professor" class="w-full" [showClear]="true" [filter]="true" filterBy="name"  />
                     </div>

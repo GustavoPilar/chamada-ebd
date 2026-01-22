@@ -9,19 +9,19 @@
         </ng-template>
         <ng-template #header>
             <tr>
-                <th>Nome</th>
-                <th>Idade</th>
-                <th>Sala</th>
-                <th>Ativo?</th>
-                <th>Ação</th>
+                <th class="text-center">Nome</th>
+                <th class="text-center">Idade</th>
+                <th class="text-center">Sala</th>
+                <th class="text-center">Ativo?</th>
+                <th class="text-center">Ação</th>
             </tr>
         </ng-template>
         <ng-template #body let-result>
             <tr>
-                <td>{{result.name}}</td>
-                <td>{{result.age}}</td>
-                <td>{{result.room.code}}</td>
-                <td>
+                <td class="text-center">{{result.name}}</td>
+                <td class="text-center">{{result.age}}</td>
+                <td class="text-center">{{result.room.code}}</td>
+                <td class="text-center">
                     @if (result.active) {
                         <p-button icon="pi pi-check" severity="success" [disabled]="true"></p-button>
                     }
@@ -39,27 +39,31 @@
         </ng-template>
     </p-table>
     @if (visible) {
-        <p-dialog [modal]="true" [visible]="visible" [closeOnEscape]="false" [closable]="false" class="form-dialog" [draggable]="false" [style]="{'width' : '50%', 'height': '50%'}">
+        <p-dialog [modal]="true" [visible]="visible" [closeOnEscape]="false" [closable]="false" [draggable]="false" [style]="{'width' : '90%', 'height': '90%'}">
             <form [formGroup]="entityForm">
                 <h2 class="border-bottom-3">{{formDescription}}</h2>
                 <div class="grid">
-                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                    <div class="field xl:col-6 lg:col-6 md:col-12 col-12">
                         <label for="name">Nome</label>
                         <input pInputText type="text" id="name" placeholder="Nome do aluno" formControlName="name" class="w-full"/>
                     </div>
-                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                    <div class="field lg:col-6 md:col-12 col-12">
                         <label for="age">Idade</label>
                         <p-inputNumber [min]="0" [max]="120" [showButtons]="true" suffix=" anos" class="w-full" formControlName="age"></p-inputNumber>
                     </div>
-                    <div class="field lg:col-6 md:col-12 sm:col-12">
+                    <div class="field lg:col-6 md:col-12 col-12">
                         <label for="room">Sala</label>
                         <p-select formControlName="room" [options]="rooms" optionLabel="code" dataKey="id" placeholder="Selecione a sala" class="w-full" [showClear]="true" [editable]="true" />
+                    </div>
+                    <div class="field lg:col-6 md:col-12 col-12 text-center">
+                        <label for="active" class="w-full">Ativo?</label>
+                        <p-toggle-switch formControlName="active" name="active"></p-toggle-switch>
                     </div>
                 </div>
             </form>
             <ng-template #footer>
                 <div class="flex justify-content-between w-full">
-                    <p-button [variant]="'text'" label="Cancelar e voltar" icon="pi pi-undo" severity="danger" (onClick)="closeForm()"></p-button>
+                    <p-button [variant]="'text'" label="Cancelar" icon="pi pi-undo" severity="danger" (onClick)="closeForm()"></p-button>
                     <p-button label="Salvar" severity="success"></p-button>
                 </div>
             </ng-template>
