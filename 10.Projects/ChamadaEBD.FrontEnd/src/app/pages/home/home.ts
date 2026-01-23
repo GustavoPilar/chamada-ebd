@@ -23,6 +23,11 @@ export class HomeComponent implements OnInit {
         label: "Alunos",
         icon: PrimeIcons.LIST,
         target: "students"
+      },
+      {
+        label: "Usuário",
+        icon: PrimeIcons.USERS,
+        target: "users"
       }
     ]
   }

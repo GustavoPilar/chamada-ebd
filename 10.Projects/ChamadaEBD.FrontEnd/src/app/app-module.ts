@@ -1,3 +1,4 @@
+import { ApiService } from './services/communication/api.service';
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -71,7 +72,8 @@ const myPreset = definePreset(Aura, {
         dateFormat: "dd/mm/yyyy"
       },
     }),
-    ConfirmationService
+    ConfirmationService,
+    ApiService
   ],
   bootstrap: [App]
 })

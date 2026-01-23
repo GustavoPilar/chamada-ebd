@@ -21,6 +21,16 @@ builder.Services.AddScoped(typeof(IRepositoryBase<IEntityBase>), typeof(Reposito
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(cgf => { }, typeof(Program));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("enableAll", options =>
+    {
+        options.AllowAnyHeader();
+        options.AllowAnyMethod();
+        options.AllowAnyOrigin();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +47,7 @@ else
 
     app.UseHttpsRedirection();
 
+app.UseCors("enableAll");
 app.UseAuthorization();
 
 app.MapControllers();

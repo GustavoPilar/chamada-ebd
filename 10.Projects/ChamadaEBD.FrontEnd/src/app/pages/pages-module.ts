@@ -18,12 +18,14 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { UserComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     SalasComponent,
-    AlunosComponent
+    AlunosComponent,
+    UserComponent
   ],
   imports: [
     CommonModule,
