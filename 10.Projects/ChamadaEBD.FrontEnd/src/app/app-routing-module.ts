@@ -6,7 +6,8 @@ import { AlunosComponent } from './pages/alunos/alunos';
 import { UserComponent } from './pages/users/users.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: "/home", pathMatch: 'full' },
+  { path: "", redirectTo: "/manager", pathMatch: 'full' },
+  { path: "manager", loadChildren: () => import("./modules/crud/crud.module").then(m => m.CrudModule), data: { title: "Cadastros" } },
   { path: "home", component: HomeComponent, data: { title: "Págian inicial" } },
   { path: "rooms", component: SalasComponent, data: { title: "Salas" } },
   { path: "students", component: AlunosComponent, data: { title: "Alunos" } },

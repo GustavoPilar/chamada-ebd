@@ -17,6 +17,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 // Modules
 import { ComponentsModule } from './components/components-module';
 import { PagesModule } from './pages/pages-module';
+import { CrudModule } from './modules/crud/crud.module';
 
 const myPreset = definePreset(Aura, {
   semantic: {
@@ -45,6 +46,7 @@ const myPreset = definePreset(Aura, {
     // Modules
     ComponentsModule,
     PagesModule,
+    CrudModule,
 
     // PrimeNG
     Menubar,
