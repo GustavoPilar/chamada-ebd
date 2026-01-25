@@ -3,10 +3,12 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { CrudComponent } from "./crud.component";
 import { CrudListComponent } from "./crud-list/crud-list.component";
+import { CrudFormComponent } from "./crud-form/crud-form.component";
 
 const routes: Routes = [
     { path: "", component: CrudComponent },
     { path: "list/:entityName", component: CrudListComponent, data: { title: "Lista" } },
+    { path: "edit/:entityName/:entityId", component: CrudFormComponent, data: { title: "Formulário" } },
     { path: "**", redirectTo: "", pathMatch: "full" }
 ]
 

@@ -19,6 +19,10 @@ import { ComponentsModule } from './components/components-module';
 import { PagesModule } from './pages/pages-module';
 import { CrudModule } from './modules/crud/crud.module';
 
+// NgxSpinner
+import { NgxSpinnerModule } from "ngx-spinner";
+import { provideAnimations } from '@angular/platform-browser/animations';
+
 const myPreset = definePreset(Aura, {
   semantic: {
     primary: {
@@ -50,10 +54,14 @@ const myPreset = definePreset(Aura, {
 
     // PrimeNG
     Menubar,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+
+    // NgxModule
+    NgxSpinnerModule.forRoot({type: "ball-atom"})
 ],
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideAnimations(),
     providePrimeNG({
       theme: {
         preset: myPreset,

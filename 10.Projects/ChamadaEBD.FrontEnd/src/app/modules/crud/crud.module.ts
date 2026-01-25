@@ -10,11 +10,13 @@ import { ToolbarModule } from "primeng/toolbar";
 import { ButtonModule } from "primeng/button";
 import { CrudListComponent } from "./crud-list/crud-list.component";
 import { UserComponent } from "./entities/user/user.component";
+import { CrudFormComponent } from "./crud-form/crud-form.component";
 
 @NgModule({
     declarations: [
         CrudComponent,
         CrudListComponent,
+        CrudFormComponent,
 
         UserComponent,
     ],

@@ -14,7 +14,7 @@ export abstract class CrudBaseComponent implements OnInit {
     public entityName: string;
 
     public isForm: boolean = false;
-    public isList: boolean = true;
+    public isList: boolean = false;
 
     constructor(public crudManager: CrudManager,
         protected apiService: ApiService

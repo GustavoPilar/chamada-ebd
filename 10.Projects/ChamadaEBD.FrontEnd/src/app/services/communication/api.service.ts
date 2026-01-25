@@ -1,18 +1,22 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Injectable({
   providedIn: "root"
 })
 export class ApiService {
 
-  constructor (private httpClient: HttpClient) {
+  constructor (private httpClient: HttpClient,
+    private ngxSpinnerService: NgxSpinnerService
+  ) {
 
   }
 
   public async Get(entityName: string): Promise<any>{
     return new Promise<any>((resolve, reject) => {
       try {
+        this.ngxSpinnerService.show();
         let url = `https://localhost:7083/${entityName}`;
         let header: {
           'Content-Type': 'application/json'
@@ -28,12 +32,16 @@ export class ApiService {
         console.log(error);
         reject(error);
       }
+      finally {
+        this.ngxSpinnerService.hide();
+      }
     });
   }
 
   public async GetById(entityName: string, id: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
+        this.ngxSpinnerService.show();
         let url = `https://localhost:7083/${entityName}/${id}`;
         let headers: {
           "Content-Type": "application/json"
@@ -49,12 +57,16 @@ export class ApiService {
         console.log(error);
         reject(error);
       }
+      finally {
+        this.ngxSpinnerService.hide();
+      }
     });
   }
 
   public async Post(entityName: string, data: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
+        this.ngxSpinnerService.show();
         let url = `https://localhost:7083/${entityName}`;
         let headers: {
           "Content-Type": "application/json"
@@ -70,12 +82,16 @@ export class ApiService {
         console.log(error);
         reject(error);
       }
+      finally {
+        this.ngxSpinnerService.hide();
+      }
     });
   }
 
   public async Put(entityName: string, id: number, data: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
+        this.ngxSpinnerService.show();
         let url = `https://localhost:7083/${entityName}/${id}`;
         let headers: {
           "Content-Type": "application/json"
@@ -91,12 +107,16 @@ export class ApiService {
         console.log(error);
         reject(error);
       }
+      finally {
+        this.ngxSpinnerService.hide();
+      }
     });
   }
 
   public async Delete(entityName: string, id: number, data: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
+        this.ngxSpinnerService.show();
         let url = `https://localhost:7083/${entityName}/${id}`;
         let headers: {
           "Content-Type": "application/json"
@@ -111,6 +131,9 @@ export class ApiService {
       catch (error) {
         console.log(error);
         reject(error);
+      }
+      finally {
+        this.ngxSpinnerService.hide();
       }
     });
   }
