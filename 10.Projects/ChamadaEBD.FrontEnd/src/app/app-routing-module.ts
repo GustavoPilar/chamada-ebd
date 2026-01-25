@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: "rooms", component: SalasComponent, data: { title: "Salas" } },
   { path: "students", component: AlunosComponent, data: { title: "Alunos" } },
   { path: "users", component: UserComponent, data:  {title: "Usuários" } },
-  { path: "**", redirectTo: "/home", pathMatch: "full" }
+  { path: "**", redirectTo: "/manager", pathMatch: "full" }
 ];
 
 @NgModule({

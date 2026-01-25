@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace ChamadaEBD.BackEnd
 {
@@ -76,7 +77,7 @@ namespace ChamadaEBD.BackEnd
             repository.Delete(entity);
             await _unitOfWork.CommitAsync();
 
-            return Ok("Entidade deletada");
+            return Ok(JsonSerializer.Serialize("Entidade deletada"));
         }
         #endregion
 

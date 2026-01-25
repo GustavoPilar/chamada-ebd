@@ -102,7 +102,7 @@ export class ApiService {
           "Content-Type": "application/json"
         }
 
-        this.httpClient.delete(url, { headers: headers }).subscribe((result: any) => {
+        this.httpClient.delete(url, { headers: headers, body: data }).subscribe((result: any) => {
           if (result) {
             resolve(result);
           }

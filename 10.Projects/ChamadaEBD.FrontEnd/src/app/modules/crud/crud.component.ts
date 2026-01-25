@@ -11,16 +11,22 @@ import { PrimeIcons } from "primeng/api";
 })
 export class CrudComponent implements OnInit {
     
+    //#region Fields
     public crudOptions: CrudOptions[] = [];
+    //#endregion
 
+    //#region Constructor
     constructor(private router: Router
     ) {
 
     }
-    
+    //#endregion
+
+    //#region ngOnInit
     ngOnInit(): void {
         this.initCrudOptions();
     }
+    //#endregion
 
     //#region initCrudOptions(), navigateTo()
     private initCrudOptions(): void {
@@ -34,7 +40,7 @@ export class CrudComponent implements OnInit {
     }
 
     public navigateTo(crudTarget: any): void {
-        this.router.navigate(["/manager", crudTarget]);
+        this.router.navigate(["/manager/list/", crudTarget]);
     }
     //#endregion
 
