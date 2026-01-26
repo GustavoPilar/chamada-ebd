@@ -1,6 +1,6 @@
 <p-confirmDialog></p-confirmDialog>
 @if(!loading) {
-    <p-table [value]="entities" [columns]="crudBaseComponent.GetColumns()" [size]="'small'">
+    <p-table [value]="entities" [columns]="crudBaseComponent.GetColumns()" [size]="'small'" dataKey="id" [rowHover]="true" class="cursor-pointer">
         <ng-template #caption>
             <p-toolbar>
                 <ng-template #start>
@@ -17,15 +17,15 @@
             </tr>
         </ng-template>
         <ng-template #body let-rowData let-columns="columns">
-            <tr>
+            <tr (dblclick)="editEntity(rowData)">
                 @for (col of columns; track $index) {
                     <td class="text-center">
                         @if (checkBooleanType(col.type)) {
                             @if (rowData[col.name]) {
-                                <p-button [rounded]="true" icon="pi pi-check" severity="success" disabled="true"></p-button>
+                                <p-button [rounded]="true" icon="pi pi-check" severity="success" disabled="true" class="cursor-pointer"></p-button>
                             }
                             @else {
-                                <p-button [rounded]="true" icon="pi pi-times" severity="danger" disabled="true"></p-button>
+                                <p-button [rounded]="true" icon="pi pi-times" severity="danger" disabled="true" class="cursor-pointer"></p-button>
                             }
                         }
                         @else {

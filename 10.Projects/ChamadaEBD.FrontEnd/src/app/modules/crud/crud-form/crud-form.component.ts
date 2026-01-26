@@ -4,71 +4,126 @@ import { ApiService } from "../../../services/communication/api.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FocusTrap } from "primeng/focustrap";
 import { UserComponent } from "../entities/user/user.component";
+import { ConfirmationService, MessageService, PrimeIcons } from "primeng/api";
 
 @Component({
-    selector: "app-crud-form",
-    templateUrl: "./crud-form.component.html",
-    styleUrl: "./crud-form.component.css",
-    standalone: false
+  selector: "app-crud-form",
+  templateUrl: "./crud-form.component.html",
+  styleUrl: "./crud-form.component.css",
+  standalone: false
 })
 export class CrudFormComponent implements OnInit {
-    public entityName: string;
-    public entityId: number;
-    public selectedEntity: any;
+  //#region Fields
+  public entityName: string;
+  public entityId: number;
 
-    @ViewChild ("form", { read: ViewContainerRef })
-    formContainerRef: ViewContainerRef;
+  @ViewChild("form", { read: ViewContainerRef })
+  formContainerRef: ViewContainerRef;
 
-    public crudBaseComponent: CrudBaseComponent;
+  public crudBaseComponent: CrudBaseComponent;
 
-    public loading: boolean = true;
+  public loading: boolean = true;
+  //#endregion
 
-    constructor(private activatedRoute: ActivatedRoute,
-        private apiService: ApiService,
-        private changeDetectorRef: ChangeDetectorRef
-    ) {
-        this.entityName = this.activatedRoute.params["_value"].entityName;
-        this.entityId = this.activatedRoute.params["_value"].entityId;
-    }
+  //#region Constructor
+  constructor(private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {
+    this.entityName = this.activatedRoute.params["_value"].entityName;
+    this.entityId = this.activatedRoute.params["_value"].entityId;
+  }
+  //#region
 
-    async ngOnInit(): Promise<void> {
+  //#region OnInit && AfterViewInit
+  ngOnInit(): void {
 
-    }
+  }
 
-    async ngAfterViewInit() {
+  ngAfterViewInit(): void {
 
-    }
+  }
+  //#endregion
 
-    public async loadFormComponent() {
-        const loadedModule = await import("../entities/" + this.entityName + "/" + this.entityName + ".component.ts");
-        const componentName: string = Object.keys(loadedModule)[0];
+  //#region Members :: loadFormComponent(), loadEntity()
 
-        this.formContainerRef.clear();
-        const createdComponent = this.formContainerRef.createComponent(loadedModule[componentName]);
-        this.crudBaseComponent = createdComponent.instance as CrudBaseComponent;
+  /**
+   * @description Carrega o componente dinâmico
+   * @async
+   * @returns Promise void
+   */
+  public async loadFormComponent(): Promise<void> {
+    const loadedModule = await import("../entities/" + this.entityName + "/" + this.entityName + ".component.ts");
+    const componentName: string = Object.keys(loadedModule)[0];
 
-        this.crudBaseComponent.entityName = this.entityName;
-        this.crudBaseComponent.isForm = true;
-        this.crudBaseComponent.init();
-        this.loadEntity();
-    }
+    this.formContainerRef.clear();
+    const createdComponent = this.formContainerRef.createComponent(loadedModule[componentName]);
+    this.crudBaseComponent = createdComponent.instance as CrudBaseComponent;
 
-    public loadEntity(): Promise<any> {
-        return new Promise<void>((resolve, reject) => {
-            try {
-                this.apiService.GetById(this.entityName, this.entityId).then((result: any) => {
-                    if (result) {
-                        this.selectedEntity = result ?? { id: 0 };
-                        this.crudBaseComponent.selectedEntity = this.selectedEntity;
-                        this.loading = true;
-                        this.changeDetectorRef.detectChanges();
-                        resolve(this.selectedEntity);
-                    }
-                });
-            } catch (error) {
-                console.log(error);
-                reject(error);
-            }
+    this.crudBaseComponent.entityName = this.entityName;
+    this.crudBaseComponent.entityId = this.entityId;
+    this.crudBaseComponent.isForm = true;
+    this.loadEntity();
+  }
+
+  /**
+   * @description Carrega o método InitAsync do CrudBase e verifica as mudanças
+   * @returns Promise any
+   */
+  public loadEntity(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.crudBaseComponent.initAsync().then((result) => {
+          this.loading = true;
+          this.changeDetectorRef.detectChanges();
+          resolve(result);
         })
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
+  }
+
+
+  public cancelForm(): void {
+    if (!this.crudBaseComponent.entityForm.pristine) {
+      this.confirmationService.confirm({
+        header: "Cancelar alterações",
+        message: "Deseja cancelar as alterações e voltar para a listagem?",
+        icon: PrimeIcons.QUESTION_CIRCLE,
+        accept: () => {
+          this.router.navigate(["/manager/list", this.entityName]);
+        }
+      });
     }
+    else {
+      this.router.navigate(["/manager/list", this.entityName]);
+    }
+  }
+
+  public canSave(): boolean {
+    if (this.crudBaseComponent) {
+      return this.crudBaseComponent.canSave();
+    }
+
+    return false;
+  }
+
+  public saveForm(): void {
+    this.crudBaseComponent.saveEntity().then((result: any) => {
+      if (result) {
+        this.messageService.add({
+          summary: "Entidade salva",
+          severity: "success",
+          life: 1500,
+          closable: true
+        });
+        this.router.navigate(["/manager/list", this.entityName]);
+      }
+    });
+  }
+  //#endregion
 }
