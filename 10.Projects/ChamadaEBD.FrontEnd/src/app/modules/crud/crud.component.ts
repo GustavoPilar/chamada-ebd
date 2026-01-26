@@ -10,7 +10,7 @@ import { PrimeIcons } from "primeng/api";
     standalone: false
 })
 export class CrudComponent implements OnInit {
-    
+
     //#region Fields
     public crudOptions: CrudOptions[] = [];
     //#endregion
@@ -29,16 +29,31 @@ export class CrudComponent implements OnInit {
     //#endregion
 
     //#region initCrudOptions(), navigateTo()
+
+    /**
+     * @description Inicia as opções da lista de cruds
+     * @returns void
+     */
     private initCrudOptions(): void {
         this.crudOptions = [
             {
                 label: "Usuários",
                 crudTarget: "user",
                 icon: PrimeIcons.USERS
-            }
+            },
+            {
+                label: "Alunos",
+                crudTarget: "student",
+                icon: PrimeIcons.USERS
+            },
         ];
     }
 
+    /**
+     * @description Navega para a a listagem alvo
+     * @param crudTarget crud alvo
+     * @returns void
+     */
     public navigateTo(crudTarget: any): void {
         this.router.navigate(["/manager/list/", crudTarget]);
     }

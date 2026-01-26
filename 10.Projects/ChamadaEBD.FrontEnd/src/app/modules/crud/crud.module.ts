@@ -20,6 +20,8 @@ import { InputIconModule } from "primeng/inputicon";
 import { ToggleButtonModule } from "primeng/togglebutton";
 import { InputMaskModule } from "primeng/inputmask";
 import { CrudListManagerComponent } from "./crud-list/crud-list-manager/crud-list-manager.component";
+import { StudentComponent } from "./entities/student/student.component";
+import { SelectModule } from "primeng/select";
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { CrudListManagerComponent } from "./crud-list/crud-list-manager/crud-lis
     CrudFormComponent,
 
     UserComponent,
+    StudentComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +52,8 @@ import { CrudListManagerComponent } from "./crud-list/crud-list-manager/crud-lis
     InputIconModule,
     ConfirmDialogModule,
     ToggleButtonModule,
-    InputMaskModule
+    InputMaskModule,
+    SelectModule
   ],
   exports: [
   ],

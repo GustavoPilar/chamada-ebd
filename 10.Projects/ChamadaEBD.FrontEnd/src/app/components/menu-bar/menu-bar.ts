@@ -19,16 +19,6 @@ export class MenuBar {
         label: "Home",
         icon: PrimeIcons.HOME,
         command: () => this.router.navigate(["/manager"])
-      },
-      {
-        label: "Salas",
-        icon: PrimeIcons.OBJECTS_COLUMN,
-        command: () => this.router.navigate(["/rooms"])
-      },
-      {
-        label: "Alunos",
-        icon: PrimeIcons.USERS,
-        command: () => this.router.navigate(["/students"])
       }
     ]
   }

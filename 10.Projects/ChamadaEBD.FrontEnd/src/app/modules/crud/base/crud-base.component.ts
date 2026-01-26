@@ -85,14 +85,20 @@ export abstract class CrudBaseComponent implements OnInit {
    */
   public initForm(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.crudManager.loadEntity().then((result) => {
-        if (result) {
-          this.selectedEntity = result;
-          this.entityForm = this.createForm();
-          resolve();
-        }
-      }, reject);
+      this.loadResources().then((result) => {
+        this.crudManager.loadEntity().then((result) => {
+          if (result) {
+            this.selectedEntity = result;
+            this.entityForm = this.createForm();
+            resolve();
+          }
+        }, reject);
+      }, reject)
     })
+  }
+
+  public loadResources(): Promise<any[]> {
+    return Promise.all([]);
   }
 
   /**

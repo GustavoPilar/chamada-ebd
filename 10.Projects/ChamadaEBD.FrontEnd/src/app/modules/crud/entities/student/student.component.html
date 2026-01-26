@@ -1,0 +1,47 @@
+@if (isForm && entityForm) {
+    <div class="fluid p-2">
+        <form [formGroup]="entityForm">
+            <div class="formgrid grid">
+                <div class="field lg:col-6 col-12">
+                  <label for="code">Código:</label>
+                  <p-iconfield>
+                      <p-inputicon class="pi pi-id-card"></p-inputicon>
+                      <input type="text" pInputText inputId="code" id="code" formControlName="code" class="w-full" placeholder="Digite o código do aluno" />
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                  <label for="userId">Aluno:</label>
+                  <p-select formControlName="userId" [options]="users" optionLabel="name" dataKey="id" optionValue="id" placeholder="Selecione o usuário" class="w-full" [showClear]="false" [editable]="true" />
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="attendanceCount">Qtd. Presença:</label>
+                    <p-iconfield>
+                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+                      <p-inputNumber formControlName="attendanceCount" id="attendanceCount" inputId="attendanceCount" class="w-full" placeholder="Quantidade do aluno" suffix=" presenças" [disabled]="true"/>
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="absenceCount">Qtd. Falta:</label>
+                    <p-iconfield>
+                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+                      <p-inputNumber formControlName="absenceCount" id="absenceCount" inputId="absenceCount" class="w-full" placeholder="Quantidade do aluno" suffix=" presenças" [disabled]="true"/>
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="attendancePercentage">Porcentagem de presença:</label>
+                    <p-iconfield>
+                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+                      <p-inputNumber formControlName="attendancePercentage" id="attendancePercentage" inputId="attendancePercentage" class="w-full" placeholder="Quantidade do aluno" suffix=" %" [disabled]="true"/>
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="description">Obsevação:</label>
+                    <p-iconfield>
+                      <p-inputicon class="pi pi-pencil"></p-inputicon>
+                      <input type="text" pInputText inputId="description" formControlName="description" class="w-full" placeholder="Digite uma observação do aluno se houver"/>
+                    </p-iconfield>
+                </div>
+            </div>
+        </form>
+    </div>
+}
