@@ -17,6 +17,7 @@ export abstract class CrudBaseComponent implements OnInit {
   public entityId: number;
   public selectedEntity: any;
   public entityForm: FormGroup;
+  public entities: any[];
 
   public isForm: boolean = false;
   public isList: boolean = false;
@@ -39,20 +40,13 @@ export abstract class CrudBaseComponent implements OnInit {
   }
   //#endregion
 
-  //#region Members :: initAsync(), initForm(), canSave(), saveEntity(), deleteEntity()
-  public init(): void {
-    this.crudManager.initialize(this);
-
-    if (this.isForm) {
-      this.initForm();
-    }
-  }
+  //#region Members :: initialize(), initForm(), canSave(), saveEntity(), deleteEntity()
 
   /**
    * @description Inicia o CrudManager e verifica se é formulário ou listagem
    * @returns Promise any
    */
-  public initAsync(): Promise<any> {
+  public initialize(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
         this.crudManager.initialize(this);
@@ -62,10 +56,26 @@ export abstract class CrudBaseComponent implements OnInit {
             resolve(true);
           });
         }
+        else if (this.isList) {
+          this.initList().then(result => {
+            resolve(true);
+          })
+        }
       } catch (error) {
         console.log(error);
         reject(error);
       }
+    })
+  }
+
+  public initList(): Promise<any> {
+    return new Promise<void>((resolve, reject) => {
+      this.crudManager.loadEntities().then((result) => {
+        if (result) {
+          this.entities = result;
+          resolve();
+        }
+      }, reject);
     })
   }
 
@@ -134,6 +144,26 @@ export abstract class CrudBaseComponent implements OnInit {
             resolve(result);
           }
         });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  public deleteEntityByList(id: number, entity: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.crudManager.deleteEntity(id, entity).then((result: any) => {
+          if (result) {
+            this.crudManager.loadEntities().then((entities: any) => {
+              if (entities) {
+                this.entities = entities;
+                resolve(this.entities);
+              }
+            });
+          }
+        })
       } catch (error) {
         console.log(error);
         reject(error);

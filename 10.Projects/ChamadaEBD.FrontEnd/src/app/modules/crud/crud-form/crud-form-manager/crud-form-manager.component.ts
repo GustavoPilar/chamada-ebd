@@ -14,17 +14,17 @@ export class CrudFormManagerComponent implements OnInit {
     crudForm: CrudFormComponent
 
     constructor(private activatedRoute: ActivatedRoute) {
-        
+
     }
 
     ngOnInit(): void {
     }
 
     ngAfterViewInit(): void {
-        let entity = this.activatedRoute.params["_value"].entityName;
+        let entityName = this.activatedRoute.params["_value"].entityName;
 
-        if (entity) {
-            this.crudForm.entityName = entity;
+        if (entityName) {
+            this.crudForm.entityName = entityName;
             this.crudForm.loadFormComponent();
         }
     }

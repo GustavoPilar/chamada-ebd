@@ -55,7 +55,7 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
         Validators.required
       ],
       active: [
-        this.selectedEntity?.active,
+        this.selectedEntity?.active ?? false,
         Validators.required
       ]
     });

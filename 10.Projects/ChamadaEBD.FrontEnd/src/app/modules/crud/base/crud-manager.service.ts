@@ -56,11 +56,15 @@ export class CrudManager {
   public loadEntity(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
+        if (this.entityId == undefined) {
+          return resolve({ id: 0 });
+        }
+
         this.apiService.GetById(this.entityName, this.entityId).then((result: any) => {
           if (result) {
             resolve(result);
           }
-        })
+        });
       } catch (error) {
         console.log(error);
         reject(error);
@@ -68,12 +72,32 @@ export class CrudManager {
     })
   }
 
+  /**
+   * @description Salva a entidade nova
+   * @param entity Entidade
+   * @returns Promise any
+   */
   public saveEntity(entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-
+      try {
+        this.apiService.Post(this.entityName, entity).then((result: any) => {
+          if (result) {
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
     })
   }
 
+  /**
+   * @description Atualiza a entidade
+   * @param id Id da entidade
+   * @param entity Entidade
+   * @returns Promise any
+   */
   public updateEntity(id: number, entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {

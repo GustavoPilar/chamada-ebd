@@ -1,10 +1,11 @@
+<p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
-@if(!loading) {
-    <p-table [value]="entities" [columns]="crudBaseComponent.GetColumns()" [size]="'small'" dataKey="id" [rowHover]="true" class="cursor-pointer">
+@if(canShow) {
+    <p-table [value]="crudBaseComponent.entities" [columns]="crudBaseComponent.GetColumns()" [size]="'small'" dataKey="id" [rowHover]="true" class="cursor-pointer">
         <ng-template #caption>
             <p-toolbar>
                 <ng-template #start>
-                    <p-button icon="pi pi-plus" severity="primary" label="adicionar"></p-button>
+                    <p-button icon="pi pi-plus" severity="primary" label="adicionar" (onClick)="openNew()"></p-button>
                 </ng-template>
             </p-toolbar>
         </ng-template>

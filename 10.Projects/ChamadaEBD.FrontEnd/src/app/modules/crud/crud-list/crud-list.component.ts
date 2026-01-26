@@ -7,97 +7,130 @@ import { ApiService } from "../../../services/communication/api.service";
 import { ColumnType } from "../models/column-type";
 
 @Component({
-    selector: "app-crud-list",
-    templateUrl: "./crud-list.component.html",
-    styleUrl: "./crud-list.component.css",
-    standalone: false,
-    providers: [CrudManager]
+  selector: "app-crud-list",
+  templateUrl: "./crud-list.component.html",
+  styleUrl: "./crud-list.component.css",
+  standalone: false,
+  providers: [CrudManager]
 })
 export class CrudListComponent {
 
-    public entityName: string;
-    public entities: any[] = [];
-    public crudBaseComponent: CrudBaseComponent;
+  //#region Fields
+  public entityName: string;
 
-    public loading: boolean = true;
+  public crudBaseComponent: CrudBaseComponent;
 
-    constructor(public crudManager: CrudManager,
-        private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private viewRef: ViewContainerRef,
-        private changeDetectorRef: ChangeDetectorRef,
-        private messageService: MessageService,
-        private confirmationService: ConfirmationService
-    ) {
-        this.entityName = this.activatedRoute.params["_value"].entityName;
-        this.crudManager.entityName = this.entityName;
-    }
+  public canShow: boolean = false;
+  //#endregion
 
-    async ngOnInit(): Promise<any> {
-        let moduleImported = await import("../entities/" + this.entityName + "/" + this.entityName + ".component.ts");
-        let componentName: string = Object.keys(moduleImported)[0];
-        let componentCreated = this.viewRef.createComponent(moduleImported[componentName]);
+  //#region Constructor
+  constructor(public crudManager: CrudManager,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private viewRef: ViewContainerRef,
+    private changeDetectorRef: ChangeDetectorRef,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) {
+  }
+  //#endregion
 
-        this.crudBaseComponent = componentCreated.instance as CrudBaseComponent;
-        this.crudBaseComponent.entityName = this.entityName;
-        this.crudBaseComponent.isList = true;
-        this.crudBaseComponent.init();
+  //#region OnInit && AfterViewInit
+  async ngOnInit(): Promise<any> {
+  }
 
-        this.crudManager.loadEntities().then((result) => {
-            this.entities = result;
-            this.loading = false;
+  ngAfterViewInit(): void {
+
+  }
+
+  //#region Members :: Initialize(), checkBooleanType(), OpenNew(), editEntity(), confirmationDelete()
+
+  /**
+   * @description Inicializa as variáveis e inicia o crudBaseComponent
+   * @returns Promise void
+   */
+  public async initialize(): Promise<void> {
+    const importedModule = await import("../entities/" + this.entityName + "/" + this.entityName + ".component.ts");
+    const componentName: string = Object.keys(importedModule)[0];
+    const createdCompoonent = this.viewRef.createComponent(importedModule[componentName]);
+
+    this.crudBaseComponent = createdCompoonent.instance as CrudBaseComponent;
+
+    this.crudBaseComponent.entityName = this.entityName;
+    this.crudBaseComponent.isList = true;
+    this.loadEntities();
+  }
+
+  /**
+   * @description Carreaga as entidades da lista
+   * @returns Promise any
+   */
+  public loadEntities(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.crudBaseComponent.initialize().then((result: any) => {
+          this.canShow = true;
+          this.changeDetectorRef.detectChanges();
+          resolve(result);
+        });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  /**
+   * @description Checa se o tipo da coluna é booleana
+   * @param type Tipo da colu
+   * @returns boolean
+   */
+  public checkBooleanType(type: ColumnType): boolean {
+    return type == ColumnType.BOOLEAN;
+  }
+
+  /**
+   * @description Navega até o formulário para inserção
+   * @returns void
+   */
+  public openNew(): void {
+    this.router.navigate(["/manager/new/", this.entityName]);
+  }
+
+  /**
+   * @description Edita a entidade
+   * @param entity Entidade
+   * @returns void
+   */
+  public editEntity(entity: any): void {
+    this.router.navigate(["/manager/edit/", this.entityName, entity.id]);
+  }
+
+  /**
+   * @description Faz a confirmação para a exclusão da entidade
+   * @param entity Entidade
+   * @returns void
+   */
+  public confirmationDelete(entity: any): void {
+    this.confirmationService.confirm({
+      header: "Confirmar exclusão",
+      message: `Deseja excluir o item ${entity.code}`,
+      icon: PrimeIcons.QUESTION_CIRCLE,
+      accept: () => {
+        this.crudBaseComponent.deleteEntityByList(entity.id, entity).then((result: any) => {
+          if (result) {
             this.changeDetectorRef.detectChanges();
-        });
-    }
+            this.messageService.add({
+              summary: "Registro deletado",
+              severity: "success",
+              detail: `A entidade ${entity.code} foi excluída com sucesso.`,
+              life: 3000
+            });
 
-    ngAfterViewInit(): void {
-    
-    }
-
-    public loadEntities(): Promise<any> {
-        return new Promise<any>((resolve, reject) => {
-            try {
-                this.crudManager.loadEntities().then((result: any) => {
-                    if (result) {
-                        resolve(result);
-                    }
-                })
-            } catch (error) {
-                console.log(error);
-                reject(error);
-            }
-        });
-    }
-
-    public checkBooleanType(type: ColumnType): boolean {
-        return type == ColumnType.BOOLEAN;
-    }
-
-    public editEntity(entity: any): void {
-        this.router.navigate(["/manager/edit/", this.entityName, entity.id]);
-    }
-
-    public confirmationDelete(entity: any): void {
-        this.confirmationService.confirm({
-            header: "Confirmar exclusão",
-            message: `Deseja excluir o item ${entity.code}`,
-            icon: PrimeIcons.QUESTION_CIRCLE,
-            accept: () => { 
-                this.loading = true;
-                let id = entity.id;
-                this.crudBaseComponent.deleteEntity(id, entity).then((result) => {
-                    if (result) {
-                        this.loadEntities().then((result) => {
-                            if (result) {
-                                this.entities = result;
-                                this.loading = false;
-                                this.changeDetectorRef.detectChanges();
-                            }
-                        })
-                    }
-                });
-            }
-        });
-    }
+          }
+        })
+      }
+    });
+  }
 
 }

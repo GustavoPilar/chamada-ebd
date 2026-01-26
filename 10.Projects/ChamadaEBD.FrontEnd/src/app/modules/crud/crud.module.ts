@@ -19,10 +19,12 @@ import { IconFieldModule } from "primeng/iconfield";
 import { InputIconModule } from "primeng/inputicon";
 import { ToggleButtonModule } from "primeng/togglebutton";
 import { InputMaskModule } from "primeng/inputmask";
+import { CrudListManagerComponent } from "./crud-list/crud-list-manager/crud-list-manager.component";
 
 @NgModule({
   declarations: [
     CrudComponent,
+    CrudListManagerComponent,
     CrudListComponent,
     CrudFormManagerComponent,
     CrudFormComponent,

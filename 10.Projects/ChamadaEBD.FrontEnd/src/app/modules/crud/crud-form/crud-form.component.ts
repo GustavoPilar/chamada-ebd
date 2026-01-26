@@ -22,7 +22,6 @@ export class CrudFormComponent implements OnInit {
 
   public crudBaseComponent: CrudBaseComponent;
 
-  public loading: boolean = true;
   //#endregion
 
   //#region Constructor
@@ -75,8 +74,7 @@ export class CrudFormComponent implements OnInit {
   public loadEntity(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.crudBaseComponent.initAsync().then((result) => {
-          this.loading = true;
+        this.crudBaseComponent.initialize().then((result) => {
           this.changeDetectorRef.detectChanges();
           resolve(result);
         })
@@ -87,7 +85,10 @@ export class CrudFormComponent implements OnInit {
     });
   }
 
-
+  /**
+   * @description Verifica se há alteração no formulário e pergunta se quer voltar para a listagem.
+   * @returns void
+   */
   public cancelForm(): void {
     if (!this.crudBaseComponent.entityForm.pristine) {
       this.confirmationService.confirm({
@@ -104,6 +105,10 @@ export class CrudFormComponent implements OnInit {
     }
   }
 
+  /**
+   * @description Verifica se o formulário é valido
+   * @returns boolean
+   */
   public canSave(): boolean {
     if (this.crudBaseComponent) {
       return this.crudBaseComponent.canSave();
@@ -112,6 +117,10 @@ export class CrudFormComponent implements OnInit {
     return false;
   }
 
+  /**
+   * @description Salva o formulário e retorna para a listagem
+   * @returns void
+   */
   public saveForm(): void {
     this.crudBaseComponent.saveEntity().then((result: any) => {
       if (result) {
