@@ -5,7 +5,10 @@
         <ng-template #caption>
             <p-toolbar>
                 <ng-template #start>
-                    <p-button icon="pi pi-plus" severity="primary" label="adicionar" (onClick)="openNew()"></p-button>
+                  <h1>{{crudBaseComponent.typeDescription.pluralDescription}}</h1>
+                </ng-template>
+                <ng-template #end>
+                  <p-button icon="pi pi-plus" severity="primary" label="adicionar" (onClick)="openNew()"></p-button>
                 </ng-template>
             </p-toolbar>
         </ng-template>
@@ -28,6 +31,9 @@
                             @else {
                                 <p-button [rounded]="true" icon="pi pi-times" severity="danger" disabled="true" class="cursor-pointer"></p-button>
                             }
+                        }
+                        @else if (checkDateType(col.type)) {
+                          {{getTimeByString(rowData[col.name])}}
                         }
                         @else {
                             {{rowData[col.name]}}

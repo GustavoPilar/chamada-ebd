@@ -11,7 +11,11 @@
                 </div>
                 <div class="field lg:col-6 col-12">
                   <label for="userId">Aluno:</label>
-                  <p-select formControlName="userId" [options]="users" optionLabel="name" dataKey="id" optionValue="id" placeholder="Selecione o usuário" class="w-full" [showClear]="false" [editable]="true" />
+                  <p-select formControlName="userId" [options]="users" optionLabel="name" dataKey="id" optionValue="id" placeholder="Selecione o usuário" class="w-full" [showClear]="false" [editable]="true" (onChange)="onChangeUser($event)"/>
+                </div>
+                <div class="field lg:col-6 col-12">
+                  <label for="classRoomId">Classe:</label>
+                  <p-select formControlName="classRoomId" [options]="classRooms" optionLabel="description" dataKey="id" optionValue="id" placeholder="Selecione o usuário" class="w-full" [showClear]="false" [editable]="true" />
                 </div>
                 <div class="field lg:col-6 col-12">
                     <label for="attendanceCount">Qtd. Presença:</label>

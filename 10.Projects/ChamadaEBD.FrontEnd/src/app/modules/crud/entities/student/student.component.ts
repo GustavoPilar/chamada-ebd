@@ -1,5 +1,5 @@
 import { CrudManager } from './../../base/crud-manager.service';
-import { CrudBaseComponent } from './../../base/crud-base.component';
+import { CrudBaseComponent, TypeDescription } from './../../base/crud-base.component';
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from '../../../../services/communication/api.service';
 import { Column } from '../../models/column';
@@ -17,6 +17,7 @@ export class StudentComponent extends CrudBaseComponent implements OnInit {
 
   //#region Fields
   public users: any[] = [];
+  public classRooms: any[] = [];
   //#endregion
 
   //#region Constructor
@@ -80,24 +81,38 @@ export class StudentComponent extends CrudBaseComponent implements OnInit {
         type: ColumnType.NUMBER
       },
       {
-        name: "AbsenceCount",
+        name: "absenceCount",
         label: "Faltas",
         type: ColumnType.NUMBER
       },
       {
         name: "attendancePercentage",
         label: "Porcentagem de presença",
-        type: ColumnType.BOOLEAN
+        type: ColumnType.NUMBER
       }
     ]
   }
 
   public override loadResources(): Promise<any[]> {
     return Promise.all([
-      this.getUsers()
+      this.getUsers(),
+      this.getClassRooms()
     ])
   }
+
+  public getTypeDescription(): TypeDescription {
+    return new TypeDescription("Aluno", "Alunos", false, this.selectedEntity?.user?.name ?? null);
+  }
+
+  public override prepareEntityToSave(): any {
+    let entity = this.entityForm.value;
+    return entity;
+  }
   //#endregion
+
+  public onChangeUser(event: any): void {
+    console.log(event);
+  }
 
   //#region Resources :: getUsers()
   public getUsers(): Promise<any> {
@@ -106,7 +121,22 @@ export class StudentComponent extends CrudBaseComponent implements OnInit {
         this.apiService.Get("user").then((result: any) => {
           if (result) {
             this.users = result;
-            console.log(this.users);
+            resolve(result);
+          }
+        })
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  public getClassRooms(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.apiService.Get("classRoom").then((result: any) => {
+          if (result) {
+            this.classRooms = result;
             resolve(result);
           }
         })

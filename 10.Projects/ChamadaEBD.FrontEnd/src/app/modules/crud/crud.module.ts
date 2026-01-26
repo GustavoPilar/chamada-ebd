@@ -22,6 +22,8 @@ import { InputMaskModule } from "primeng/inputmask";
 import { CrudListManagerComponent } from "./crud-list/crud-list-manager/crud-list-manager.component";
 import { StudentComponent } from "./entities/student/student.component";
 import { SelectModule } from "primeng/select";
+import { ClassRoomComponent } from "./entities/classRoom/classRoom.component";
+import { DatePickerModule } from "primeng/datepicker";
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { SelectModule } from "primeng/select";
     CrudFormComponent,
 
     UserComponent,
-    StudentComponent
+    StudentComponent,
+    ClassRoomComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +56,8 @@ import { SelectModule } from "primeng/select";
     ConfirmDialogModule,
     ToggleButtonModule,
     InputMaskModule,
-    SelectModule
+    SelectModule,
+    DatePickerModule
   ],
   exports: [
   ],

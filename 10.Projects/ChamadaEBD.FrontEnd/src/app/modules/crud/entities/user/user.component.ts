@@ -1,5 +1,5 @@
 import { CrudManager } from './../../base/crud-manager.service';
-import { CrudBaseComponent } from './../../base/crud-base.component';
+import { CrudBaseComponent, TypeDescription } from './../../base/crud-base.component';
 import { Component, OnInit } from "@angular/core";
 import { ApiService } from '../../../../services/communication/api.service';
 import { Column } from '../../models/column';
@@ -15,9 +15,7 @@ import { PrimeIcons } from 'primeng/api';
 })
 export class UserComponent extends CrudBaseComponent implements OnInit {
 
-  //#region Fields
-  public onIcon: string = PrimeIcons.CHECK;
-  public offIcon: string = PrimeIcons.TIMES;
+  //#region Field
   //#endregion
 
   //#region Constructor
@@ -89,6 +87,10 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
         type: ColumnType.BOOLEAN
       },
     ]
+  }
+
+  public getTypeDescription(): TypeDescription {
+    return new TypeDescription("Usuário", "Usuários", false, this.selectedEntity?.name ?? null);
   }
   //#endregion
 }

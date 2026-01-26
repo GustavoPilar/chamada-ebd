@@ -82,11 +82,24 @@ export class CrudListComponent {
 
   /**
    * @description Checa se o tipo da coluna é booleana
-   * @param type Tipo da colu
+   * @param type Tipo da coluna
    * @returns boolean
    */
   public checkBooleanType(type: ColumnType): boolean {
     return type == ColumnType.BOOLEAN;
+  }
+
+  /**
+   * @description Checa se o tipo da coluna é data
+   * @param type Tipo da coluna
+   * @returns boolean
+   */
+  public checkDateType(type: ColumnType): boolean {
+    return type == ColumnType.DATE;
+  }
+
+  public getTimeByString(date: string): string {
+    return date.substring(11);
   }
 
   /**

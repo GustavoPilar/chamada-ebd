@@ -21,6 +21,7 @@ export class CrudFormComponent implements OnInit {
   formContainerRef: ViewContainerRef;
 
   public crudBaseComponent: CrudBaseComponent;
+  public formDescription: string = "Formulário";
 
   //#endregion
 
@@ -75,6 +76,7 @@ export class CrudFormComponent implements OnInit {
     return new Promise<any>((resolve, reject) => {
       try {
         this.crudBaseComponent.initialize().then((result) => {
+          this.formDescription = this.crudBaseComponent.getFormDescription();
           this.changeDetectorRef.detectChanges();
           resolve(result);
         })

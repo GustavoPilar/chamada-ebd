@@ -3,6 +3,21 @@ import { ApiService } from "../../../services/communication/api.service";
 import { Column } from "../models/column";
 import { CrudManager } from "./crud-manager.service";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { PrimeIcons } from "primeng/api";
+
+export class TypeDescription {
+  singleDescription: string;
+  pluralDescription: string;
+  isFamale: boolean;
+  entityDescription?: string;
+
+  constructor(singleDescription: string, pluralDescription: string, isFamale: boolean, entityDescription: string) {
+    this.singleDescription = singleDescription;
+    this.pluralDescription = pluralDescription;
+    this.isFamale = isFamale;
+    this.entityDescription = entityDescription;
+  }
+}
 
 @Component({
   selector: "app-crud-base",
@@ -19,8 +34,13 @@ export abstract class CrudBaseComponent implements OnInit {
   public entityForm: FormGroup;
   public entities: any[];
 
+  public typeDescription: TypeDescription;
+
   public isForm: boolean = false;
   public isList: boolean = false;
+
+  public onIcon: string = PrimeIcons.CHECK;
+  public offIcon: string = PrimeIcons.TIMES;
   //#endregion
 
   //#region Constructor
@@ -51,13 +71,16 @@ export abstract class CrudBaseComponent implements OnInit {
       try {
         this.crudManager.initialize(this);
 
+
         if (this.isForm) {
           this.initForm().then(result => {
+            this.typeDescription = this.getTypeDescription();
             resolve(true);
           });
         }
         else if (this.isList) {
           this.initList().then(result => {
+            this.typeDescription = this.getTypeDescription();
             resolve(true);
           })
         }
@@ -68,6 +91,10 @@ export abstract class CrudBaseComponent implements OnInit {
     })
   }
 
+  /**
+   * @description Inicia a lista de entidades
+   * @returns Promise any
+   */
   public initList(): Promise<any> {
     return new Promise<void>((resolve, reject) => {
       this.crudManager.loadEntities().then((result) => {
@@ -97,8 +124,25 @@ export abstract class CrudBaseComponent implements OnInit {
     })
   }
 
+  /**
+   * @description Carrega os recursos necessários antes de iniciar o formulário
+   * @returns Promise any[]
+   */
   public loadResources(): Promise<any[]> {
     return Promise.all([]);
+  }
+
+  /**
+   * @description Retorna a descrição para o formulário
+   * @returns string
+   */
+  public getFormDescription(): string {
+    if (this.entityId) {
+      return this.typeDescription.singleDescription + " - " + this.typeDescription.entityDescription;
+    }
+
+    let description: string = this.typeDescription.isFamale ? "Nova " : "Novo ";
+    return description + this.typeDescription.singleDescription;
   }
 
   /**
@@ -109,10 +153,22 @@ export abstract class CrudBaseComponent implements OnInit {
     return this.entityForm?.valid ?? false;
   }
 
+  /**
+   * @description Prepara a entidade para ser salva. Método pode ser sobreescrito.
+   * @returns any
+   */
+  public prepareEntityToSave(): any {
+    return this.entityForm.value;
+  }
+
+  /**
+   * @description Salva a entidade
+   * @returns Promise any
+   */
   public saveEntity(): Promise<any> {
     return new Promise<void>((resolve, reject) => {
       try {
-        let entity = this.entityForm.value;
+        let entity = this.prepareEntityToSave();
         entity.id = this.selectedEntity.id;
 
         if (this.selectedEntity.id == 0) {
@@ -157,6 +213,12 @@ export abstract class CrudBaseComponent implements OnInit {
     })
   }
 
+  /**
+   * @description Deleta a entidade pela listagem
+   * @param id Id da entidade
+   * @param entity Entidade
+   * @returns Promise any
+   */
   public deleteEntityByList(id: number, entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
@@ -192,5 +254,12 @@ export abstract class CrudBaseComponent implements OnInit {
    * @returns FormGroup
    */
   abstract createForm(): FormGroup;
+
+  /**
+   * @description Retorna tipo da descrição da entidade
+   * @returns TypeDescription
+   */
+  abstract getTypeDescription(): TypeDescription;
+
   //#endregion
 }

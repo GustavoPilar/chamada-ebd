@@ -80,6 +80,7 @@ export class CrudManager {
   public saveEntity(entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
+        console.log(entity);
         this.apiService.Post(this.entityName, entity).then((result: any) => {
           if (result) {
             resolve(result);

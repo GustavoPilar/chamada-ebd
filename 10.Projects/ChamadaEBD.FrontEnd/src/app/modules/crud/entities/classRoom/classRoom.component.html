@@ -1,0 +1,54 @@
+@if (isForm && entityForm) {
+    <div class="fluid p-2" style="min-height: 50vh">
+        <form [formGroup]="entityForm">
+            <div class="formgrid grid">
+                <div class="field lg:col-6 col-12">
+                  <label for="code">Código:</label>
+                  <p-iconfield>
+                      <p-inputicon class="pi pi-id-card"></p-inputicon>
+                      <input type="text" pInputText inputId="code" id="code" formControlName="code" class="w-full" placeholder="Digite da sala" />
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="description">Nome da sala:</label>
+                    <p-iconfield>
+                      <p-inputicon class="pi pi-pencil"></p-inputicon>
+                      <input type="text" pInputText inputId="description" id="description" formControlName="description" class="w-full" placeholder="Digite o nome da sala"/>
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                  <label for="startHour">Hora de início:</label>
+                  <p-iconfield>
+                    <p-inputicon class="pi pi-clock"></p-inputicon>
+                    <p-datepicker [timeOnly]="true" formControlName="startHour" class="w-full" (onSelect)="OnSelectHour('startHour', $event)"></p-datepicker>
+                  </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                  <label for="finishHour">Hora de início:</label>
+                  <p-iconfield>
+                    <p-inputicon class="pi pi-clock"></p-inputicon>
+                    <p-datepicker [timeOnly]="true" formControlName="finishHour" class="w-full" (onSelect)="OnSelectHour('finishHour', $event)"></p-datepicker>
+                  </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="studentsCount">Qtd. Alunos:</label>
+                    <p-iconfield>
+                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+                      <p-inputNumber formControlName="studentsCount" id="studentsCount" inputId="studentsCount" class="w-full" placeholder="Quantidade de alunos" suffix=" alunos" [disabled]="true"/>
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="teachersCount">Qtd. Professores:</label>
+                    <p-iconfield>
+                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+                      <p-inputNumber formControlName="teachersCount" id="teachersCount" inputId="teachersCount" class="w-full" placeholder="Quantidade de alunos" suffix=" professores" [disabled]="true"/>
+                    </p-iconfield>
+                </div>
+                <div class="field lg:col-6 col-12">
+                    <label for="active" class="w-full">Ativo?</label>
+                    <p-toggleButton formControlName="active" onLabel="Ativo" offLabel="Inativo" [onIcon]="onIcon" [offIcon]="offIcon" fluid="true"/>
+                </div>
+            </div>
+        </form>
+    </div>
+}

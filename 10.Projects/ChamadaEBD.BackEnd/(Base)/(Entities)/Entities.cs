@@ -188,16 +188,16 @@ namespace ChamadaEBD.BackEnd
         public string? Code { get; set; }
         #endregion
 
-        #region Fields :: Description, StartHour, StartFinish, StudentsCount, TeachersCount
+        #region Fields :: Description, StartHour, FinishHour, StudentsCount, TeachersCount, Active
         [Required]
         [StringLength(150, ErrorMessage = "Descrição com tamanho maior que o permitido")]
         public string? Description { get; set; }
 
         [Required]
-        public TimeOnly StartHour { get; set; }
+        public DateTime? StartHour { get; set; }
 
         [Required]
-        public TimeOnly StartFinish { get; set; }
+        public DateTime? FinishHour { get; set; }
 
         [Required]
         public int StudentsCount { get; set; }

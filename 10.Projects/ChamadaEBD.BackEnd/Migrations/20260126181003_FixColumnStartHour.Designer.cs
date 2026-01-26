@@ -4,6 +4,7 @@ using ChamadaEBD.BackEnd.Base.Context.EntityFrameworkContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChamadaEBD.BackEnd.Migrations
 {
     [DbContext(typeof(EntityFrameworkContext))]
-    partial class EntityFrameworkContextModelSnapshot : ModelSnapshot
+    [Migration("20260126181003_FixColumnStartHour")]
+    partial class FixColumnStartHour
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,13 +44,11 @@ namespace ChamadaEBD.BackEnd.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<DateTime?>("FinishHour")
-                        .IsRequired()
-                        .HasColumnType("datetime(6)");
+                    b.Property<TimeOnly>("FinishHour")
+                        .HasColumnType("time(6)");
 
-                    b.Property<DateTime?>("StartHour")
-                        .IsRequired()
-                        .HasColumnType("datetime(6)");
+                    b.Property<TimeOnly>("StartHour")
+                        .HasColumnType("time(6)");
 
                     b.Property<int>("StudentsCount")
                         .HasColumnType("int");
