@@ -12,6 +12,7 @@ import { CrudManager } from "./crud-manager.service";
 export abstract class CrudBaseComponent implements OnInit {
 
     public entityName: string;
+    public selectedEntity: any;
 
     public isForm: boolean = false;
     public isList: boolean = false;

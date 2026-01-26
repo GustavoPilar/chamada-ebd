@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnInit, Type, ViewChild, ViewContainerRef, ViewRef } from "@angular/core";
 import { CrudBaseComponent } from "../base/crud-base.component";
 import { ApiService } from "../../../services/communication/api.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FocusTrap } from "primeng/focustrap";
 import { UserComponent } from "../entities/user/user.component";
 
@@ -16,32 +16,45 @@ export class CrudFormComponent implements OnInit {
     public entityId: number;
     public selectedEntity: any;
 
-    @ViewChild("container", { read: ViewContainerRef })
-    private childRef: ViewContainerRef;
+    @ViewChild ("form", { read: ViewContainerRef })
+    formContainerRef: ViewContainerRef;
 
     public crudBaseComponent: CrudBaseComponent;
 
-    public loading: boolean = false;
+    public loading: boolean = true;
 
     constructor(private activatedRoute: ActivatedRoute,
         private apiService: ApiService,
-        private containerRef: ViewContainerRef,
         private changeDetectorRef: ChangeDetectorRef
     ) {
         this.entityName = this.activatedRoute.params["_value"].entityName;
         this.entityId = this.activatedRoute.params["_value"].entityId;
     }
-    
+
     async ngOnInit(): Promise<void> {
+
+    }
+
+    async ngAfterViewInit() {
+
+    }
+
+    public async loadFormComponent() {
         const loadedModule = await import("../entities/" + this.entityName + "/" + this.entityName + ".component.ts");
         const componentName: string = Object.keys(loadedModule)[0];
-        const createdComponent = this.containerRef.createComponent(loadedModule[componentName]);
+
+        this.formContainerRef.clear();
+        const createdComponent = this.formContainerRef.createComponent(loadedModule[componentName]);
         this.crudBaseComponent = createdComponent.instance as CrudBaseComponent;
-    
+
         this.crudBaseComponent.entityName = this.entityName;
         this.crudBaseComponent.isForm = true;
         this.crudBaseComponent.init();
-        this.loadEntity();
+        this.loadEntity().then((result) => {
+            if (result) {
+                this.crudBaseComponent.selectedEntity = result;
+            }
+        });
     }
 
     public loadEntity(): Promise<any> {
@@ -61,5 +74,4 @@ export class CrudFormComponent implements OnInit {
             }
         })
     }
-
 }
