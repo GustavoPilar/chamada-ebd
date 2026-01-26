@@ -4,6 +4,7 @@ import { Component, OnInit } from "@angular/core";
 import { ApiService } from '../../../../services/communication/api.service';
 import { Column } from '../../models/column';
 import { ColumnType } from '../../models/column-type';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: "app-user",
@@ -14,13 +15,39 @@ import { ColumnType } from '../../models/column-type';
 export class UserComponent extends CrudBaseComponent implements OnInit {
 
     constructor(public crudManager: CrudManager,
-        protected apiService: ApiService
+        protected apiService: ApiService,
+        protected formBuilder: FormBuilder
     ) {
-        super(crudManager, apiService)
+        super(crudManager, apiService, formBuilder)
     }
 
     ngOnInit(): void {
         
+    }
+
+    public createForm(): FormGroup {
+        return this.formBuilder.group({
+            code: [
+                this.selectedEntity?.code,
+                Validators.required
+            ],
+            name: [
+                this.selectedEntity?.name,
+                Validators.required
+            ],
+            age: [
+                this.selectedEntity?.age,
+                Validators.required
+            ],
+            phone: [
+                this.selectedEntity?.phone,
+                Validators.required
+            ],
+            active: [
+                this.selectedEntity?.active,
+                Validators.required
+            ]
+        });
     }
 
     public GetColumns(): Column[] {

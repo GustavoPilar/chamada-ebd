@@ -50,11 +50,7 @@ export class CrudFormComponent implements OnInit {
         this.crudBaseComponent.entityName = this.entityName;
         this.crudBaseComponent.isForm = true;
         this.crudBaseComponent.init();
-        this.loadEntity().then((result) => {
-            if (result) {
-                this.crudBaseComponent.selectedEntity = result;
-            }
-        });
+        this.loadEntity();
     }
 
     public loadEntity(): Promise<any> {
@@ -62,7 +58,8 @@ export class CrudFormComponent implements OnInit {
             try {
                 this.apiService.GetById(this.entityName, this.entityId).then((result: any) => {
                     if (result) {
-                        this.selectedEntity = result;
+                        this.selectedEntity = result ?? { id: 0 };
+                        this.crudBaseComponent.selectedEntity = this.selectedEntity;
                         this.loading = true;
                         this.changeDetectorRef.detectChanges();
                         resolve(this.selectedEntity);

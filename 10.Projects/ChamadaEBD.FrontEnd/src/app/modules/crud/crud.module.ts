@@ -12,6 +12,8 @@ import { CrudListComponent } from "./crud-list/crud-list.component";
 import { UserComponent } from "./entities/user/user.component";
 import { CrudFormComponent } from "./crud-form/crud-form.component";
 import { CrudFormManagerComponent } from "./crud-form/crud-form-manager/crud-form-manager.component";
+import { FormsModule } from "@angular/forms";
+import { InputText } from "primeng/inputtext";
 
 @NgModule({
     declarations: [
@@ -23,15 +25,17 @@ import { CrudFormManagerComponent } from "./crud-form/crud-form-manager/crud-for
         UserComponent,
     ],
     imports: [
-        CommonModule,
-        CrudRoutingModule,
-        //PrimeNG,
-        TableModule,
-        ToastModule,
-        ConfirmDialog,
-        ToolbarModule,
-        ButtonModule
-    ],
+    CommonModule,
+    CrudRoutingModule,
+    //PrimeNG,
+    TableModule,
+    ToastModule,
+    ConfirmDialog,
+    ToolbarModule,
+    ButtonModule,
+    FormsModule,
+    InputText
+],
     exports: [
     ],
     providers: [

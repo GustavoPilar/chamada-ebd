@@ -1,3 +1,12 @@
 @if (isForm) {
-    <p>It's work</p>
+    <div class="fluid p-2">
+        <form formGroup="entityForm">
+            <div class="formgrid grid">
+                <div class="field col-6">
+                    <label for="code">Código</label>
+                    <input type="text" pInputText inputId="code" formControlName="code" class="w-full" />
+                </div>
+            </div>
+        </form>
+    </div>
 }
