@@ -6,12 +6,12 @@
                   <label for="code">Código:</label>
                   <p-iconfield>
                       <p-inputicon class="pi pi-id-card"></p-inputicon>
-                      <input type="text" pInputText inputId="code" id="code" formControlName="code" class="w-full" placeholder="Digite o código do aluno" />
+                      <input type="text" pInputText inputId="code" id="code" formControlName="code" class="w-full" placeholder="Digite o código do professor" />
                     </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
                   <label for="userId">Usuário:</label>
-                  <p-select formControlName="userId" [options]="users" optionLabel="name" dataKey="id" optionValue="id" placeholder="Selecione o usuário" class="w-full" [showClear]="false" [editable]="true"/>
+                  <p-select formControlName="userId" [options]="users" optionLabel="name" dataKey="id" optionValue="id" placeholder="Selecione o professor" class="w-full" [showClear]="false" [editable]="true"/>
                 </div>
                 <div class="field lg:col-6 col-12">
                   <label for="classRoomId">Classe:</label>
@@ -21,28 +21,28 @@
                     <label for="attendanceCount">Qtd. Presença:</label>
                     <p-iconfield>
                       <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="attendanceCount" id="attendanceCount" inputId="attendanceCount" class="w-full" placeholder="Quantidade de presença do aluno" suffix=" presenças" [disabled]="true"/>
+                      <p-inputNumber formControlName="attendanceCount" id="attendanceCount" inputId="attendanceCount" class="w-full" placeholder="Quantidade de presença do professor" suffix=" presenças" [disabled]="true"/>
                     </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
                     <label for="absenceCount">Qtd. Falta:</label>
                     <p-iconfield>
                       <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="absenceCount" id="absenceCount" inputId="absenceCount" class="w-full" placeholder="Quantidade de falta do aluno" suffix=" presenças" [disabled]="true"/>
+                      <p-inputNumber formControlName="absenceCount" id="absenceCount" inputId="absenceCount" class="w-full" placeholder="Quantidade de falta do professor" suffix=" presenças" [disabled]="true"/>
                     </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
                     <label for="attendancePercentage">Porcentagem de presença:</label>
                     <p-iconfield>
                       <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="attendancePercentage" id="attendancePercentage" inputId="attendancePercentage" class="w-full" placeholder="Porcentagem de presença do aluno" suffix=" %" [disabled]="true"/>
+                      <p-inputNumber formControlName="attendancePercentage" id="attendancePercentage" inputId="attendancePercentage" class="w-full" placeholder="Porcentagem de presença do professor" suffix="%" [disabled]="true"/>
                     </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
                     <label for="description">Obsevação:</label>
                     <p-iconfield>
                       <p-inputicon class="pi pi-pencil"></p-inputicon>
-                      <input type="text" pInputText inputId="description" formControlName="description" class="w-full" placeholder="Digite uma observação do aluno se houver"/>
+                      <input type="text" pInputText inputId="description" formControlName="description" class="w-full" placeholder="Digite uma observação do professor se houver"/>
                     </p-iconfield>
                 </div>
             </div>

@@ -20,14 +20,14 @@
                   <label for="startHour">Hora de início:</label>
                   <p-iconfield>
                     <p-inputicon class="pi pi-clock"></p-inputicon>
-                    <p-datepicker [timeOnly]="true" formControlName="startHour" class="w-full" (onSelect)="OnSelectHour('startHour', $event)"></p-datepicker>
+                    <p-datepicker [timeOnly]="true" formControlName="startHour" class="w-full"></p-datepicker>
                   </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
                   <label for="finishHour">Hora de início:</label>
                   <p-iconfield>
                     <p-inputicon class="pi pi-clock"></p-inputicon>
-                    <p-datepicker [timeOnly]="true" formControlName="finishHour" class="w-full" (onSelect)="OnSelectHour('finishHour', $event)"></p-datepicker>
+                    <p-datepicker [timeOnly]="true" formControlName="finishHour" class="w-full"></p-datepicker>
                   </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
@@ -50,5 +50,10 @@
                 </div>
             </div>
         </form>
+        <div class="grid">
+          <div class="field lg:col-6 col-12">
+            <p-button label="fazer chamada" severity="primary" (onClick)="openDialog()"></p-button>
+          </div>
+        </div>
     </div>
 }

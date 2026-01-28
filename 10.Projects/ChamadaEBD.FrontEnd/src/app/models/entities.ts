@@ -42,6 +42,7 @@ export class StudentCheckin implements IEntityBase {
   code: number;
   dateTimeCheckin: Date;
   description: string;
+  attendance: boolean;
   studentId: number;
   classRoomId: number;
 
@@ -54,6 +55,7 @@ export class TeacherCheckin implements IEntityBase {
   code: number;
   dateTimeCheckin: Date;
   description: string;
+  attendance: boolean;
   teacherId: number;
   classRoomId: number;
 

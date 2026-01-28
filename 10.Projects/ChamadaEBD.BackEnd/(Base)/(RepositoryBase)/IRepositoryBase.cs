@@ -7,6 +7,7 @@
         Task<TEntity?> GetEntityByIdAsync(long id);
         IQueryable<TEntity> GetQueryable();
         TEntity Save(TEntity entity);
+        IEnumerable<TEntity> SaveRange(IEnumerable<TEntity> entities);
         TEntity Update(TEntity entity);
         void Delete(TEntity entity);
     }

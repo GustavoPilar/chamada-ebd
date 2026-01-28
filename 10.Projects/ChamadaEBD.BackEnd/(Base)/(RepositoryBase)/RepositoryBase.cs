@@ -41,7 +41,7 @@ namespace ChamadaEBD.BackEnd
         }
         #endregion
 
-        #region SaveAsync()
+        #region Update()
         public TEntity Update(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);
@@ -49,7 +49,15 @@ namespace ChamadaEBD.BackEnd
         }
         #endregion
 
-        #region UpdateAsync()
+        #region SaveRange
+        public IEnumerable<TEntity> SaveRange(IEnumerable<TEntity> entities)
+        {
+            _context.Set<TEntity>().AddRange(entities);
+            return entities;
+        }
+        #endregion
+
+        #region Save()
         public TEntity Save(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);

@@ -1,3 +1,4 @@
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ChangeDetectorRef, Component, OnInit, ViewContainerRef } from "@angular/core";
 import { ApiService } from "../../../services/communication/api.service";
 import { Column } from "../models/column";
@@ -41,12 +42,16 @@ export abstract class CrudBaseComponent implements OnInit {
 
   public onIcon: string = PrimeIcons.CHECK;
   public offIcon: string = PrimeIcons.TIMES;
+
+  public dynamicDialogRef: DynamicDialogRef | undefined;
   //#endregion
 
   //#region Constructor
   constructor(public crudManager: CrudManager,
     protected apiService: ApiService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: FormBuilder,
+    protected viewContainerRef: ViewContainerRef,
+    protected dialogService: DialogService
   ) {
 
   }

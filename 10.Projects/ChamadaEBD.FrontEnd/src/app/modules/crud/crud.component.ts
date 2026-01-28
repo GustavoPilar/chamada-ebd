@@ -51,6 +51,11 @@ export class CrudComponent implements OnInit {
                 crudTarget: "classRoom",
                 icon: PrimeIcons.OBJECTS_COLUMN
             },
+            {
+                label: "Professores",
+                crudTarget: "teacher",
+                icon: PrimeIcons.OBJECTS_COLUMN
+            },
         ];
     }
 

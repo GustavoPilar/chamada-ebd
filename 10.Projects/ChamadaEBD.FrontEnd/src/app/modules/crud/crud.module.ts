@@ -24,6 +24,11 @@ import { StudentComponent } from "./entities/student/student.component";
 import { SelectModule } from "primeng/select";
 import { ClassRoomComponent } from "./entities/classRoom/classRoom.component";
 import { DatePickerModule } from "primeng/datepicker";
+import { TeacherComponent } from "./entities/teacher/teacher.component";
+import { DialogService } from "primeng/dynamicdialog";
+import { DialogModule } from "primeng/dialog";
+import { CheckinDialogComponent } from "./dynamicDialog/checkin/cheking-dialog.component";
+import { SelectButtonModule } from "primeng/selectbutton";
 
 @NgModule({
   declarations: [
@@ -35,7 +40,10 @@ import { DatePickerModule } from "primeng/datepicker";
 
     UserComponent,
     StudentComponent,
-    ClassRoomComponent
+    TeacherComponent,
+    ClassRoomComponent,
+
+    CheckinDialogComponent
   ],
   imports: [
     CommonModule,
@@ -57,13 +65,16 @@ import { DatePickerModule } from "primeng/datepicker";
     ToggleButtonModule,
     InputMaskModule,
     SelectModule,
-    DatePickerModule
+    DatePickerModule,
+    DialogModule,
+    SelectButtonModule
   ],
   exports: [
   ],
   providers: [
     ConfirmationService,
-    MessageService
+    MessageService,
+    DialogService
   ]
 })
 export class CrudModule { }

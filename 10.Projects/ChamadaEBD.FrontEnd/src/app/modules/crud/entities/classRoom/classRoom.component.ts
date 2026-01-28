@@ -1,16 +1,20 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { CrudBaseComponent, TypeDescription } from "../../base/crud-base.component";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ApiService } from "../../../../services/communication/api.service";
 import { CrudManager } from "../../base/crud-manager.service";
 import { Column } from "../../models/column";
 import { ColumnType } from "../../models/column-type";
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
+import { StudentChekcinComponent } from "../studentCheckin/studentCheckin.component";
+import { CheckinDialogComponent } from "../../dynamicDialog/checkin/cheking-dialog.component";
 
 @Component({
   selector: "app-class-room",
   templateUrl: "./classRoom.component.html",
   styleUrl: "./classRoom.component.css",
-  standalone: false
+  standalone: false,
+  providers: [CrudManager]
 })
 export class ClassRoomComponent extends CrudBaseComponent implements OnInit {
   //#region Fields
@@ -20,9 +24,11 @@ export class ClassRoomComponent extends CrudBaseComponent implements OnInit {
   //#region Constructor
   constructor(public crudManager: CrudManager,
     protected apiService: ApiService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: FormBuilder,
+    protected viewContainerRef: ViewContainerRef,
+    protected dialogService: DialogService
   ) {
-    super(crudManager, apiService, formBuilder)
+    super(crudManager, apiService, formBuilder, viewContainerRef, dialogService)
   }
   //#endregion
 
@@ -135,8 +141,20 @@ export class ClassRoomComponent extends CrudBaseComponent implements OnInit {
   }
   //#endregion
 
-  //#region Events Emmiters
-  public OnSelectHour(target: string, event: Date): void {
+  //#region Dialog Dynamic
+  public openDialog(isStudents: boolean = false): void {
+
+    let config: DynamicDialogConfig = {
+      header: "Chamada - " + this.selectedEntity.description,
+      closable: true,
+      draggable: false,
+      width: "80%",
+      height: "90%",
+      data: this.selectedEntity
+    }
+
+
+    this.dynamicDialogRef = this.dialogService.open(CheckinDialogComponent, config);
   }
   //#endregion
 }

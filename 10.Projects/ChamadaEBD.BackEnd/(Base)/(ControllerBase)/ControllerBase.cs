@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 using System.Text.Json;
 
 namespace ChamadaEBD.BackEnd
@@ -7,8 +9,8 @@ namespace ChamadaEBD.BackEnd
         where TEntity : class, IEntityBase
     {
         #region Fields
-        private readonly IRepositoryBase<TEntity> repository;
-        private readonly IUnitOfWork _unitOfWork;
+        protected readonly IRepositoryBase<TEntity> repository;
+        protected readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region Constructor

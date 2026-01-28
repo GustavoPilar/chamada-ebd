@@ -1,0 +1,28 @@
+<div class="fluid border-bottom-1">
+    <div class="flex justify-content-between align-items-center p-2">
+        <div class="fluid">
+            <p-selectbutton [options]="checkinOptions" [(ngModel)]="selectedOption" optionLabel="description" aria-labelledby="basic"/>
+        </div>
+        <div clas="fluid">
+            <p-button label="Salvar" (onClick)="save()"></p-button>
+        </div>
+    </div>
+</div>
+
+@if (checkins) {
+    <div class="fluid">
+        @for (checkin of checkins; track $index) {
+            <div class="fluid flex justify-content-between align-items-center p-2 shadow-1 my-3 border-round-xl">
+                <div class="w-full">{{checkin.code}}</div>
+                <div>
+                    @if (checkin.attendance) {
+                        <p-button icon="pi pi-check" severity="success" label="Presente" (onClick)="changeAttendance(checkin)"></p-button>
+                    }
+                    @else {
+                        <p-button icon="pi pi-times" severity="danger" label="Faltou" (onClick)="changeAttendance(checkin)"></p-button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

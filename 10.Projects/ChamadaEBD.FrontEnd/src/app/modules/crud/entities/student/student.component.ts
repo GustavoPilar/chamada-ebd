@@ -1,11 +1,12 @@
 import { CrudManager } from './../../base/crud-manager.service';
 import { CrudBaseComponent, TypeDescription } from './../../base/crud-base.component';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { ApiService } from '../../../../services/communication/api.service';
 import { Column } from '../../models/column';
 import { ColumnType } from '../../models/column-type';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @Component({
   selector: "app-student",
@@ -23,9 +24,11 @@ export class StudentComponent extends CrudBaseComponent implements OnInit {
   //#region Constructor
   constructor(public crudManager: CrudManager,
     protected apiService: ApiService,
-    protected formBuilder: FormBuilder
+    protected formBuilder: FormBuilder,
+    protected viewContainerRef: ViewContainerRef,
+    protected dialogService: DialogService
   ) {
-    super(crudManager, apiService, formBuilder)
+    super(crudManager, apiService, formBuilder, viewContainerRef, dialogService)
   }
   //#endregion
 
@@ -109,10 +112,6 @@ export class StudentComponent extends CrudBaseComponent implements OnInit {
     return entity;
   }
   //#endregion
-
-  public onChangeUser(event: any): void {
-    console.log(event);
-  }
 
   //#region Resources :: getUsers()
   public getUsers(): Promise<any> {

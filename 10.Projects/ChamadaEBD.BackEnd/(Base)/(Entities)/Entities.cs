@@ -123,6 +123,9 @@ namespace ChamadaEBD.BackEnd
         [Required(ErrorMessage = "É necessário ter uma data para a chamada")]
         public DateTime DateTimeChekin { get; set; }
 
+        [Required(ErrorMessage = "É necessário ter um valor ao comparecimento")]
+        public bool Attendance { get; set; }
+
         [StringLength(150, ErrorMessage = "Descrição com tamanho maior que o permitido")]
         public string? Description { get; set; }
 
@@ -159,8 +162,8 @@ namespace ChamadaEBD.BackEnd
         [StringLength(150, ErrorMessage = "Descrição com tamanho maior que o permitido")]
         public string? Description { get; set; }
 
-        [Required]
-        public bool HasClass { get; set; }
+        [Required(ErrorMessage = "É necessário ter um valor ao comparecimento")]
+        public bool Attendance { get; set; }
 
         [Required(ErrorMessage = "É necessário ter um professor para a chamada")]
         public long TeacherId { get; set; }
