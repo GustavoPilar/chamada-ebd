@@ -19,6 +19,11 @@ export class MenuBar {
         label: "Cadastros",
         icon: PrimeIcons.LIST,
         command: () => this.router.navigate(["/manager"])
+      },
+      {
+        label: "Cadastros",
+        icon: PrimeIcons.LIST,
+        command: () => this.router.navigate(["/application"])
       }
     ]
   }

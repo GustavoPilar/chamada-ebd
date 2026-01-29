@@ -59,5 +59,15 @@
                 </td>
             </tr>
         </ng-template>
+        <ng-template #emptymessage >
+          <tr>
+            <td [colSpan]="crudBaseComponent.GetColumns().length + 2" class="text-center"><h3>Nenhum(a) {{this.crudBaseComponent.getTypeDescription().singleDescription}} foi encontrado</h3></td>
+          </tr>
+        </ng-template>
+        <ng-template #footer>
+          <tr>
+            <td [colSpan]="crudBaseComponent.GetColumns().length + 2" class="text-center">{{crudBaseComponent.entities.length}} {{crudBaseComponent.getTypeDescription().pluralDescription}} encontrados</td>
+          </tr>
+        </ng-template>
     </p-table>
 }

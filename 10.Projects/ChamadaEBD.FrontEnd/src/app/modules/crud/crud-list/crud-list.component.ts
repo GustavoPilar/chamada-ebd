@@ -133,6 +133,7 @@ export class CrudListComponent {
         if (isCollection) {
           this.crudBaseComponent.deleteSelectedEntities().then((result: any) => {
             if (result) {
+              this.crudBaseComponent.selectedEntities = [];
               this.changeDetectorRef.detectChanges();
               this.messageService.add({
                 summary: isCollection ? "Registros deletados" : "Registro deletado",
@@ -145,7 +146,6 @@ export class CrudListComponent {
         else {
           this.crudBaseComponent.deleteEntityByList(entity.id, entity).then((result: any) => {
             if (result) {
-              this.crudBaseComponent.selectedEntities = [];
               this.changeDetectorRef.detectChanges();
               this.messageService.add({
                 summary: isCollection ? "Registros deletados" : "Registro deletado",
@@ -154,6 +154,11 @@ export class CrudListComponent {
               });
             }
           });
+        }
+      },
+      reject: () => {
+        if (isCollection) {
+          this.crudBaseComponent.selectedEntities = [];
         }
       }
     });

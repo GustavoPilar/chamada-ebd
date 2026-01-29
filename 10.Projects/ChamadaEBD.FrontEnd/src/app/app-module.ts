@@ -21,6 +21,7 @@ import { CrudModule } from './modules/crud/crud.module';
 // NgxSpinner
 import { NgxSpinnerModule } from "ngx-spinner";
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { ApplicationModule } from './modules/application/application.module';
 
 const myPreset = definePreset(Aura, {
   semantic: {
@@ -46,9 +47,11 @@ const myPreset = definePreset(Aura, {
   imports: [
     BrowserModule,
     AppRoutingModule,
+
     // Modules
     ComponentsModule,
     CrudModule,
+    ApplicationModule,
 
     // PrimeNG
     Menubar,
