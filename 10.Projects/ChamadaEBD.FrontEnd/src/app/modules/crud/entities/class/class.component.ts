@@ -156,7 +156,7 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
           resolve(false);
         }
 
-        this.apiService.GetUsersClassesById("List/ClassId", this.entityId).then((result: any) => {
+        this.apiService.GetUsersByClassId(this.entityId).then((result: any) => {
           if (result) {
             this.users = result;
             resolve(result);

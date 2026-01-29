@@ -121,15 +121,17 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
   public loadClass(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        if (this.entityId == undefined) {
+        let withouClass: any = { description: "Sem classe" };
+
+        if (!this.entityId || this.entityId == undefined) {
+          this.class = withouClass
           resolve(false);
+          return;
         }
 
-        let url = "Entity/Class/userId";
-
-        this.apiService.GetUsersClassesById(url, this.entityId).then((result: any) => {
+        this.apiService.GetClassByUserId(this.entityId).then((result: any) => {
           if (result) {
-            this.class = result;
+            this.class = result ?? withouClass;
             resolve(result);
           }
         })

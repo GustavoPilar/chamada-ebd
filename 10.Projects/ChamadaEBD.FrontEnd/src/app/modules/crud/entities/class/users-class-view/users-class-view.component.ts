@@ -53,7 +53,7 @@ export class UsersClassViewComponnet implements OnInit {
   public loadUsers(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.Get(`User/byClassId/${this.classId}/${this.isTeacher}`).then((result: any) => {
+        this.apiService.GetUsersByClassIdAndIsTeacher(this.classId, this.isTeacher).then((result: any) => {
           if (result) {
             this.users = result.map((x: any) => x = { ...x, removed: false });
             resolve(this.users);
@@ -83,7 +83,6 @@ export class UsersClassViewComponnet implements OnInit {
     return new Promise<any>((resolve, reject) => {
       try {
         let removedUsers = this.users.filter((x: any) => x.removed == true).map((x: any) => x.id);
-        console.log(removedUsers);
         this.loadUsersClasses(removedUsers).then((result) => {
           if (result) {
             this.apiService.DeleteRange("UsersClasses", result).then((result: any) => {
@@ -110,7 +109,7 @@ export class UsersClassViewComponnet implements OnInit {
   public loadUsersClasses(ids: number[]): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.GetListUsersClassesByIds("Users", ids).then((result: any) => {
+        this.apiService.GetUsersClassesByUsersIds(ids).then((result: any) => {
           if (result) {
             resolve(result);
           }

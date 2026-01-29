@@ -21,7 +21,9 @@ namespace ChamadaEBD.BackEnd
         }
         #endregion
 
-        #region Actions
+        #region Actions :: Get(), GetById(), GetByIds(), Post(), PostRange(), Put(), PutRange(), Delete(), DeleteRange()
+
+        #region Get()
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TEntity>>> Get()
         {
@@ -34,10 +36,15 @@ namespace ChamadaEBD.BackEnd
 
             return Ok(entities.ToList());
         }
+        #endregion
 
+        #region GetById()
         [HttpGet("{id:long}")]
         public async Task<ActionResult<TEntity>> GetById(long id)
         {
+            if (id < 0)
+                return BadRequest("Id inválido");
+
             TEntity? entity = await repository.GetEntityByIdAsync(id);
 
             if (entity is null)
@@ -45,8 +52,10 @@ namespace ChamadaEBD.BackEnd
 
             return Ok(entity);
         }
+        #endregion
 
-        [HttpGet("ids")]
+        #region GetByIds()
+        [HttpGet("EntitiesIds")]
         public async Task<ActionResult<TEntity>> GetByIds([FromQuery]long[] ids)
         {
             IEnumerable<TEntity> entities = await repository.GetEntitiesByIdsAsync(ids);
@@ -56,7 +65,9 @@ namespace ChamadaEBD.BackEnd
 
             return Ok(entities);
         }
+        #endregion
 
+        #region Post()
         [HttpPost]
         public async Task<ActionResult<TEntity>> Post(TEntity entity)
         {
@@ -68,7 +79,9 @@ namespace ChamadaEBD.BackEnd
 
             return CreatedAtAction(nameof(GetById), new { id = newEntity.Id }, newEntity);
         }
+        #endregion
 
+        #region PostRange()
         [HttpPost("Range")]
         public async Task<ActionResult<IEnumerable<TEntity>>> PostRange(IEnumerable<TEntity> entities)
         {
@@ -80,7 +93,9 @@ namespace ChamadaEBD.BackEnd
 
             return Ok(newEntities);
         }
+        #endregion
 
+        #region Put()
         [HttpPut("{id:long}")]
         public async Task<ActionResult<TEntity>> Put(long id, TEntity entity)
         {
@@ -92,7 +107,23 @@ namespace ChamadaEBD.BackEnd
 
             return Ok(newEntity);
         }
+        #endregion
 
+        #region PutRange()
+        [HttpPut("Range")]
+        public async Task<ActionResult<IEnumerable<TEntity>>> PutRange(IEnumerable<TEntity> entities)
+        {
+            if (entities is null)
+                return BadRequest("Entidades inválidas");
+
+            this.repository.UpdateRange(entities);
+            await this._unitOfWork.CommitAsync();
+
+            return Ok(entities);
+        }
+        #endregion
+
+        #region Delete()
         [HttpDelete("{id:long}")]
         public async Task<ActionResult> Delete(long id, TEntity entity)
         {
@@ -104,7 +135,9 @@ namespace ChamadaEBD.BackEnd
 
             return Ok(JsonSerializer.Serialize("Entidade deletada"));
         }
+        #endregion
 
+        #region DeleteRange()
         [HttpDelete("Range")]
         public async Task<ActionResult> Delete([FromBody]IEnumerable<TEntity> entities)
         {
@@ -117,8 +150,6 @@ namespace ChamadaEBD.BackEnd
             return Ok(JsonSerializer.Serialize("Entidade deletada"));
         }
         #endregion
-
-        #region NonAction
 
         #endregion
     }
