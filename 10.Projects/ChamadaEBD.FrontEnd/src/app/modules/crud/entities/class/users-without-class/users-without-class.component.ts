@@ -84,7 +84,7 @@ export class UsersWithoutClassComponent implements OnInit {
   public loadUsersWithoutClass(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.Get("user/withoutClass").then((result: any) => {
+        this.apiService.Get("User/WithoutClass").then((result: any) => {
           if (result) {
             resolve(result);
           }

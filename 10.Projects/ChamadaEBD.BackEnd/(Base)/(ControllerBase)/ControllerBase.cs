@@ -46,6 +46,17 @@ namespace ChamadaEBD.BackEnd
             return Ok(entity);
         }
 
+        [HttpGet("ids")]
+        public async Task<ActionResult<TEntity>> GetByIds([FromQuery]long[] ids)
+        {
+            IEnumerable<TEntity> entities = await repository.GetEntitiesByIdsAsync(ids);
+
+            if (entities is null)
+                return NotFound("Entidade não encontrada");
+
+            return Ok(entities);
+        }
+
         [HttpPost]
         public async Task<ActionResult<TEntity>> Post(TEntity entity)
         {
@@ -58,7 +69,7 @@ namespace ChamadaEBD.BackEnd
             return CreatedAtAction(nameof(GetById), new { id = newEntity.Id }, newEntity);
         }
 
-        [HttpPost("range")]
+        [HttpPost("Range")]
         public async Task<ActionResult<IEnumerable<TEntity>>> PostRange(IEnumerable<TEntity> entities)
         {
             if (entities is null)
@@ -89,6 +100,18 @@ namespace ChamadaEBD.BackEnd
                 return BadRequest("Id inválido");
 
             repository.Delete(entity);
+            await _unitOfWork.CommitAsync();
+
+            return Ok(JsonSerializer.Serialize("Entidade deletada"));
+        }
+
+        [HttpDelete("Range")]
+        public async Task<ActionResult> Delete([FromBody]IEnumerable<TEntity> entities)
+        {
+            if (entities is null)
+                return BadRequest("Entidades inválidas");
+
+            repository.DeleteRange(entities);
             await _unitOfWork.CommitAsync();
 
             return Ok(JsonSerializer.Serialize("Entidade deletada"));

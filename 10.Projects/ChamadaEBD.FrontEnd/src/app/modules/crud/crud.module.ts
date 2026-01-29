@@ -27,6 +27,7 @@ import { DialogService } from "primeng/dynamicdialog";
 import { DialogModule } from "primeng/dialog";
 import { SelectButtonModule } from "primeng/selectbutton";
 import { UsersWithoutClassComponent } from "./entities/class/users-without-class/users-without-class.component";
+import { UsersClassViewComponnet } from "./entities/class/users-class-view/users-class-view.component";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { UsersWithoutClassComponent } from "./entities/class/users-without-class
     ClassComponent,
 
     // Dynamic Dialog
-    UsersWithoutClassComponent
+    UsersWithoutClassComponent,
+    UsersClassViewComponnet
   ],
   imports: [
     CommonModule,

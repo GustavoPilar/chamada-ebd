@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -70,6 +70,37 @@ export class ApiService {
     });
   }
 
+  public async GetByIds(entityName: string, ids: number[]): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.ngxSpinnerService.show();
+        let url = `https://localhost:7083/${entityName}/ids`;
+        let params = new HttpParams();
+        ids.forEach((id: number) => {
+          params = params.append("ids", id.toString());
+        });
+        console.log(params);
+
+        let headers: {
+          "Content-Type": "application/json"
+        }
+
+        this.httpClient.get(url, { headers: headers, params: params }).subscribe((result: any) => {
+          if (result) {
+            resolve(result);
+          }
+        });
+      }
+      catch (error) {
+        console.log(error);
+        reject(error);
+      }
+      finally {
+        this.ngxSpinnerService.hide();
+      }
+    });
+  }
+
   public async Post(entityName: string, data: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
@@ -99,7 +130,7 @@ export class ApiService {
     return new Promise<any>((resolve, reject) => {
       try {
         this.ngxSpinnerService.show();
-        let url = `https://localhost:7083/${entityName}/range`;
+        let url = `https://localhost:7083/${entityName}/Range`;
         let headers: {
           "Content-Type": "application/json"
         }
@@ -170,9 +201,64 @@ export class ApiService {
       }
     });
   }
+
+  public async DeleteRange(entityName: string, data: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.ngxSpinnerService.show();
+        let url = `https://localhost:7083/${entityName}/Range`;
+        let headers: {
+          "Content-Type": "application/json"
+        }
+
+        this.httpClient.delete(url, { headers: headers, body: data }).subscribe((result: any) => {
+          if (result) {
+            resolve(result);
+          }
+        });
+      }
+      catch (error) {
+        console.log(error);
+        reject(error);
+      }
+      finally {
+        this.ngxSpinnerService.hide();
+      }
+    });
+  }
   //#endregion
 
   //#region GetUsersClasses methods
+
+  public async GetListUsersClassesByIds(entityName: string, ids: number[]): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.ngxSpinnerService.show();
+        let url = `https://localhost:7083/UsersClasses/List/${entityName}Id`;
+        let params = new HttpParams();
+        ids.forEach((id: number) => {
+          params = params.append("usersId", id.toString());
+        })
+
+        let headers: {
+          "Content-Type": "application/json"
+        }
+
+        this.httpClient.get(url, { headers: headers, params: params }).subscribe((result: any) => {
+          if (result) {
+            resolve(result);
+          }
+        });
+      }
+      catch (error) {
+        console.log(error);
+        reject(error);
+      }
+      finally {
+        this.ngxSpinnerService.hide();
+      }
+    });
+  }
 
   public async GetUsersClassesById(entityName: string, classId: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {

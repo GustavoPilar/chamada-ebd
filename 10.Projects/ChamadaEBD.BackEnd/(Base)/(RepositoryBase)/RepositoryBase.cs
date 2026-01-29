@@ -18,7 +18,7 @@ namespace ChamadaEBD.BackEnd
         }
         #endregion
 
-        #region Members :: GetEntitiesAsync(), GetEntityByIdAsync(), GetQueryable()
+        #region Members :: GetEntitiesAsync(), GetEntityByIdAsync(), GetEntitiesByIdsAsync() GetQueryable(), Update(), SaveRange(), Delete(), DeleteRange()
 
         #region GetEntitiesAsync()
         public async Task<IEnumerable<TEntity>> GetEntitiesAsync()
@@ -32,6 +32,14 @@ namespace ChamadaEBD.BackEnd
         {
             return await _context.Set<TEntity>().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
+        #endregion
+
+        #region GetEntitiesByIdsAsync()
+        public async Task<IEnumerable<TEntity>> GetEntitiesByIdsAsync(long[] ids)
+        {
+            return await _context.Set<TEntity>().Where(x => ids.Contains(x.Id)).AsNoTracking().ToListAsync();
+        }
+
         #endregion
 
         #region GetQueryable()
@@ -69,6 +77,13 @@ namespace ChamadaEBD.BackEnd
         public void Delete(TEntity entity)
         {
             _context.Set<TEntity>().Remove(entity);
+        }
+        #endregion
+
+        #region DeleteRange()
+        public void DeleteRange(IEnumerable<TEntity> entities)
+        {
+            _context.Set<TEntity>().RemoveRange(entities);
         }
         #endregion
 

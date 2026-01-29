@@ -7,6 +7,7 @@ import { Column } from "../../models/column";
 import { ColumnType } from "../../models/column-type";
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { UsersWithoutClassComponent } from "./users-without-class/users-without-class.component";
+import { UsersClassViewComponnet } from "./users-class-view/users-class-view.component";
 
 @Component({
   selector: "app-class",
@@ -59,11 +60,11 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
         Validators.required
       ],
       studentsCount: [
-        this.selectedEntity?.studentsCount ?? 0,
+        this.users.filter((x: any) => x.isTeacher == false).length,
         Validators.required
       ],
       teachersCount: [
-        this.selectedEntity?.teachersCount ?? 0,
+        this.users.filter((x: any) => x.isTeacher == true).length,
         Validators.required
       ],
       active: [
@@ -155,7 +156,7 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
           resolve(false);
         }
 
-        this.apiService.GetUsersClassesById("classId", this.entityId).then((result: any) => {
+        this.apiService.GetUsersClassesById("List/ClassId", this.entityId).then((result: any) => {
           if (result) {
             this.users = result;
             resolve(result);
@@ -170,13 +171,13 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
   //#endregion
 
   //#region Dynamic Dialogs :: openUsersWithoutClass()
-  public openStudentsWithoutClass(): void {
+  public openUsersWithoutClass(isTeacher: boolean): void {
 
     let config: DynamicDialogConfig = {
-      header: "Alunos sem classes",
+      header: (isTeacher ? "Professores(as)" : "Alunos(as)") + " disponíveis",
       data: {
         classId: this.entityId,
-        isTeacher: false
+        isTeacher: isTeacher
       },
       width: "80%",
       height: "90vh",
@@ -194,13 +195,13 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
     })
   }
 
-  public openTeachersWithoutClass(): void {
+  public openUsers(isTeacher: boolean): void {
 
     let config: DynamicDialogConfig = {
-      header: "Professores sem classes",
+      header: isTeacher ? "Professores(as)" : "Alunos(as)",
       data: {
         classId: this.entityId,
-        isTeacher: true
+        isTeacher: isTeacher
       },
       width: "80%",
       height: "90vh",
@@ -209,7 +210,7 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
       draggable: false
     }
 
-    this.dynamicDialogRef = this.dialogService.open(UsersWithoutClassComponent, config);
+    this.dynamicDialogRef = this.dialogService.open(UsersClassViewComponnet, config);
 
     this.dynamicDialogRef.onClose.subscribe((result) => {
       if (result) {

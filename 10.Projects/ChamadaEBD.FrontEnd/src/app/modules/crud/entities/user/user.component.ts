@@ -125,7 +125,7 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
           resolve(false);
         }
 
-        let url = "entityClass/userId";
+        let url = "Entity/Class/userId";
 
         this.apiService.GetUsersClassesById(url, this.entityId).then((result: any) => {
           if (result) {

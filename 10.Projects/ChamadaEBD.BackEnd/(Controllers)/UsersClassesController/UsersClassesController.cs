@@ -12,7 +12,13 @@ namespace ChamadaEBD.BackEnd
         }
 
         #region Actions
-        [HttpGet("ClassId/{classId:long}")]
+
+        /// <summary>
+        /// Endpoint para pegar uma lista de UsersClasses pelo ClassId
+        /// </summary>
+        /// <param name="classId"></param>
+        /// <returns>IEnumerable<UsersClasses></returns>
+        [HttpGet("List/ClassId/{classId:long}")]
         public async Task<ActionResult<IEnumerable<UsersClasses>>> GetUsersByClassId(long classId)
         {
             if (classId < 0)
@@ -26,13 +32,19 @@ namespace ChamadaEBD.BackEnd
             return Ok(entities);
         }
 
-        [HttpGet("UserId/{userId:long}")]
-        public async Task<ActionResult<IEnumerable<UsersClasses>>> GetClassesByUserId(long userId)
+
+        /// <summary>
+        /// Endpoint para pegar uma lista de UsersClasses pelo UserId
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>IEnumerable<UsersClasses></returns>
+        [HttpGet("List/UsersId")]
+        public async Task<ActionResult<IEnumerable<UsersClasses>>> GetClassesByUserId([FromQuery]long[] usersId)
         {
-            if (userId < 0)
+            if (usersId is null)
                 return BadRequest("Id inválido");
 
-            List<UsersClasses> entities = this.repository.GetQueryable().Where(x => x.UserId == userId).ToList();
+            List<UsersClasses> entities = this.repository.GetQueryable().Where(x => usersId.Contains(x.UserId)).ToList();
 
             if (entities is null)
                 return NotFound("Entidades não encontradas");
@@ -40,7 +52,7 @@ namespace ChamadaEBD.BackEnd
             return Ok(entities);
         }
 
-        [HttpGet("EntityClass/UserId/{userId:long}")]
+        [HttpGet("Entity/Class/UserId/{userId:long}")]
         public async Task<ActionResult<IEnumerable<Class>>> GetClassByUserId(long userId)
         {
             if (userId < 0)

@@ -52,12 +52,12 @@
         </form>
         <div class="grid" [ngClass]="this.entityId == undefined ? 'hidden' : ''">
           <div class="field lg:col-6 col-12">
-            <p-button label="Ver alunos(as)" severity="primary" icon="pi pi-users" class="w-full mx-2"></p-button>
-            <p-button label="Ver professores(as)" severity="primary" icon="pi pi-users" class="w-full mx-2"></p-button>
+            <p-button label="Ver alunos(as)" severity="primary" icon="pi pi-users" class="w-full mx-2" (onClick)="openUsers(false)"></p-button>
+            <p-button label="Ver professores(as)" severity="primary" icon="pi pi-users" class="w-full mx-2" (onClick)="openUsers(true)"></p-button>
           </div>
           <div class="field lg:col-6 col-12">
-            <p-button label="Adicionar aluno(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openStudentsWithoutClass()"></p-button>
-            <p-button label="Adicionar professor(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openTeachersWithoutClass()"></p-button>
+            <p-button label="Adicionar aluno(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openUsersWithoutClass(false)"></p-button>
+            <p-button label="Adicionar professor(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openUsersWithoutClass(true)"></p-button>
           </div>
         </div>
     </div>
