@@ -67,7 +67,7 @@ import { UsersClassViewComponnet } from "./entities/class/users-class-view/users
     DatePickerModule,
     DialogModule,
     SelectButtonModule,
-    FormsModule
+    FormsModule,
   ],
   exports: [
   ],

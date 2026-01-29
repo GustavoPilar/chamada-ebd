@@ -56,15 +56,18 @@ export class CrudManager {
   public loadEntity(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        if (this.entityId == undefined) {
-          return resolve({ id: 0 });
+        if (this.entityId == 0) {
+          resolve({ id: 0 });
+          return;
+        }
+        else {
+          this.apiService.GetById(this.entityName, this.entityId).then((result: any) => {
+            if (result) {
+              resolve(result);
+            }
+          });
         }
 
-        this.apiService.GetById(this.entityName, this.entityId).then((result: any) => {
-          if (result) {
-            resolve(result);
-          }
-        });
       } catch (error) {
         console.log(error);
         reject(error);
@@ -80,7 +83,6 @@ export class CrudManager {
   public saveEntity(entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        console.log(entity);
         this.apiService.Post(this.entityName, entity).then((result: any) => {
           if (result) {
             resolve(result);
@@ -117,15 +119,23 @@ export class CrudManager {
   /**
    * @description Deleta a entidade
    * @param id Id da entidade
-   * @param entity Entidade
+   * @param data Entidade | Entidades
    * @returns Promise any
    */
-  public deleteEntity(id: number, entity: any): Promise<any> {
+  public deleteEntity(id: number, data: any | any[], isCollection: boolean): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.Delete(this.entityName, id, entity).then((result: any) => {
-          resolve(result);
-        });
+
+        if (isCollection) {
+          this.apiService.DeleteRange(this.entityName, data).then((result: any) => {
+            resolve(result);
+          });
+        }
+        else {
+          this.apiService.Delete(this.entityName, id, data).then((result: any) => {
+            resolve(result);
+          });
+        }
       } catch (error) {
         console.log(error);
         reject(error);

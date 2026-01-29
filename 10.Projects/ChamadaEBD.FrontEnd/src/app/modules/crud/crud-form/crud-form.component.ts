@@ -33,7 +33,7 @@ export class CrudFormComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.entityName = this.activatedRoute.params["_value"].entityName;
-    this.entityId = this.activatedRoute.params["_value"].entityId;
+    this.entityId = this.activatedRoute.params["_value"].entityId ?? 0;
   }
   //#region
 

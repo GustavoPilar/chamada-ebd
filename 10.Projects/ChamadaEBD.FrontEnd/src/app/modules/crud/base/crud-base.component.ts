@@ -34,6 +34,7 @@ export abstract class CrudBaseComponent implements OnInit {
   public selectedEntity: any;
   public entityForm: FormGroup;
   public entities: any[];
+  public selectedEntities: any[] = [];
 
   public typeDescription: TypeDescription;
 
@@ -206,7 +207,7 @@ export abstract class CrudBaseComponent implements OnInit {
   public deleteEntity(id: number, entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.crudManager.deleteEntity(id, entity).then((result: any) => {
+        this.crudManager.deleteEntity(id, entity, false).then((result: any) => {
           if (result) {
             resolve(result);
           }
@@ -227,7 +228,7 @@ export abstract class CrudBaseComponent implements OnInit {
   public deleteEntityByList(id: number, entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.crudManager.deleteEntity(id, entity).then((result: any) => {
+        this.crudManager.deleteEntity(id, entity, false).then((result: any) => {
           if (result) {
             this.crudManager.loadEntities().then((entities: any) => {
               if (entities) {
@@ -237,6 +238,26 @@ export abstract class CrudBaseComponent implements OnInit {
             });
           }
         })
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  public deleteSelectedEntities(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.crudManager.deleteEntity(null, this.selectedEntities, true).then((result: any) => {
+          if (result) {
+            this.crudManager.loadEntities().then((entities: any) => {
+              if (entities) {
+                this.entities = entities;
+                resolve(this.entities)
+              }
+            });
+          }
+        });
       } catch (error) {
         console.log(error);
         reject(error);

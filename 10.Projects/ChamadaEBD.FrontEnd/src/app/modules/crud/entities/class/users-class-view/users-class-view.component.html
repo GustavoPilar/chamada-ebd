@@ -1,37 +1,43 @@
 <p-toast></p-toast>
 
+@if(form) {
+  <form [formGroup]="form" class="fluid p-3 grid">
+    <div class="field lg:col-4 col-12">
+      <label for="name">Filtre pelo nome</label>
+      <p-iconfield>
+        <p-inputicon class="pi pi-user"></p-inputicon>
+        <input type="text" pInputText inputId="name" id="name" class="w-full" placeholder="Filtre pelo nome" formControlName="name" [disabled]="!users.length">
+      </p-iconfield>
+    </div>
+    <div class="field lg:col-4 col-12">
+      <label for="age">Filtre pela idade</label>
+      <p-iconfield>
+        <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+        <p-inputNumber inputId="age" id="age" class="w-full" placeholder="Filtre pela idade" formControlName="age" [min]="0" [max]="120" [disabled]="!users.length"/>
+      </p-iconfield>
+    </div>
+    <div class="field lg:col-4 col-12">
+      <label for="active">Usuário:</label>
+      <p-toggleButton formControlName="active" onLabel="ativo" offLabel="Usuário inativo" [onIcon]="'pi pi-check'" [offIcon]="'pi pi-times'" fluid="true" [disabled]="!users.length"/>
+    </div>
+    <div class="field lg:col-6 col-12">
+      <p-button label="Filtrar" icon="pi pi-search" (onClick)="filter()" [disabled]="!users.length"></p-button>
+    </div>
+    <div class="field lg:col-6 col-12">
+      <p-button label="Salvar" icon="pi pi-check" severity="success" (onClick)="save()" [disabled]="!users.length"></p-button>
+    </div>
+    <div class="field col-12" [hidden]="!users.length">
+      <p>Usuários encontrados: {{usersFiltered.length}}</p>
+    </div>
+  </form>
+}
+
 @if (users && !users.length) {
-  <div class="fluid">
+  <div class="fluid text-center">
     <h1>Nenhum usuário foi encontrado...</h1>
   </div>
 }
 @else {
-  <form [formGroup]="form" class="fluid p-3 grid">
-    <div class="field lg:col-6 col-12">
-      <label for="name">Filtre pelo nome</label>
-      <p-iconfield>
-        <p-inputicon class="pi pi-user"></p-inputicon>
-        <input type="text" pInputText inputId="name" id="name" class="w-full" placeholder="Filtre pelo nome" formControlName="name">
-      </p-iconfield>
-    </div>
-    <div class="field lg:col-6 col-12">
-      <label for="age">Filtre pela idade</label>
-      <p-iconfield>
-        <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-        <p-inputNumber inputId="age" id="age" class="w-full" placeholder="Filtre pela idade" formControlName="age" [min]="0" [max]="120" />
-      </p-iconfield>
-    </div>
-    <div class="field lg:col-6 col-12">
-      <p-button label="Filtrar" icon="pi pi-search" (onClick)="filter()"></p-button>
-    </div>
-    <div class="field lg:col-6 col-12">
-      <p-button label="Salvar" icon="pi pi-check" severity="success" (onClick)="save()"></p-button>
-    </div>
-    <div class="field col-12">
-      <p>Usuários encontrados: {{usersFiltered.length}}</p>
-    </div>
-  </form>
-
   @for (user of usersFiltered; track $index) {
   <div class="flex justify-content-between align-items-center shadow-3 p-2 border-round-xl hover:shadow-5 cursor-pointer my-3" (dblclick)="addOrRemoveUser(user)">
     <div class="w-full p-2">

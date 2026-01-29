@@ -50,14 +50,22 @@
                 </div>
             </div>
         </form>
-        <div class="grid" [ngClass]="this.entityId == undefined ? 'hidden' : ''">
+        <div class="grid">
           <div class="field lg:col-6 col-12">
-            <p-button label="Ver alunos(as)" severity="primary" icon="pi pi-users" class="w-full mx-2" (onClick)="openUsers(false)"></p-button>
-            <p-button label="Ver professores(as)" severity="primary" icon="pi pi-users" class="w-full mx-2" (onClick)="openUsers(true)"></p-button>
+            <div class="my-2">
+              <p-button label="Ver alunos(as)" severity="primary" icon="pi pi-users" class="mx-2" (onClick)="openUsers(false)" [disabled]="this.entityId == 0" fluid="true"></p-button>
+            </div>
+            <div class="my-2">
+              <p-button label="Ver professores(as)" severity="primary" icon="pi pi-users" class="mx-2" (onClick)="openUsers(true)" [disabled]="this.entityId == 0" fluid="true"></p-button>
+            </div>
           </div>
           <div class="field lg:col-6 col-12">
-            <p-button label="Adicionar aluno(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openUsersWithoutClass(false)"></p-button>
-            <p-button label="Adicionar professor(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openUsersWithoutClass(true)"></p-button>
+            <div class="my-2">
+              <p-button label="Adicionar aluno(a)" severity="success" icon="pi pi-plus" class="mx-2" (onClick)="openUsersWithoutClass(false)" [disabled]="this.entityId == 0" fluid="true"></p-button>
+            </div>
+            <div class="my-2">
+              <p-button label="Adicionar professor(a)" severity="success" icon="pi pi-plus" class="mx-2" (onClick)="openUsersWithoutClass(true)" [disabled]="this.entityId == 0" fluid="true"></p-button>
+            </div>
           </div>
         </div>
     </div>

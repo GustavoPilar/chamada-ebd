@@ -37,7 +37,7 @@ export class UsersClassViewComponnet implements OnInit {
     this.initForm();
 
     this.loadUsers().then((result: any) => {
-      this.usersFiltered = result;
+      this.usersFiltered = result.filter((x: any) => x.active == true);
       this.changeDetectorRef.detectChanges();
     });
   }
@@ -46,7 +46,8 @@ export class UsersClassViewComponnet implements OnInit {
   public initForm(): void {
     this.form = this.formBuilder.group({
       name: [null],
-      age: [null]
+      age: [null],
+      active: [true]
     });
   }
 
@@ -68,7 +69,7 @@ export class UsersClassViewComponnet implements OnInit {
 
   public filter(): void {
     let filters = this.form.value;
-    this.usersFiltered = this.users;
+    this.usersFiltered = this.users.filter((x: any) => x.active == filters.active);
 
     if (filters.name != null && filters.name != "") {
       this.usersFiltered = this.usersFiltered.filter((x: any) => x.name.toLowerCase().includes(filters.name.toLocaleLowerCase()));

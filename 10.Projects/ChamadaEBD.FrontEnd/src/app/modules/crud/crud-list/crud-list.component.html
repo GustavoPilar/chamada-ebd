@@ -1,19 +1,27 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 @if(canShow) {
-    <p-table [value]="crudBaseComponent.entities" [columns]="crudBaseComponent.GetColumns()" [size]="'small'" dataKey="id" [rowHover]="true" class="cursor-pointer">
+    <p-table [value]="crudBaseComponent.entities" [columns]="crudBaseComponent.GetColumns()" [size]="'small'" dataKey="id" [rowHover]="true" class="cursor-pointer" [stripedRows]="true" selectionMode="multiple" [(selection)]="crudBaseComponent.selectedEntities">
         <ng-template #caption>
             <p-toolbar>
                 <ng-template #start>
-                  <h1>{{crudBaseComponent.typeDescription.pluralDescription}}</h1>
-                </ng-template>
-                <ng-template #end>
-                  <p-button icon="pi pi-plus" severity="primary" label="adicionar" (onClick)="openNew()"></p-button>
+                  <div class="mx-2">
+                    <h1>{{crudBaseComponent.typeDescription.pluralDescription}}</h1>
+                  </div>
+                  <div class="mx-2">
+                    <p-button icon="pi pi-plus" severity="primary" label="adicionar" (onClick)="openNew()"></p-button>
+                  </div>
+                  <div class="mx-2">
+                    <p-button icon="pi pi-trash" severity="danger" label="Deletar" (onClick)="confirmationDelete(null, true)" [disabled]="!crudBaseComponent.selectedEntities.length"></p-button>
+                  </div>
                 </ng-template>
             </p-toolbar>
         </ng-template>
         <ng-template #header let-columns>
             <tr>
+              <th style="width: 4rem">
+                <p-tableHeaderCheckbox />
+              </th>
                 @for (col of columns; track $index) {
                     <th class="text-center">{{col.label}}</th>
                 }
@@ -22,6 +30,9 @@
         </ng-template>
         <ng-template #body let-rowData let-columns="columns">
             <tr (dblclick)="editEntity(rowData)">
+              <td>
+                <p-tableCheckbox [value]="rowData" />
+              </td>
                 @for (col of columns; track $index) {
                     <td class="text-center">
                         @if (checkBooleanType(col.type)) {
@@ -42,8 +53,8 @@
                 }
                 <td>
                     <div class="flex justify-content-evenly">
-                        <p-button icon="pi pi-pencil" severity="warn" (onClick)="editEntity(rowData)"></p-button>
-                        <p-button icon="pi pi-trash" severity="danger" (onClick)="confirmationDelete(rowData)"></p-button>
+                        <p-button icon="pi pi-pencil" severity="primary" (onClick)="editEntity(rowData)"></p-button>
+                        <p-button icon="pi pi-trash" severity="danger" (onClick)="confirmationDelete(rowData, false)"></p-button>
                     </div>
                 </td>
             </tr>

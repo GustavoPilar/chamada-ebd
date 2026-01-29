@@ -21,7 +21,7 @@ namespace ChamadaEBD.BackEnd
         {
             long[] usersIds = this._unitOfWork.GetRepository<UsersClasses>().GetQueryable().Select(x => x.UserId).ToArray();
 
-            List<User> users = this.repository.GetQueryable().Where(x => !usersIds.Contains(x.Id)).ToList();
+            List<User> users = this.repository.GetQueryable().Where(x => !usersIds.Contains(x.Id) && x.Active == true).ToList();
 
             if (users is null)
                 return NotFound("Entidades não encontradas");

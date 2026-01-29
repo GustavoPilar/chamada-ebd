@@ -124,26 +124,40 @@ export class CrudListComponent {
    * @param entity Entidade
    * @returns void
    */
-  public confirmationDelete(entity: any): void {
+  public confirmationDelete(entity: any, isCollection: boolean): void {
     this.confirmationService.confirm({
       header: "Confirmar exclusão",
-      message: `Deseja excluir o item ${entity.code}`,
+      message: isCollection ? "Deseja excluir os items selecionados?" : `Deseja excluir o item ${entity.code}`,
       icon: PrimeIcons.QUESTION_CIRCLE,
       accept: () => {
-        this.crudBaseComponent.deleteEntityByList(entity.id, entity).then((result: any) => {
-          if (result) {
-            this.changeDetectorRef.detectChanges();
-            this.messageService.add({
-              summary: "Registro deletado",
-              severity: "success",
-              detail: `A entidade ${entity.code} foi excluída com sucesso.`,
-              life: 3000
-            });
-
-          }
-        })
+        if (isCollection) {
+          this.crudBaseComponent.deleteSelectedEntities().then((result: any) => {
+            if (result) {
+              this.changeDetectorRef.detectChanges();
+              this.messageService.add({
+                summary: isCollection ? "Registros deletados" : "Registro deletado",
+                severity: "success",
+                life: 3000
+              });
+            }
+          })
+        }
+        else {
+          this.crudBaseComponent.deleteEntityByList(entity.id, entity).then((result: any) => {
+            if (result) {
+              this.crudBaseComponent.selectedEntities = [];
+              this.changeDetectorRef.detectChanges();
+              this.messageService.add({
+                summary: isCollection ? "Registros deletados" : "Registro deletado",
+                severity: "success",
+                life: 3000
+              });
+            }
+          });
+        }
       }
     });
   }
 
+  //#endregion
 }

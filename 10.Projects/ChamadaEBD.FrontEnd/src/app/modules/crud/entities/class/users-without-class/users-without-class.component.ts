@@ -3,7 +3,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { ApiService } from "../../../../../services/communication/api.service";
 import { Observable, Subject } from "rxjs";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { MessageService } from "primeng/api";
+import { MessageService, PrimeIcons } from "primeng/api";
 
 @Component({
   selector: "app-users-without-class",
@@ -17,10 +17,12 @@ export class UsersWithoutClassComponent implements OnInit {
   public classId: number;
   public isTeacher: boolean;
 
-  public users: any[];
+  public users: any[] = [];
   public userFiltered: any[] = [];
 
   public form: FormGroup;
+  public onIcon: string = PrimeIcons.CHECK;
+  public offIcon: string = PrimeIcons.TIMES;
   //#endregion
 
   constructor(private dynamicDialogConfig: DynamicDialogConfig,
@@ -102,6 +104,7 @@ export class UsersWithoutClassComponent implements OnInit {
 
   public filter(): void {
     let filters = this.form.value;
+
     this.userFiltered = this.users;
 
     if (filters.name != null && filters.name != "") {
