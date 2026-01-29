@@ -10,5 +10,9 @@ namespace ChamadaEBD.BackEnd
         [Required]
         [StringLength(50, ErrorMessage = "Código com tamanho maior que o permitido")]
         string? Code { get; set; }
+
+        [Required]
+        [StringLength(180, ErrorMessage = "Descrição com tamanho maior que o permitido")]
+        public string? Description { get; set; }
     }
 }

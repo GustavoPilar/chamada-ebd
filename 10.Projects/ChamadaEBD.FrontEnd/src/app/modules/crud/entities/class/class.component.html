@@ -34,25 +34,30 @@
                     <label for="studentsCount">Qtd. Alunos:</label>
                     <p-iconfield>
                       <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="studentsCount" id="studentsCount" inputId="studentsCount" class="w-full" placeholder="Quantidade de alunos" suffix=" alunos" [disabled]="true"/>
+                      <p-inputNumber formControlName="studentsCount" id="studentsCount" inputId="studentsCount" class="w-full" placeholder="Quantidade de alunos(as)" suffix=" alunos" [disabled]="true"/>
                     </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
                     <label for="teachersCount">Qtd. Professores:</label>
                     <p-iconfield>
                       <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="teachersCount" id="teachersCount" inputId="teachersCount" class="w-full" placeholder="Quantidade de alunos" suffix=" professores" [disabled]="true"/>
+                      <p-inputNumber formControlName="teachersCount" id="teachersCount" inputId="teachersCount" class="w-full" placeholder="Quantidade de professores(as)" suffix=" professores" [disabled]="true"/>
                     </p-iconfield>
                 </div>
                 <div class="field lg:col-6 col-12">
-                    <label for="active" class="w-full">Ativo?</label>
+                    <label for="active" class="w-full">Classe ativa?</label>
                     <p-toggleButton formControlName="active" onLabel="Ativo" offLabel="Inativo" [onIcon]="onIcon" [offIcon]="offIcon" fluid="true"/>
                 </div>
             </div>
         </form>
-        <div class="grid">
+        <div class="grid" [ngClass]="this.entityId == undefined ? 'hidden' : ''">
           <div class="field lg:col-6 col-12">
-            <p-button label="fazer chamada" severity="primary" (onClick)="openDialog()"></p-button>
+            <p-button label="Ver alunos(as)" severity="primary" icon="pi pi-users" class="w-full mx-2"></p-button>
+            <p-button label="Ver professores(as)" severity="primary" icon="pi pi-users" class="w-full mx-2"></p-button>
+          </div>
+          <div class="field lg:col-6 col-12">
+            <p-button label="Adicionar aluno(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openStudentsWithoutClass()"></p-button>
+            <p-button label="Adicionar professor(a)" severity="success" icon="pi pi-plus" class="w-full mx-2" (onClick)="openTeachersWithoutClass()"></p-button>
           </div>
         </div>
     </div>

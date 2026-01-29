@@ -58,6 +58,18 @@ namespace ChamadaEBD.BackEnd
             return CreatedAtAction(nameof(GetById), new { id = newEntity.Id }, newEntity);
         }
 
+        [HttpPost("range")]
+        public async Task<ActionResult<IEnumerable<TEntity>>> PostRange(IEnumerable<TEntity> entities)
+        {
+            if (entities is null)
+                return BadRequest("Entidade inválida");
+
+            IEnumerable<TEntity> newEntities = repository.SaveRange(entities);
+            await _unitOfWork.CommitAsync();
+
+            return Ok(newEntities);
+        }
+
         [HttpPut("{id:long}")]
         public async Task<ActionResult<TEntity>> Put(long id, TEntity entity)
         {

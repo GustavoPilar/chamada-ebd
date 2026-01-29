@@ -4,6 +4,7 @@ using ChamadaEBD.BackEnd.Base.Context.EntityFrameworkContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChamadaEBD.BackEnd.Migrations
 {
     [DbContext(typeof(EntityFrameworkContext))]
-    partial class EntityFrameworkContextModelSnapshot : ModelSnapshot
+    [Migration("20260128155501_updateAllDatabase")]
+    partial class updateAllDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,7 +84,7 @@ namespace ChamadaEBD.BackEnd.Migrations
                     b.Property<int>("AttendanceFrequency")
                         .HasColumnType("int");
 
-                    b.Property<long?>("ClassId")
+                    b.Property<long>("ClassId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Code")
@@ -108,62 +111,15 @@ namespace ChamadaEBD.BackEnd.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ChamadaEBD.BackEnd.UsersClasses", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ClassId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("IsTeacher")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UsersClasses");
-                });
-
             modelBuilder.Entity("ChamadaEBD.BackEnd.User", b =>
                 {
-                    b.HasOne("ChamadaEBD.BackEnd.Class", null)
-                        .WithMany("Users")
-                        .HasForeignKey("ClassId");
-                });
-
-            modelBuilder.Entity("ChamadaEBD.BackEnd.UsersClasses", b =>
-                {
                     b.HasOne("ChamadaEBD.BackEnd.Class", "Class")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ChamadaEBD.BackEnd.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Class");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ChamadaEBD.BackEnd.Class", b =>

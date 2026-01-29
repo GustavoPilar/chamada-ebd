@@ -42,18 +42,8 @@ export class CrudComponent implements OnInit {
                 icon: PrimeIcons.USERS
             },
             {
-                label: "Alunos",
-                crudTarget: "student",
-                icon: PrimeIcons.USERS
-            },
-            {
                 label: "Classes",
-                crudTarget: "classRoom",
-                icon: PrimeIcons.OBJECTS_COLUMN
-            },
-            {
-                label: "Professores",
-                crudTarget: "teacher",
+                crudTarget: "class",
                 icon: PrimeIcons.OBJECTS_COLUMN
             },
         ];

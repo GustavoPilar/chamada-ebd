@@ -16,7 +16,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 // Modules
 import { ComponentsModule } from './components/components-module';
-import { PagesModule } from './pages/pages-module';
 import { CrudModule } from './modules/crud/crud.module';
 
 // NgxSpinner
@@ -49,7 +48,6 @@ const myPreset = definePreset(Aura, {
     AppRoutingModule,
     // Modules
     ComponentsModule,
-    PagesModule,
     CrudModule,
 
     // PrimeNG

@@ -6,19 +6,20 @@ import { CrudManager } from "../../base/crud-manager.service";
 import { Column } from "../../models/column";
 import { ColumnType } from "../../models/column-type";
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { StudentChekcinComponent } from "../studentCheckin/studentCheckin.component";
-import { CheckinDialogComponent } from "../../dynamicDialog/checkin/cheking-dialog.component";
+import { UsersWithoutClassComponent } from "./users-without-class/users-without-class.component";
 
 @Component({
-  selector: "app-class-room",
-  templateUrl: "./classRoom.component.html",
-  styleUrl: "./classRoom.component.css",
+  selector: "app-class",
+  templateUrl: "./class.component.html",
+  styleUrl: "./class.component.css",
   standalone: false,
   providers: [CrudManager]
 })
-export class ClassRoomComponent extends CrudBaseComponent implements OnInit {
+export class ClassComponent extends CrudBaseComponent implements OnInit {
   //#region Fields
   public currentDate: Date = new Date();
+
+  public users: any[] = [];
   //#endregion
 
   //#region Constructor
@@ -103,13 +104,18 @@ export class ClassRoomComponent extends CrudBaseComponent implements OnInit {
         name: "teachersCount",
         label: "Qtd. Professores",
         type: ColumnType.NUMBER
+      },
+      {
+        name: "active",
+        label: "Sala ativa?",
+        type: ColumnType.BOOLEAN
       }
     ]
   }
 
   public override loadResources(): Promise<any[]> {
     return Promise.all([
-
+      this.loadUsersByClass()
     ])
   }
 
@@ -141,20 +147,75 @@ export class ClassRoomComponent extends CrudBaseComponent implements OnInit {
   }
   //#endregion
 
-  //#region Dialog Dynamic
-  public openDialog(isStudents: boolean = false): void {
+  //#region Resources
+  public loadUsersByClass(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        if (this.entityId == undefined) {
+          resolve(false);
+        }
+
+        this.apiService.GetUsersClassesById("classId", this.entityId).then((result: any) => {
+          if (result) {
+            this.users = result;
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    });
+  }
+  //#endregion
+
+  //#region Dynamic Dialogs :: openUsersWithoutClass()
+  public openStudentsWithoutClass(): void {
 
     let config: DynamicDialogConfig = {
-      header: "Chamada - " + this.selectedEntity.description,
-      closable: true,
-      draggable: false,
+      header: "Alunos sem classes",
+      data: {
+        classId: this.entityId,
+        isTeacher: false
+      },
       width: "80%",
-      height: "90%",
-      data: this.selectedEntity
+      height: "90vh",
+      closable: true,
+      closeOnEscape: true,
+      draggable: false
     }
 
+    this.dynamicDialogRef = this.dialogService.open(UsersWithoutClassComponent, config);
 
-    this.dynamicDialogRef = this.dialogService.open(CheckinDialogComponent, config);
+    this.dynamicDialogRef.onClose.subscribe((result) => {
+      if (result) {
+        console.log(result);
+      }
+    })
+  }
+
+  public openTeachersWithoutClass(): void {
+
+    let config: DynamicDialogConfig = {
+      header: "Professores sem classes",
+      data: {
+        classId: this.entityId,
+        isTeacher: true
+      },
+      width: "80%",
+      height: "90vh",
+      closable: true,
+      closeOnEscape: true,
+      draggable: false
+    }
+
+    this.dynamicDialogRef = this.dialogService.open(UsersWithoutClassComponent, config);
+
+    this.dynamicDialogRef.onClose.subscribe((result) => {
+      if (result) {
+        console.log(result);
+      }
+    })
   }
   //#endregion
 }

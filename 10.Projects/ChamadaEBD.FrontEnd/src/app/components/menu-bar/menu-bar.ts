@@ -16,8 +16,8 @@ export class MenuBar {
   ) {
     this.items = [
       {
-        label: "Home",
-        icon: PrimeIcons.HOME,
+        label: "Cadastros",
+        icon: PrimeIcons.LIST,
         command: () => this.router.navigate(["/manager"])
       }
     ]

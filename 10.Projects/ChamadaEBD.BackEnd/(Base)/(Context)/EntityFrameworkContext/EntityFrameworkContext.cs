@@ -10,13 +10,10 @@ namespace ChamadaEBD.BackEnd.Base.Context.EntityFrameworkContext
             
         }
 
-        #region DbSets :: Users, Students, Teachers, StudentChekins, TeacherChekins, ClassRooms
+        #region DbSets :: Users, Classes
         public DbSet<User> Users { get; set; }
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<StudentCheckin> StudentCheckins { get; set; }
-        public DbSet<TeacherCheckin> TeacherCheckins { get; set; }
-        public DbSet<ClassRoom> ClassRooms { get; set; }
+        public DbSet<Class> Classes { get; set; }
+        public DbSet<UsersClasses> UsersClasses { get; set; }
         #endregion
     }
 }

@@ -11,12 +11,14 @@ import { DialogService } from 'primeng/dynamicdialog';
 @Component({
   selector: "app-user",
   templateUrl: "./user.component.html",
+  styleUrl: "./user.component.css",
   standalone: false,
   providers: [CrudManager]
 })
 export class UserComponent extends CrudBaseComponent implements OnInit {
 
   //#region Field
+  public class: any = { description: "Sem classe" };
   //#endregion
 
   //#region Constructor
@@ -53,6 +55,18 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
       ],
       phone: [
         this.selectedEntity?.phone,
+        Validators.required
+      ],
+      attendanceCount: [
+        this.selectedEntity?.attendanceCount ?? 0,
+        Validators.required
+      ],
+      absenceCount: [
+        this.selectedEntity?.absenceCount ?? 0,
+        Validators.required
+      ],
+      attendanceFrequency: [
+        this.selectedEntity?.attendanceFrequency ?? 0,
         Validators.required
       ],
       active: [
@@ -94,6 +108,36 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
 
   public getTypeDescription(): TypeDescription {
     return new TypeDescription("Usuário", "Usuários", false, this.selectedEntity?.name ?? null);
+  }
+
+  public override loadResources(): Promise<any[]> {
+    return Promise.all([
+      this.loadClass()
+    ])
+  }
+  //#endregion
+
+  //#region Resources
+  public loadClass(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        if (this.entityId == undefined) {
+          resolve(false);
+        }
+
+        let url = "entityClass/userId";
+
+        this.apiService.GetUsersClassesById(url, this.entityId).then((result: any) => {
+          if (result) {
+            this.class = result;
+            resolve(result);
+          }
+        })
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
   }
   //#endregion
 }

@@ -13,6 +13,13 @@ export class ApiService {
 
   }
 
+  //#region Api basic requests
+
+  /**
+   * @description Retorna as entidades do banco
+   * @param entityName Nome da entidade
+   * @returns Promise any
+   */
   public async Get(entityName: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
@@ -92,7 +99,7 @@ export class ApiService {
     return new Promise<any>((resolve, reject) => {
       try {
         this.ngxSpinnerService.show();
-        let url = `https://localhost:7083/${entityName}/any`;
+        let url = `https://localhost:7083/${entityName}/range`;
         let headers: {
           "Content-Type": "application/json"
         }
@@ -163,13 +170,15 @@ export class ApiService {
       }
     });
   }
+  //#endregion
 
-  //#region GetByClassRoom
-  public async getEntityByClassRoom(entityName: string, id: number): Promise<any> {
+  //#region GetUsersClasses methods
+
+  public async GetUsersClassesById(entityName: string, classId: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
         this.ngxSpinnerService.show();
-        let url = `https://localhost:7083/${entityName}/ClassRoom/${id}`;
+        let url = `https://localhost:7083/UsersClasses/${entityName}/${classId}`;
         let headers: {
           "Content-Type": "application/json"
         }

@@ -4,9 +4,9 @@ namespace ChamadaEBD.BackEnd
 {
     [ApiController]
     [Route("[Controller]")]
-    public class ClassRoomController : CrudControllerBase<ClassRoom>
+    public class ClassController : CrudControllerBase<Class>
     {
-        public ClassRoomController(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public ClassController(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
     }
