@@ -4,6 +4,7 @@ using ChamadaEBD.BackEnd.Base.Context.EntityFrameworkContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChamadaEBD.BackEnd.Migrations
 {
     [DbContext(typeof(EntityFrameworkContext))]
-    partial class EntityFrameworkContextModelSnapshot : ModelSnapshot
+    [Migration("20260130132844_InseringCheckinsTable")]
+    partial class InseringCheckinsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,7 +180,7 @@ namespace ChamadaEBD.BackEnd.Migrations
 
             modelBuilder.Entity("ChamadaEBD.BackEnd.Checkin", b =>
                 {
-                    b.HasOne("ChamadaEBD.BackEnd.Class", "Class")
+                    b.HasOne("ChamadaEBD.BackEnd.Class", "Classs")
                         .WithMany()
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -189,7 +192,7 @@ namespace ChamadaEBD.BackEnd.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Class");
+                    b.Navigation("Classs");
 
                     b.Navigation("User");
                 });

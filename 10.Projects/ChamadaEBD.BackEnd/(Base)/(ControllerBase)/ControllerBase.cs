@@ -88,7 +88,17 @@ namespace ChamadaEBD.BackEnd
             if (entities is null)
                 return BadRequest("Entidade inválida");
 
-            IEnumerable<TEntity> newEntities = repository.SaveRange(entities);
+            IEnumerable<TEntity> entitiesToUpdate = entities.Where(x => x.Id > 0);
+            IEnumerable<TEntity> entitiesToSave = entities.Where(x => x.Id == 0);
+            List<TEntity> newEntities = new List<TEntity>();
+
+            // Se tiver alguma entidade existente para atualizar
+            if (entitiesToUpdate.Any())
+                newEntities.AddRange(repository.UpdateRange(entitiesToUpdate).ToList());
+
+            if (entitiesToSave.Any())
+                newEntities.AddRange(repository.SaveRange(entitiesToSave).ToList());
+            
             await _unitOfWork.CommitAsync();
 
             return Ok(newEntities);
@@ -116,10 +126,20 @@ namespace ChamadaEBD.BackEnd
             if (entities is null)
                 return BadRequest("Entidades inválidas");
 
-            this.repository.UpdateRange(entities);
+            IEnumerable<TEntity> entitiesToSave = entities.Where(x => x.Id == 0);
+            IEnumerable<TEntity> entitiesToUpdate = entities.Where(x => x.Id > 0);
+            List<TEntity> entitiesUpdated = new List<TEntity>();
+
+            // Se tiver alguma entidade nova, já salva
+            if (entitiesToSave.Any())
+                entitiesUpdated.AddRange(repository.SaveRange(entitiesToSave).ToList());
+
+            if (entitiesToUpdate.Any())
+                entitiesUpdated.AddRange(this.repository.UpdateRange(entities).ToList());
+
             await this._unitOfWork.CommitAsync();
 
-            return Ok(entities);
+            return Ok(entitiesUpdated);
         }
         #endregion
 

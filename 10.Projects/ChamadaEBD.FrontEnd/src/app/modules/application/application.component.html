@@ -1,1 +1,57 @@
-<p>It's work</p>
+<p-toast></p-toast>
+<p-confirm-dialog></p-confirm-dialog>
+
+<div class="fuild bg-white p-2 border-round-xl">
+  <div class="field lg:col-6 col-12">
+    <h1>Chamada</h1>
+  </div>
+  <form [formGroup]="entityForm">
+    <div class="formgrid grid">
+      <div class="field lg:col-3 md:col-6 col-12">
+        <label for="class">Classe:</label>
+        <p-select [options]="classes" optionLabel="description" [fluid]="true" placeholder="Selecione uma classe" [showClear]="true" [editable]="true" formControlName="class"></p-select>
+      </div>
+      <div class="field lg:col-3 md:col-6 col-12">
+        <label for="registerDateTime">Data:</label>
+        <p-date-picker [fluid]="true" placeholder="Seleciona uma data" dateFormat="dd/mm/yy" hourFormat="HH:mm" [showTime]="true" formControlName="registerDateTime" [showClear]="true"/>
+      </div>
+      <div class="field lg:col-3 col-12 gap-2">
+        <label for=""><span>&nbsp;</span></label>
+        <p-button label="Consultar" fluid="true" icon="pi pi-search" (onClick)="searchCheckins()" [disabled]="!this.canSearch()"></p-button>
+      </div>
+      <div class="field lg:col-3 col-12 gap-2">
+        <label for=""><span>&nbsp;</span></label>
+        <p-button label="Salvar" fluid="true" severity="success" icon="pi pi-check" [disabled]="!canSave" (onClick)="this.saveCheckins()"></p-button>
+      </div>
+    </div>
+  </form>
+
+  <p-table [value]="checkins" class="fluid my-2" size="small" stripedRows="true">
+    <ng-template #caption>
+      <p-toolbar>
+        <ng-template #start>
+          <h2>Alunos</h2>
+        </ng-template>
+      </p-toolbar>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th style="width: 33%;">Classe</th>
+        <th style="width: 33%;">Usuário</th>
+        <th style="width: 33%;">Está presente?</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-result>
+      <tr>
+        <td>{{result.classDescription}}</td>
+        <td>{{result.userDescription}}</td>
+        <td><p-button [label]="result.isPresent ? 'Presente' : 'Faltou'" [icon]="result.isPresent ? 'pi pi-check' : 'pi pi-times'" [severity]="result.isPresent ? 'success' : 'danger'" (onClick)="onChangeAttendance(result)"></p-button></td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="3" class="text-center">Nenhum registro encontrado</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -21,15 +21,10 @@ export class MenuBar {
         command: () => this.router.navigate(["/manager"])
       },
       {
-        label: "Cadastros",
-        icon: PrimeIcons.LIST,
+        label: "Chamadas",
+        icon: PrimeIcons.LIST_CHECK,
         command: () => this.router.navigate(["/application"])
       }
     ]
-  }
-
-  toggleDarkMode() {
-    const element = document.querySelector('html');
-    element.classList.toggle('my-app-dark');
   }
 }

@@ -519,4 +519,65 @@ export class ApiService {
   }
 
   //#endregion
+
+  //#region Api custom requests 'Checkin' :: GetCheckinsByClass GetCheckinsByClassAndRegisterDateTime()
+  public async GetCheckinsByClass(classId: number): Promise<any> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.ngxSpinnerService.show();
+
+        this.ngxSpinnerService.show();
+
+        let url = `https://localhost:7083/Checkin/List/byClass/${classId}`;
+
+        let headers: {
+          "Content-Type": "application/json"
+        }
+
+        this.httpClient.get(url, { headers: headers }).subscribe((result: any) => {
+          if (result) {
+            this.ngxSpinnerService.hide();
+            resolve(result);
+          }
+        });
+
+      } catch (error) {
+        console.log(error);
+        this.ngxSpinnerService.hide();
+        reject(error);
+      }
+    })
+  }
+
+
+  public async GetCheckinsByClassAndRegisterDateTime(classId: number, registerDateTime: Date): Promise<any> {
+    return new Promise<void>((resolve, reject) => {
+      try {
+        this.ngxSpinnerService.show();
+
+        this.ngxSpinnerService.show();
+
+        let url = `https://localhost:7083/Checkin/List/byClass/${classId}/byRegisterDateTime`;
+
+        let params: HttpParams = new HttpParams().set("registerDateTime", registerDateTime.toISOString());
+
+        let headers: {
+          "Content-Type": "application/json"
+        }
+
+        this.httpClient.get(url, { headers: headers, params: params }).subscribe((result: any) => {
+          if (result) {
+            this.ngxSpinnerService.hide();
+            resolve(result);
+          }
+        });
+
+      } catch (error) {
+        console.log(error);
+        this.ngxSpinnerService.hide();
+        reject(error);
+      }
+    })
+  }
+  //#endregion
 }

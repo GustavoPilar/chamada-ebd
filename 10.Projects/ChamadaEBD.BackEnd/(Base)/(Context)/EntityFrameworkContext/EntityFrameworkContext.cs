@@ -10,10 +10,11 @@ namespace ChamadaEBD.BackEnd.Base.Context.EntityFrameworkContext
             
         }
 
-        #region DbSets :: Users, Classes
+        #region DbSets :: Users, Classes, UsersClasses, Checkins
         public DbSet<User> Users { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<UsersClasses> UsersClasses { get; set; }
+        public DbSet<Checkin> Checkins { get; set; }
         #endregion
     }
 }

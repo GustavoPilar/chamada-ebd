@@ -77,7 +77,7 @@ namespace ChamadaEBD.BackEnd
     }
     #endregion
 
-    #region :: UsersClassesMapping, UsersClassesDTO, UsersClasses
+    #region UsersClasses :: UsersClassesMapping, UsersClassesDTO, UsersClasses
     public class UsersClassesMapping : Profile
     {
         public UsersClassesMapping()
@@ -106,6 +106,52 @@ namespace ChamadaEBD.BackEnd
         public UsersClassesRepository(EntityFrameworkContext context) : base(context)
         {
             
+        }
+    }
+    #endregion
+
+    #region UsersClasses :: UsersClassesMapping, UsersClassesDTO, UsersClasses
+    public class CheckinMapping : Profile
+    {
+        public CheckinMapping()
+        {
+            CreateMap<Checkin, CheckinDTO>().ReverseMap();
+        }
+    }
+
+    public class CheckinDTO : IEntityBase
+    {
+        #region IEntityBase
+        public long Id { get; set; }
+        public string? Code { get; set; }
+        public string? Description { get; set; }
+        #endregion
+
+        #region Fields :: UserId, ClassId, IsPresent, RegisterDateTime
+        [Required(ErrorMessage = "É necessário ter um usuário")]
+        public long UserId { get; set; }
+
+        [Required(ErrorMessage = "É necessário ter uma classe")]
+        public long ClassId { get; set; }
+
+        [Required(ErrorMessage = "É necessário ter um valor de presença")]
+        public bool IsPresent { get; set; }
+
+        [Required(ErrorMessage = "É necessário ter uma data do registro")]
+        public DateTime RegisterDateTime { get; set; }
+        #endregion
+
+        #region Naviagation :: User, Class
+        public User? User { get; set; }
+        public Class? Classs { get; set; }
+        #endregion
+    }
+
+    public partial class CheckinRepository : RepositoryBase<Checkin>
+    {
+        public CheckinRepository(EntityFrameworkContext context) : base(context)
+        {
+
         }
     }
     #endregion

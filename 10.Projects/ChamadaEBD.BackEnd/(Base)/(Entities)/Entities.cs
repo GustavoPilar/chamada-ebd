@@ -88,7 +88,7 @@ namespace ChamadaEBD.BackEnd
         public string? Description { get; set; }
         #endregion
 
-        #region Fields:
+        #region Fields :: ClassId, UserId, IsTeacher
         [Required(ErrorMessage = "É necessário ter uma sala")]
         public long ClassId { get; set; }
 
@@ -105,6 +105,40 @@ namespace ChamadaEBD.BackEnd
 
         [JsonIgnore]
         public User? User { get; set; }
+        #endregion
+    }
+    #endregion
+
+    #region Checkin
+    [Table("Checkins")]
+    public class Checkin : IEntityBase
+    {
+        #region IEntityBase
+        public long Id { get; set; }
+        public string? Code { get; set; }
+        public string? Description { get; set; }
+        #endregion
+
+        #region Fields :: UserId, ClassId, IsPresent, RegisterDateTime
+        [Required(ErrorMessage = "É necessário ter um usuário")]
+        public long UserId { get; set; }
+
+        [Required(ErrorMessage = "É necessário ter uma classe")]
+        public long ClassId { get; set; }
+
+        [Required(ErrorMessage = "É necessário ter um valor de presença")]
+        public bool IsPresent { get; set; }
+
+        [Required(ErrorMessage = "É necessário ter uma data do registro")]
+        public DateTime RegisterDateTime { get; set; }
+        #endregion
+
+        #region Naviagation :: User, Class
+        [JsonIgnore]
+        public User? User { get; set; }
+
+        [JsonIgnore]
+        public Class? Class { get; set; }
         #endregion
     }
     #endregion
