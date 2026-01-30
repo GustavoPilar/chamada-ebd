@@ -1,67 +1,79 @@
 @if (isForm && entityForm) {
-    <div class="fluid p-2">
-        <form [formGroup]="entityForm">
-            <div class="formgrid grid">
-                <div class="field lg:col-6 col-12">
-                  <label for="code">Código:</label>
-                  <p-iconfield>
-                      <p-inputicon class="pi pi-id-card"></p-inputicon>
-                      <input type="text" pInputText inputId="code" id="code" formControlName="code" class="w-full" placeholder="Digite o código do usuário" />
-                    </p-iconfield>
-                </div>
-                <div class="field lg:col-6 col-12">
-                    <label for="name">Nome:</label>
-                    <p-iconfield>
-                      <p-inputicon class="pi pi-user"></p-inputicon>
-                      <input type="text" pInputText inputId="name" id="name" formControlName="name" class="w-full" placeholder="Digite o nome do usuário"/>
-                    </p-iconfield>
-                </div>
-                <div class="field lg:col-6 col-12">
-                    <label for="age">Idade:</label>
-                    <p-iconfield>
-                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="age" id="age" inputId="age" class="w-full" placeholder="Digite a idade do usuário" suffix=" anos" [min]="0" [max]="120" />
-                    </p-iconfield>
-                </div>
-                <div class="field lg:col-6 col-12">
-                    <label for="phone">Telefone:</label>
-                    <p-iconfield>
-                      <p-inputicon class="pi pi-phone"></p-inputicon>
-                      <input type="text" pInputText inputId="phone" formControlName="phone" class="w-full" placeholder="Digite o telefone do usuário"/>
-                    </p-iconfield>
-                </div>
-                <div class="field lg:col-6 col-12">
-                    <label for="attendanceCount">Qtd. Presenças:</label>
-                    <p-iconfield>
-                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="attendanceCount" id="attendanceCount" inputId="attendanceCount" class="w-full" placeholder="Quantidade de presença do usuário" suffix=" presenças" [min]="0" [disabled]="true"/>
-                    </p-iconfield>
-                </div>
-                <div class="field lg:col-6 col-12">
-                    <label for="absenceCount">Qtd. Faltas:</label>
-                    <p-iconfield>
-                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="absenceCount" id="absenceCount" inputId="absenceCount" class="w-full" placeholder="Quantidade de faltas do usuário" suffix=" faltas" [min]="0" [disabled]="true"/>
-                    </p-iconfield>
-                </div>
-                <div class="field lg:col-6 col-12">
-                    <label for="attendanceFrequency">Frequência:</label>
-                    <p-iconfield>
-                      <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
-                      <p-inputNumber formControlName="attendanceFrequency" id="attendanceFrequency" inputId="attendanceFrequency" class="w-full" placeholder="Quantidade de presença do usuário" suffix=" presenças" [min]="0" [disabled]="true"/>
-                    </p-iconfield>
-                </div>
-                <div class="field lg:col-6 col-12">
-                    <label for="active" class="w-full">Ativo?</label>
-                    <p-toggleButton formControlName="active" onLabel="Sim" offLabel="Não" [onIcon]="onIcon" [offIcon]="offIcon" fluid="false" class="w-full"/>
-                </div>
+  <div class="fluid p-2">
+    <form [formGroup]="entityForm">
+      <div class="formgrid grid">
+        <div class="field lg:col-6 col-12">
+          <label for="code">Código:</label>
+          <p-iconfield>
+            <p-inputicon class="pi pi-id-card"></p-inputicon>
+            <input type="text" pInputText inputId="code" id="code" formControlName="code" class="w-full" placeholder="Digite o código do usuário" />
+          </p-iconfield>
+        </div>
+        <div class="field lg:col-6 col-12">
+          <label for="name">Nome:</label>
+          <p-iconfield>
+            <p-inputicon class="pi pi-user"></p-inputicon>
+            <input type="text" pInputText inputId="name" id="name" formControlName="name" class="w-full" placeholder="Digite o nome do usuário"/>
+          </p-iconfield>
+        </div>
+        <div class="field lg:col-6 col-12">
+          <label for="age">Idade:</label>
+          <p-iconfield>
+            <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+            <p-inputNumber formControlName="age" id="age" inputId="age" class="w-full" placeholder="Digite a idade do usuário" suffix=" anos" [min]="0" [max]="120" />
+          </p-iconfield>
+        </div>
+        <div class="field lg:col-6 col-12">
+          <label for="phone">Telefone:</label>
+          <p-iconfield>
+            <p-inputicon class="pi pi-phone"></p-inputicon>
+            <input type="text" pInputText inputId="phone" formControlName="phone" class="w-full" placeholder="Digite o telefone do usuário"/>
+          </p-iconfield>
+        </div>
+        <div class="field lg:col-6 col-12">
+          <label for="attendanceCount">Qtd. Presenças:</label>
+          <p-iconfield>
+            <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+            <p-inputNumber formControlName="attendanceCount" id="attendanceCount" inputId="attendanceCount" class="w-full" placeholder="Quantidade de presença do usuário" suffix=" presenças" [min]="0" [disabled]="true"/>
+          </p-iconfield>
+        </div>
+        <div class="field lg:col-6 col-12">
+          <label for="absenceCount">Qtd. Faltas:</label>
+          <p-iconfield>
+            <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+            <p-inputNumber formControlName="absenceCount" id="absenceCount" inputId="absenceCount" class="w-full" placeholder="Quantidade de faltas do usuário" suffix=" faltas" [min]="0" [disabled]="true"/>
+          </p-iconfield>
+        </div>
+        <div class="field lg:col-6 col-12">
+          <label for="attendanceFrequency">Frequência:</label>
+          <p-iconfield>
+            <p-inputicon class="pi pi-sort-numeric-up-alt"></p-inputicon>
+            <p-inputNumber formControlName="attendanceFrequency" id="attendanceFrequency" inputId="attendanceFrequency" class="w-full" placeholder="Quantidade de presença do usuário" suffix=" %" [min]="0" [disabled]="true"/>
+          </p-iconfield>
+        </div>
+        <div class="field lg:col-6 col-12">
+          <div class="grid">
+            <div class=" field col-6">
+              <label for="sex" class="w-full">Sexo:</label>
+              <p-select-button [options]="sexs" fluid="true" optionValue="value" formControlName="sex">
+                <ng-template #item let-item>
+                  <i [class]="item.icon"></i>
+                </ng-template>
+              </p-select-button>
             </div>
-        </form>
-        <div class="grid fluid">
-          <div class="field lg:col-6 col-12">
-            <label for="class">Classe:</label>
-            <input type="text" pInputText class="w-full" inputId="class" id="class" [disabled]="true" placeholder="Nenhuma classe" [(ngModel)]="class.description">
+            <div class="field col-6">
+              <label for="active" class="w-full">Ativo?</label>
+              <p-toggleButton formControlName="active" onLabel="Sim" offLabel="Não" [onIcon]="onIcon" [offIcon]="offIcon" fluid="true"/>
+            </div>
           </div>
         </div>
+      </div>
+    </form>
+    <div class="grid fluid">
+      <div class="field lg:col-6 col-12">
+        <label for="class">Classe:</label>
+        <input type="text" pInputText class="w-full" inputId="class" id="class" [disabled]="true" placeholder="Nenhuma classe" [(ngModel)]="class.description">
+      </div>
     </div>
+  </div>
 }

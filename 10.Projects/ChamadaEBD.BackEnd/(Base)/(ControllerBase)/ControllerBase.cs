@@ -83,7 +83,7 @@ namespace ChamadaEBD.BackEnd
 
         #region PostRange()
         [HttpPost("Range")]
-        public async Task<ActionResult<IEnumerable<TEntity>>> PostRange(IEnumerable<TEntity> entities)
+        public virtual async Task<ActionResult<IEnumerable<TEntity>>> PostRange(IEnumerable<TEntity> entities)
         {
             if (entities is null)
                 return BadRequest("Entidade inválida");

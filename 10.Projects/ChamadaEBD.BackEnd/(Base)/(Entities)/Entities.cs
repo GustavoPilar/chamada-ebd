@@ -14,7 +14,7 @@ namespace ChamadaEBD.BackEnd
         public string? Description { get; set; }
         #endregion
 
-        #region Fields :: Name, Age, Phone, AttendanceCount, AbsenceCount, AttendanceFrenquency, Active, RegisterDateTime, ClassId
+        #region Fields :: Name, Age, Phone, Sex, AttendanceCount, AbsenceCount, AttendanceFrenquency, Active, RegisterDateTime,
         [Required]
         [StringLength(150, ErrorMessage = "Nome com tamanho maior que o permitido.")]
         public string? Name { get; set; }
@@ -25,14 +25,17 @@ namespace ChamadaEBD.BackEnd
         [Phone(ErrorMessage = "Telefone com formato inválido")]
         public string? Phone { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "É necessário ter um sexo")]
+        public char Sex { get; set; }
+
+        [Required(ErrorMessage = "Quantidade de presença necessária")]
         public int AttendanceCount { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Quantidade de falta necessária")]
         public int AbsenceCount { get; set; }
 
         [Required]
-        [Range(0, 10, ErrorMessage = "Frequencia deve ser entre 0 a 100")]
+        [Range(0, 100, ErrorMessage = "Frequencia deve ser entre 0 a 100")]
         public int AttendanceFrequency { get; set; }
 
         [Required]

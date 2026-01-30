@@ -7,6 +7,7 @@ import { ColumnType } from '../../models/column-type';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { SelectButtonItemTemplateContext } from 'primeng/selectbutton';
 
 @Component({
   selector: "app-user",
@@ -19,6 +20,10 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
 
   //#region Field
   public class: any = { description: "Sem classe" };
+  public sexs: any = [
+    { icon: "pi pi-mars", value: "M" },
+    { icon: "pi pi-venus", value: "F" }
+  ]
   //#endregion
 
   //#region Constructor
@@ -51,6 +56,10 @@ export class UserComponent extends CrudBaseComponent implements OnInit {
       ],
       age: [
         this.selectedEntity?.age,
+        Validators.required
+      ],
+      sex: [
+        this.selectedEntity?.sex ?? "M",
         Validators.required
       ],
       phone: [

@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { NgxSpinnerService } from "ngx-spinner";
+import { MessageService } from "primeng/api";
 
 @Injectable({
   providedIn: "root"
@@ -9,7 +10,8 @@ export class ApiService {
 
   //#region Constructor
   constructor(private httpClient: HttpClient,
-    private ngxSpinnerService: NgxSpinnerService
+    private ngxSpinnerService: NgxSpinnerService,
+    private messageService: MessageService
   ) {
 
   }
@@ -199,7 +201,6 @@ export class ApiService {
         let headers: {
           "Content-Type": "application/json"
         }
-
         this.httpClient.put(url, data, { headers: headers }).subscribe((result: any) => {
           if (result) {
             this.ngxSpinnerService.hide();

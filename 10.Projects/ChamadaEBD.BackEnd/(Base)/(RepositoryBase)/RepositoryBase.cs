@@ -107,7 +107,7 @@ namespace ChamadaEBD.BackEnd
         }
         #endregion
 
-        #region UpdateSave()
+        #region UpdateRange()
         /// <summary>
         /// Atualiza uma lista de entidades existentes
         /// </summary>

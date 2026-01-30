@@ -17,7 +17,7 @@ builder.Services.AddControllers().AddJsonOptions( options => options.JsonSeriali
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped(typeof(IRepositoryBase<IEntityBase>), typeof(RepositoryBase<IEntityBase>));
+builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(cgf => { }, typeof(Program));
 

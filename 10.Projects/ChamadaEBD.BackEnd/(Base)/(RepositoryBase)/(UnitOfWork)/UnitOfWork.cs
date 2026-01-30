@@ -8,13 +8,15 @@ namespace ChamadaEBD.BackEnd._Base_._RepositoryBase_._UnitOfWork_
     {
         #region Fields
         private readonly EntityFrameworkContext _context;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ConcurrentDictionary<Type, object> repository = new();
         #endregion
 
         #region Constructor
-        public UnitOfWork(EntityFrameworkContext context)
+        public UnitOfWork(EntityFrameworkContext context, IServiceProvider serviceProvider)
         {
             _context = context;
+            _serviceProvider = serviceProvider;
         }
         #endregion
 
@@ -33,7 +35,7 @@ namespace ChamadaEBD.BackEnd._Base_._RepositoryBase_._UnitOfWork_
         {
             return (IRepositoryBase<TEntity>)repository.GetOrAdd(
                 typeof(TEntity),
-                _ => new RepositoryBase<TEntity>(_context)
+                _ = new RepositoryBase<TEntity>(_context)
             );
         }
     }
