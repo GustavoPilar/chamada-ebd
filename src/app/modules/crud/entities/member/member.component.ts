@@ -11,7 +11,7 @@ import { ApiService } from "../../../../services/api-service/api.service";
 
 @Component({
   selector: "app-Member",
-  template: "",
+  templateUrl: "./member.component.html",
   standalone: false,
   providers: [CrudManager]
 })
@@ -51,37 +51,32 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
   }
 
   public override getForm(): FormGroup {
+
+    let birthday: Date = new Date(this.selectedEntity?.birthday);
+    if (birthday.toString() == "Invalid Date") {
+      birthday = new Date();
+    }
+
+    console.log(this.selectedEntity);
     return this.formBuilder.group({
       name: [
         this.selectedEntity?.name ?? null,
         Validators.required
       ],
-      phone: [
-        this.selectedEntity?.phone ?? null
-      ],
       age: [
-        this.selectedEntity?.age ?? 18,
+        this.selectedEntity?.age ?? 0,
         Validators.required
       ],
-      sex: [
-        this.selectedEntity?.sex ?? "M",
+      birthday: [
+        birthday
+      ],
+      status: [
+        this.selectedEntity?.status ?? true,
         Validators.required
       ],
-      maritalStatus: [
-        this.selectedEntity?.maritalStatusId ?? 0,
-        Validators.required
+      class: [
+        this.selectedEntity?.class ?? null
       ],
-      hasChildren: [
-        this.selectedEntity?.hasChildren ?? false,
-        Validators.required
-      ],
-      childrenCount: [
-        this.selectedEntity?.childrenCount ?? 0
-      ],
-      active: [
-        this.selectedEntity?.active ?? false,
-        Validators.required
-      ]
     })
   }
 
@@ -90,6 +85,20 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
   }
   //#endregion
 
+  //#region OnChange
+  public onChangeBirthday(event: Date) {
+    if (event == null) {
+      this.entityForm.get('age')?.setValue(0);
+      return;
+    }
+
+    let currentYear: number = this.currentDate.getFullYear();
+    let selectedeYear: number = event.getFullYear();
+    let age: number = currentYear - selectedeYear;
+
+    this.entityForm.get('age')?.setValue(age);
+  }
+  //#endregion
 
   //#region Resources
   //#endregion

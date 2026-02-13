@@ -30,7 +30,7 @@
         @for (column of columns; track $index) {
           <td>
             @if (column.displayColumnType == 2) {
-              <p-tag [value]="result[column.field] ? 'Sim' : 'Não'"></p-tag>
+              <p-tag [value]="result[column.field] ? 'Sim' : 'Não'" [severity]="result[column.field] ? 'success' : 'danger'"></p-tag>
             }
             @else if (column.displayColumnType == 3) {
               {{showDateValue(result[column.field])}}

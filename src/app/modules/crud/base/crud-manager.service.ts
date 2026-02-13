@@ -10,10 +10,6 @@ export class CrudManager {
   //#region Fields
   public entityName!: string;
   public entityId!: number;
-  public entities: any[] = [
-    { id: 1, name: "Abertura", dateTime: new Date(), description: "Culto de abertura e apresentação do calendário", location: "Igreja", active: true},
-    { id: 2, name: "cafofo", dateTime: new Date(), description: "Culto na casa de um membro", location: "Casa do Gustavo", active: true },
-  ]
   //#endregion
 
   //#region Constructor
@@ -48,10 +44,7 @@ export class CrudManager {
   public getEntityById(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        let index = this.entities.findIndex(x => x.id == this.entityId);
-        let entity = this.entities[index] ?? { id: 0 };
-
-        Promise.resolve(entity).then((result: any) => {
+        this.apiService.getEntityById(this.entityName, this.entityId).then((result: any) => {
           if (result) {
             resolve(result)
           }

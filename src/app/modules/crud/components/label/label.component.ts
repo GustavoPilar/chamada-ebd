@@ -10,7 +10,7 @@ export class LabelComponent {
 
   //#region Fields
   @Input() public description!: string;
-  @Input() public abstractControll!: AbstractControl;
+  @Input() public abstractControl!: AbstractControl;
   //#endregion
 
   //#region Constructor
@@ -20,7 +20,7 @@ export class LabelComponent {
   //#endregion
 
   isRequired(): boolean {
-    if (this.abstractControll) return this.abstractControll.hasValidator(Validators.required);
+    if (this.abstractControl) return this.abstractControl.hasValidator(Validators.required);
 
     return false;
   }

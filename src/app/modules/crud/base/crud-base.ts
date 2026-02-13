@@ -26,6 +26,8 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
   public isList: boolean = false;
 
   public entityForm!: FormGroup;
+
+  public currentDate: Date = new Date();
   //#endregion
 
   //#region Constructor
@@ -64,6 +66,7 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
   public initForm(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       try {
+        this.crudManager.initialize(this);
         this.loadResources().then((result) => {
           if (result) {
             this.crudManager.getEntityById().then((entity: any) => {

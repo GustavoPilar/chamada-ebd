@@ -1,0 +1,29 @@
+@if (isForm && selectedEntity) {
+  <form [formGroup]="entityForm">
+    <div class="grid">
+      <div class="field col-12 md:col-6">
+        <app-label description="Nome" [abstractControl]="getField('name')"></app-label>
+        <p-iconField>
+          <input type="text" pInputText id="name" formControlName="name" fluid placeholder="Digite o nome"/>
+          <p-inputIcon class="pi pi-user"></p-inputIcon>
+        </p-iconField>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Status" [abstractControl]="getField('status')"></app-label>
+        <p-toggleButton id="status" formControlName="status" onLabel="Ativo" offLabel="Inativo" fluid></p-toggleButton>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Data de nascimento" [abstractControl]="getField('birthday')"></app-label>
+        <p-datePicker id="birthday" inputId="birthday" formControlName="birthday" dateFormat="dd/mm/yy" fluid showIcon="true" showClear="true" placeholder="Selecione a data de nascimento" (onSelect)="onChangeBirthday($event)" (onClear)="onChangeBirthday($event)"></p-datePicker>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Idade" [abstractControl]="getField('age')"></app-label>
+        <p-inputNumber id="age" inputId="age" formControlName="age" fluid showButtons="true" [min]="0" showClear="false" placeholder="Digite a idade"></p-inputNumber>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Classe" [abstractControl]="getField('class')"></app-label>
+        <input type="text" pInputText id="class" inputId="class" formControlName="class" fluid placeholder="Digite a classe" />
+      </div>
+    </div>
+  </form>
+}
