@@ -1,0 +1,14 @@
+<div class="fluid text-center border-round-lg overflow-hidden">
+  @for (homeOption of homeOptions; track $index) {
+    <div class="p-2 fluid h-20rem flex justify-content-center align-items-center background-default" [ngClass]="homeOption.styleClass">
+      <div class="grid">
+        <div class="field col-12 hidden md:block">
+          <h1 class="text-bold text-2xl bg-black text-white border-round-xl">{{homeOption.title}}</h1>
+        </div>
+        <div class="field col-12">
+          <p-button [label]="homeOption.buttonLabel" [icon]="homeOption.icon" fluid="true" [routerLink]="homeOption.target"></p-button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

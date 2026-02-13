@@ -1,0 +1,58 @@
+@if (crudBaseComponent) {
+  <p-table [value]="crudBaseComponent.entities" [columns]="crudBaseComponent.getDisplayColumns()" size="small" stripedRows="true" rowHover="true">
+    <ng-template #caption>
+      <p-toolbar>
+        <ng-template #start>
+          <div class="flex gap-2">
+            <h1 class="text-2xl font-bold">{{crudBaseComponent.getTypeDescription().plural}}</h1>
+            <p-button icon="pi pi-plus" (onClick)="openNew()"></p-button>
+          </div>
+        </ng-template>
+        <ng-template #end>
+          <div class="flex gap-2">
+            @for (specialOption of crudBaseComponent.getSpecialOptions(); track $index) {
+              <p-button [icon]="specialOption.buttonIcon" [label]="specialOption.buttonLabel" severity="info" (onClick)="specialOption.buttonAction()!"></p-button>
+            }
+          </div>
+        </ng-template>
+      </p-toolbar>
+    </ng-template>
+    <ng-template #header let-columns>
+      <tr>
+        @for (column of columns; track $index) {
+          <th>{{column.label}}</th>
+        }
+        <th>Ações</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-result let-columns="columns">
+      <tr (click)="openEdit(result.id)" class="cursor-pointer">
+        @for (column of columns; track $index) {
+          <td>
+            @if (column.displayColumnType == 2) {
+              <p-tag [value]="result[column.field] ? 'Sim' : 'Não'"></p-tag>
+            }
+            @else if (column.displayColumnType == 3) {
+              {{showDateValue(result[column.field])}}
+            }
+            @else if (column.displayColumnType == 4) {
+              {{showObejctValue(result, column.field)}}
+            }
+            @else {
+              {{result[column.field]}}
+            }
+          </td>
+        }
+        <td class="flex justify-content-evenly align-items-center">
+          <p-button icon="pi pi-pencil" class="hidden md:block" [rounded]="true" (onClick)="openEdit(result.id)"></p-button>
+          <p-button icon="pi pi-trash" severity="danger" [rounded]="true"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td>Nenhum registro foi encontrado</td>
+      </tr>
+    </ng-template>
+  </p-table>
+}

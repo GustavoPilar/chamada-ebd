@@ -1,0 +1,19 @@
+<div class="card flex flex-col items-center overflow-hidden">
+
+  <div class="fluid text-center my-3">
+    <h1 class="text-2xl font-bold">Selecione o tipo de cadastro</h1>
+    <p class="my-2">Cadastre membros, diretoria e programações aqui!</p>
+  </div>
+
+  <div class="flex flex-wrap justify-center gap-8 my-3">
+    @for (crudOption of crudOptions; track $index) {
+      <div class="flex flex-col shadow-2 justify-center items-center max-w-80 rounded-2xl p-8 gap-4 cursor-pointer" (click)="navigateTo(crudOption.target!)">
+          <div class="rounded-full bg-primary text-primary-contrast w-12 h-12 flex items-center justify-center">
+              <i [class]="crudOption.icon + ' !text-2xl'"></i>
+          </div>
+          <span class="text-2xl font-bold">{{crudOption.label}}</span>
+          <span class="text-muted-color text-center">{{crudOption.title}}</span>
+      </div>
+    }
+  </div>
+</div>
