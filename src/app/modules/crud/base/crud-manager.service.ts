@@ -55,5 +55,20 @@ export class CrudManager {
       }
     })
   }
+
+  public updateEntity(entity: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.apiService.putEntityById(this.entityName, this.entityId, entity).then((result: any) => {
+          if (result) {
+            resolve(result);
+          }
+        })
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
   //#endregion
 }

@@ -79,5 +79,13 @@ export class CrudFormComponent implements OnInit, AfterViewInit {
       returnList();
     }
   }
+
+  public save(): void {
+    this.crudBaseComponent.save().then((result) => {
+      if (result) {
+        this.router.navigate(["/manager/list", this.entityName]);
+      }
+    });
+  } 
   //#endregion
 }

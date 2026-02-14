@@ -108,5 +108,31 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
   public getSpecialOptions(): SpecialOption[] {
     return [];
   }
+
+  public prepareEntityToSave(): any {
+    let entity = this.entityForm.value;
+    entity.id = this.selectedEntity.id;
+    return entity;
+  }
+
+  public save(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        if (this.selectedEntity.id > 0) {
+          this.crudManager.updateEntity(this.prepareEntityToSave()).then((result: any) => {
+            if (result) {
+              resolve(result);
+            }
+          });
+        }
+        else {
+
+        }
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
   //#endregion
 }

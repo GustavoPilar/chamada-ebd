@@ -43,6 +43,7 @@ export class ApiService {
       }
     })
   }
+
   public async getEntityById(entityName: string, entityId: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
@@ -69,4 +70,30 @@ export class ApiService {
   }
   //#endregion
 
+  //#region Put
+  public async putEntityById(entityName: string, entityId: number, data: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.spinner.show();
+        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}/${entityId}`;
+        console.log(url);
+
+        let header: any = {
+          "Content-Type": "application/json"
+        };
+
+        this.httpClient.put(url, data, { headers: header }).subscribe((result: any) => {
+          if (result) {
+            this.spinner.hide();
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        this.spinner.hide();
+        reject(error);
+      }
+    })
+  }
+  //#endregion
 }
