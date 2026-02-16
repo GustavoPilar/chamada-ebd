@@ -49,7 +49,6 @@ export class ApiService {
       try {
         this.spinner.show();
         let url: string = `${CHAMADA_EBD_API_URL}/${entityName}/${entityId}`;
-        console.log(url);
 
         let header: any = {
           "Content-Type": "application/json"
@@ -76,13 +75,38 @@ export class ApiService {
       try {
         this.spinner.show();
         let url: string = `${CHAMADA_EBD_API_URL}/${entityName}/${entityId}`;
-        console.log(url);
 
         let header: any = {
           "Content-Type": "application/json"
         };
 
         this.httpClient.put(url, data, { headers: header }).subscribe((result: any) => {
+          if (result) {
+            this.spinner.hide();
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        this.spinner.hide();
+        reject(error);
+      }
+    })
+  }
+  //#endregion
+
+  //#region Post
+  public async postEntity(entityName: string, data: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.spinner.show();
+        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}`;
+
+        let header: any = {
+          "Content-Type": "application/json"
+        };
+
+        this.httpClient.post(url, data, { headers: header }).subscribe((result: any) => {
           if (result) {
             this.spinner.hide();
             resolve(result);

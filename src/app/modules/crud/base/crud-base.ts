@@ -126,7 +126,11 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
           });
         }
         else {
-
+          this.crudManager.addEntity(this.prepareEntityToSave()).then((result: any) => {
+            if (result) {
+              resolve(result);
+            }
+          })
         }
       } catch (error) {
         console.log(error);

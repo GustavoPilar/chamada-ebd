@@ -44,9 +44,29 @@ export class CrudManager {
   public getEntityById(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.getEntityById(this.entityName, this.entityId).then((result: any) => {
+        if (this.entityId > 0) {
+          this.apiService.getEntityById(this.entityName, this.entityId).then((result: any) => {
+            if (result) {
+              resolve(result)
+            }
+          });
+        }
+        else {
+          resolve({ id: 0 });
+        }
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  public addEntity(entity: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.apiService.postEntity(this.entityName, entity).then((result: any) => {
           if (result) {
-            resolve(result)
+            resolve(result);
           }
         })
       } catch (error) {
