@@ -84,5 +84,21 @@ export class CrudListComponent implements OnInit, AfterViewInit {
 
     return new Date(date).toLocaleDateString();
   }
+
+  public deleteEntities(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.crudBaseComponent.deleteEntities().then((result: any) => {
+          if (result) {
+            this.getRefresh();
+            resolve(result);
+          }
+        })
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
   //#endregion
 }

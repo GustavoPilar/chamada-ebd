@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { CHAMADA_EBD_API_URL } from "../../core/global/global";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -107,6 +107,41 @@ export class ApiService {
         };
 
         this.httpClient.post(url, data, { headers: header }).subscribe((result: any) => {
+          if (result) {
+            this.spinner.hide();
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        this.spinner.hide();
+        reject(error);
+      }
+    })
+  }
+  //#endregion
+
+  //#region Delete
+  public async deleteEntities(entityName: string, ids: number[]): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.spinner.show();
+        let first: number = ids[0]; // 1
+        let last: number = ids.length == 1 ? ids[ids.length - 1] : ids[ids.length - 1] + 1
+        let range: number[] = [first, last];
+
+        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}/delete`;
+
+        let params = new HttpParams();
+        range.forEach(id => {
+          params = params.append('ids', id);
+        });
+
+        let header: any = {
+          "Content-Type": "application/json"
+        };
+
+        this.httpClient.delete(url, { headers: header, params: params }).subscribe((result: any) => {
           if (result) {
             this.spinner.hide();
             resolve(result);

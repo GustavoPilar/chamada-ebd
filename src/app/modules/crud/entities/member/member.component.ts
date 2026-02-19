@@ -69,14 +69,16 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
         Validators.required
       ],
       birthday: [
-        birthday
+        birthday,
+        Validators.required
       ],
       status: [
         this.selectedEntity?.status ?? true,
         Validators.required
       ],
       class: [
-        this.selectedEntity?.class ?? null
+        this.selectedEntity?.class ?? null,
+        Validators.required
       ],
     })
   }

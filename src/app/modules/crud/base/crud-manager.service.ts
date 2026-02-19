@@ -90,5 +90,20 @@ export class CrudManager {
       }
     })
   }
+
+  public deleteEntities(entities: number[]): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.apiService.deleteEntities(this.entityName, entities).then((result: any) => {
+          if (result) {
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
   //#endregion
 }

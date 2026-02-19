@@ -21,6 +21,7 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
 
   public selectedEntity!: any;
   public entities!: any[];
+  public selectedEntities: any[] = [];
 
   public isForm: boolean = false;
   public isList: boolean = false;
@@ -53,8 +54,10 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
       try {
         this.crudManager.initialize(this);
         this.crudManager.getEntities().then((result: any) => {
-          this.entities = result;
-          resolve(result);
+          if (result) {
+            this.entities = result;
+            resolve(result);
+          }
         });
       } catch (error) {
         console.log(error);
@@ -132,6 +135,27 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
             }
           })
         }
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  public deleteEntities(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.crudManager.deleteEntities(this.selectedEntities.map(x => x.id)).then((result: any) => {
+          if (result) {
+            this.selectedEntities = [];
+            this.crudManager.getEntities().then((entities: any) => {
+              if (entities) {
+                this.entities = entities;
+                resolve(entities);
+              }
+            });
+          }
+        })
       } catch (error) {
         console.log(error);
         reject(error);
