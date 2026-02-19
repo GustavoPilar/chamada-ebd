@@ -18,6 +18,7 @@ import { ApiService } from "../../../../services/api-service/api.service";
 export class MemberComponent extends CrudBaseComponent implements OnInit {
 
   //#region Fields
+  public classes: any;
   //#endregion
 
   //#region Constructor
@@ -81,7 +82,9 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
   }
 
   public override loadResources(): Promise<any> {
-    return Promise.all([]);
+    return Promise.all([
+      this.loadClasses()
+    ]);
   }
   //#endregion
 
@@ -101,5 +104,20 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
   //#endregion
 
   //#region Resources
+  public loadClasses(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.apiService.getEntities("class").then((result: any) => {
+          if (result) {
+            this.classes = result;
+            resolve(result);
+          }
+        });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
   //#endregion
 }
