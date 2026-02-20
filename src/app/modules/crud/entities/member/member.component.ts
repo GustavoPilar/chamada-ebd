@@ -3,11 +3,13 @@ import { CrudBaseComponent } from "../../base/crud-base";
 import { CrudManager } from "../../base/crud-manager.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { PrimeIcons } from "primeng/api";
-import { DialogService } from "primeng/dynamicdialog";
+import { DialogService, DynamicDialog, DynamicDialogRef } from "primeng/dynamicdialog";
 import { DisplayColumn } from "../../../../models/crud/display-column";
 import { DisplayColumnType } from "../../../../models/crud/display-column-type";
 import { TypeDescription } from "../../../../models/crud/type-description";
 import { ApiService } from "../../../../services/api-service/api.service";
+import { SpecialOption } from "../../../../models/crud/special-option";
+import { BirthdayDialogComponent } from "./birthday-dialog/birthday-dialog.component";
 
 @Component({
   selector: "app-Member",
@@ -19,6 +21,8 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
 
   //#region Fields
   public classes: any;
+
+  public birthdayDialog!: DynamicDialogRef<BirthdayDialogComponent> | null;
   //#endregion
 
   //#region Constructor
@@ -86,6 +90,15 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
       this.loadClasses()
     ]);
   }
+
+  public override getSpecialOptions(): SpecialOption[] {
+    return [
+      {
+        buttonIcon: PrimeIcons.GIFT,
+        buttonAction: () => this.openBirthdayDialog()
+      }
+    ]
+  }
   //#endregion
 
   //#region OnChange
@@ -112,7 +125,6 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
         this.apiService.getEntities("class").then((result: any) => {
           if (result) {
             this.classes = result;
-            console.log(result);
             resolve(result);
           }
         }, (error) => {
@@ -123,6 +135,26 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
         reject(error);
       }
     })
+  }
+  //#endregion
+
+  //#region Dynamic Dialog
+  public openBirthdayDialog(): void {
+
+    this.birthdayDialog = this.dialogService.open(BirthdayDialogComponent, {
+      data: {
+        entities: this.entities
+      },
+      header: "Aniversários",
+      closable: true,
+      closeOnEscape: false,
+      draggable: false,
+      styleClass: "w-11 h-full overflow-visible",
+    });
+
+    this.birthdayDialog?.onClose.subscribe((result) => {
+
+    });
   }
   //#endregion
 }

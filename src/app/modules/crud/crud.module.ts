@@ -32,6 +32,7 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from "primeng/toast";
 import { SkeletonModule } from "primeng/skeleton";
+import { BirthdayDialogComponent } from "./entities/member/birthday-dialog/birthday-dialog.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { SkeletonModule } from "primeng/skeleton";
     CrudFormComponent,
 
     LabelComponent,
+    BirthdayDialogComponent,
 
     MemberComponent,
   ],
