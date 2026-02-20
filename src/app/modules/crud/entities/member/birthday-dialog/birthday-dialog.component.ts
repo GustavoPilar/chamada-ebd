@@ -258,7 +258,7 @@ export class BirthdayDialogComponent implements OnInit {
    * @param date Data
    * @returns string
    */
-  public showDateValue(date?: string) {
+  public showDateValue(date: string) {
     return new Date(date!).toLocaleDateString("pt-BR");
   }
 

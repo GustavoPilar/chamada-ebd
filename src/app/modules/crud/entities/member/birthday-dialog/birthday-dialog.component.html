@@ -8,14 +8,13 @@
         </div>
         <div class="field col-12 md:col-6">
           <app-label description="Tipo" [abstractControl]="getField('type')"></app-label>
-          <!-- <p-selectButton [options]="options" fluid formControlName="type" (onChange)="onChangeType($event)"></p-selectButton> -->
            <p-toggleButton fluid onLabel="Individual" offLabel="Casamento" formControlName="isIndividual" (onChange)="onChangeType($event)"></p-toggleButton>
         </div>
       </div>
     </form>
   </div>
   <div class="w-full">
-    <p-table [value]="filteredValues" [columns]="displayColumns" dataKey="id" size="small" paginator="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" sortField="birthday" [sortOrder]="1" stripedRows="true">
+    <p-table [value]="filteredValues" [columns]="displayColumns" dataKey="id" size="small" paginator="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" sortField="weedingDateTime" [sortOrder]="1" stripedRows="true">
       <ng-template #header let-columns>
         <tr>
           @for (column of columns; track $index) {
