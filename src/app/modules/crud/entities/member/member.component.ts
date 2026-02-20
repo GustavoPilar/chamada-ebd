@@ -65,12 +65,10 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
         Validators.required
       ],
       age: [
-        this.selectedEntity?.age ?? 0,
-        Validators.required
+        this.selectedEntity?.age ?? 0
       ],
       birthday: [
-        birthday,
-        Validators.required
+        birthday
       ],
       status: [
         this.selectedEntity?.status ?? true,
@@ -101,7 +99,7 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
     let selectedeYear: number = event.getFullYear();
     let age: number = currentYear - selectedeYear;
 
-    
+
 
     this.entityForm.get('age')?.setValue(age);
   }
@@ -114,8 +112,11 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
         this.apiService.getEntities("class").then((result: any) => {
           if (result) {
             this.classes = result;
+            console.log(result);
             resolve(result);
           }
+        }, (error) => {
+          reject(error);
         });
       } catch (error) {
         console.log(error);

@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 import { CrudBaseComponent } from "../base/crud-base";
-import { ConfirmationService, PrimeIcons } from "primeng/api";
+import { ConfirmationService, MessageService, PrimeIcons } from "primeng/api";
 import { Router } from "@angular/router";
 
 @Component({
@@ -23,7 +23,8 @@ export class CrudFormComponent implements OnInit, AfterViewInit {
   //#region Constructor
   constructor(private changeDetectorRef: ChangeDetectorRef,
     private confirmationService: ConfirmationService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {
 
   }
@@ -52,7 +53,17 @@ export class CrudFormComponent implements OnInit, AfterViewInit {
       this.crudBaseComponent.entityName = this.entityName;
       this.crudBaseComponent.entityId = this.entityId;
       this.crudBaseComponent.isForm = true;
-      this.crudBaseComponent.initForm().then(() => this.refresh());
+      this.crudBaseComponent.initForm().then((result: any) => {
+        this.refresh()
+      }, (error: any) => {
+        this.messageService.add({
+          summary: "Erro ao carregar",
+          detail: "Ocorreu um erro ao carregar o registro selecionado.",
+          closable: true,
+          life: 3000,
+          severity: "error"
+        })
+      });
     }
     this.refresh();
   }
@@ -85,7 +96,16 @@ export class CrudFormComponent implements OnInit, AfterViewInit {
       if (result) {
         this.router.navigate(["/manager/list", this.entityName]);
       }
+    }, (error: any) => {
+      console.log(error);
+      this.messageService.add({
+        summary: "Erro ao salvar",
+        detail: "Ocorreu um erro tentar salvar o resgistro.\nTente novamente.",
+        life: 3000,
+        closable: true,
+        severity: "error"
+      })
     });
-  } 
+  }
   //#endregion
 }

@@ -53,6 +53,14 @@ export class CrudListComponent implements OnInit, AfterViewInit {
         if (result) {
           this.getRefresh();
         }
+      }, (error: any) => {
+        this.messageService.add({
+          summary: "Erro ao buscar registros",
+          detail: "Algo ocorreu durante a busca dos registros.\nTente novamente!",
+          severity: "error",
+          life: 3000,
+          closable: true
+        })
       });
     }
   }
@@ -108,7 +116,7 @@ export class CrudListComponent implements OnInit, AfterViewInit {
         severity: "error",
       });
 
-      return; 
+      return;
     }
 
     this.confirmationService.confirm({
@@ -121,7 +129,6 @@ export class CrudListComponent implements OnInit, AfterViewInit {
             this.getRefresh();
           }
         }, (error) => {
-          console.log(error);
           this.messageService.add({
             summary: "Erro ao excluir",
             detail: "Ocorreu um erro durante a exclusão do(s) registro(s)",
@@ -137,7 +144,7 @@ export class CrudListComponent implements OnInit, AfterViewInit {
   public getColumnType(displayColumnType: DisplayColumnType): string {
     let type: string = "";
 
-    switch(displayColumnType) {
+    switch (displayColumnType) {
       case DisplayColumnType.NUMERIC:
         type = "numeric"
         break;

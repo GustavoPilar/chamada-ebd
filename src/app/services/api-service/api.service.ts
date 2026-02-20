@@ -20,22 +20,34 @@ export class ApiService {
   //#endregion
 
   //#region Get
-  public async getEntities(entityName: string): Promise<any> {
+
+  /**
+   * @description Retorna uma lista de entidades
+   * @param entityName Nome da entidade
+   * @returns Promise any
+   */
+  public getEntities<T>(entityName: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
         this.spinner.show();
-        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}`;
 
-        let header: any = {
-          "Content-Type": "application/json"
-        };
-
-        this.httpClient.get(url, { headers: header }).subscribe((result: any) => {
-          if (result) {
+        this.httpClient.get(`${CHAMADA_EBD_API_URL}/${entityName}`, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).subscribe({
+          next: (result: any) => {
+            if (result) {
+              this.spinner.hide();
+              resolve(result);
+            }
+          },
+          error: (error) => {
             this.spinner.hide();
-            resolve(result);
+            reject(error);
           }
         });
+
       } catch (error) {
         console.log(error);
         this.spinner.hide();
@@ -44,20 +56,31 @@ export class ApiService {
     })
   }
 
-  public async getEntityById(entityName: string, entityId: number): Promise<any> {
+  /**
+   * @description Retorna uma entidade pelo ID
+   * @param entityName Nome da entidade
+   * @param entityId Id da entidade
+   * @returns Promise any
+   */
+  public getEntityById(entityName: string, entityId: number): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
         this.spinner.show();
-        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}/${entityId}`;
 
-        let header: any = {
-          "Content-Type": "application/json"
-        };
-
-        this.httpClient.get(url, { headers: header }).subscribe((result: any) => {
-          if (result) {
+        this.httpClient.get(`${CHAMADA_EBD_API_URL}/${entityName}/${entityId}`, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).subscribe({
+          next: (result: any) => {
+            if (result) {
+              this.spinner.hide();
+              resolve(result);
+            }
+          },
+          error: (error) => {
             this.spinner.hide();
-            resolve(result);
+            reject(error);
           }
         });
       } catch (error) {
@@ -70,20 +93,33 @@ export class ApiService {
   //#endregion
 
   //#region Put
-  public async putEntityById(entityName: string, entityId: number, data: any): Promise<any> {
+
+  /**
+   * @description Atualiza uma entidade
+   * @param entityName Nome da entidade
+   * @param entityId ID da entidade
+   * @param entity Entidade atualizada
+   * @returns Promise any
+   */
+  public updateEntity(entityName: string, entityId: number, entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
         this.spinner.show();
-        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}/${entityId}`;
 
-        let header: any = {
-          "Content-Type": "application/json"
-        };
-
-        this.httpClient.put(url, data, { headers: header }).subscribe((result: any) => {
-          if (result) {
+        this.httpClient.put(`${CHAMADA_EBD_API_URL}/${entityName}/${entityId}`, entity, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).subscribe({
+          next: (result: any) => {
+            if (result) {
+              this.spinner.hide();
+              resolve(result);
+            }
+          },
+          error: (error) => {
             this.spinner.hide();
-            resolve(result);
+            reject(error);
           }
         });
       } catch (error) {
@@ -96,20 +132,32 @@ export class ApiService {
   //#endregion
 
   //#region Post
-  public async postEntity(entityName: string, data: any): Promise<any> {
+
+  /**
+   * @description Cria uma nova entidade
+   * @param entityName Nome da entidade
+   * @param entity Entidade
+   * @returns Promise any
+   */
+  public createEntity(entityName: string, entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
         this.spinner.show();
-        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}`;
 
-        let header: any = {
-          "Content-Type": "application/json"
-        };
-
-        this.httpClient.post(url, data, { headers: header }).subscribe((result: any) => {
-          if (result) {
+        this.httpClient.post(`${CHAMADA_EBD_API_URL}/${entityName}`, entity, {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).subscribe({
+          next: (result: any) => {
+            if (result) {
+              this.spinner.hide();
+              resolve(result);
+            }
+          },
+          error: (error) => {
             this.spinner.hide();
-            resolve(result);
+            reject(error);
           }
         });
       } catch (error) {
@@ -122,6 +170,12 @@ export class ApiService {
   //#endregion
 
   //#region Delete
+  /**
+   * @description Deleta uma ou várias entidades, através dos IDs selecionados
+   * @param entityName Nome da entidade
+   * @param ids IDs da entidade
+   * @returns Promise any
+   */
   public async deleteEntities(entityName: string, ids: number[]): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
@@ -130,25 +184,27 @@ export class ApiService {
         let last: number = ids.length == 1 ? ids[ids.length - 1] : ids[ids.length - 1] + 1
         let range: number[] = [first, last];
 
-        let url: string = `${CHAMADA_EBD_API_URL}/${entityName}/delete`;
-
         let params = new HttpParams();
         range.forEach(id => {
           params = params.append('ids', id);
         });
 
-        let header: any = {
-          "Content-Type": "application/json"
-        };
-
-        this.httpClient.delete(url, { headers: header, params: params }).subscribe((result: any) => {
-          if (result) {
+        this.httpClient.delete(`${CHAMADA_EBD_API_URL}/${entityName}/delete`, {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          params
+        }).subscribe({
+          next: (result: any) => {
+            if (result) {
+              this.spinner.hide();
+              resolve(result);
+            }
+          },
+          error: (error: any) => {
             this.spinner.hide();
-            resolve(result);
+            reject(error);
           }
-        }, (error: any) => {
-          this.spinner.hide();
-          reject(error);
         });
       } catch (error) {
         console.log(error);

@@ -26,6 +26,11 @@ export class CrudManager {
   //#endregion
 
   //#region Api requests
+
+  /**
+   * @description Retorna as entidades
+   * @returns Promise any[]
+   */
   public getEntities(): Promise<any[]> {
     return new Promise<any[]>((resolve, reject) => {
       try {
@@ -33,6 +38,8 @@ export class CrudManager {
           if (result) {
             resolve(result);
           }
+        }, (error: any) => {
+          reject(error);
         })
       } catch (error) {
         console.log(error);
@@ -41,6 +48,10 @@ export class CrudManager {
     })
   }
 
+  /**
+   * @description Retorna uma entidade pelo ID. Se não houver id, resolve com um objeto padrão com ID igual a 0
+   * @returns Promise any
+   */
   public getEntityById(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
@@ -49,6 +60,8 @@ export class CrudManager {
             if (result) {
               resolve(result)
             }
+          }, (error: any) => {
+            reject(error);
           });
         }
         else {
@@ -58,16 +71,23 @@ export class CrudManager {
         console.log(error);
         reject(error);
       }
-    })
+    });
   }
 
-  public addEntity(entity: any): Promise<any> {
+  /**
+   * @description Cria a entidade
+   * @param entity Entidade
+   * @returns Promise any
+   */
+  public createEntity(entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.postEntity(this.entityName, entity).then((result: any) => {
+        this.apiService.createEntity(this.entityName, entity).then((result: any) => {
           if (result) {
             resolve(result);
           }
+        }, (error: any) => {
+          reject(error);
         })
       } catch (error) {
         console.log(error);
@@ -76,13 +96,20 @@ export class CrudManager {
     })
   }
 
+  /**
+   * @description Atualiza a entidade
+   * @param entity Entidade
+   * @returns Promise any
+   */
   public updateEntity(entity: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.putEntityById(this.entityName, this.entityId, entity).then((result: any) => {
+        this.apiService.updateEntity(this.entityName, this.entityId, entity).then((result: any) => {
           if (result) {
             resolve(result);
           }
+        }, (error) => {
+          reject(error);
         })
       } catch (error) {
         console.log(error);
@@ -91,10 +118,15 @@ export class CrudManager {
     })
   }
 
-  public deleteEntities(entities: number[]): Promise<any> {
+  /**
+   * @description Deleta um ou mais registros
+   * @param ids IDs selecionados
+   * @returns Promise any
+   */
+  public deleteEntities(ids: number[]): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.apiService.deleteEntities(this.entityName, entities).then((result: any) => {
+        this.apiService.deleteEntities(this.entityName, ids).then((result: any) => {
           if (result) {
             resolve(result);
           }

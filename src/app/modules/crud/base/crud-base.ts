@@ -58,6 +58,8 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
             this.entities = result;
             resolve(result);
           }
+        }, (error: any) => {
+          reject(error);
         });
       } catch (error) {
         console.log(error);
@@ -78,8 +80,12 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
                 this.entityForm = this.getForm();
                 resolve(entity);
               }
+            }, (error: any) => {
+              reject(error);
             });
           }
+        }, (error: any) => {
+          reject(error);
         })
       } catch (error) {
         console.log(error);
@@ -126,13 +132,17 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
             if (result) {
               resolve(result);
             }
+          }, (error: any) => {
+            reject(error);
           });
         }
         else {
-          this.crudManager.addEntity(this.prepareEntityToSave()).then((result: any) => {
+          this.crudManager.createEntity(this.prepareEntityToSave()).then((result: any) => {
             if (result) {
               resolve(result);
             }
+          }, (error: any) => {
+            reject(error);
           })
         }
       } catch (error) {
