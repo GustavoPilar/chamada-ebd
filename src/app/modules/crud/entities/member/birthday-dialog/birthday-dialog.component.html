@@ -4,38 +4,49 @@
       <div class="grid">
         <div class="field col-12 md:col-6">
           <app-label description="Mês" [abstractControl]="getField('month')"></app-label>
-          <p-select [options]="months" optionLabel="name" fluid placeholder="Selecione o mês do aniversário" formControlName="month" (onChange)="filterEntities()"></p-select>
+          <p-select [options]="months" optionLabel="name" fluid placeholder="Selecione o mês do aniversário" formControlName="month" (onChange)="onChangeMonth()"></p-select>
+        </div>
+        <div class="field col-12 md:col-6">
+          <app-label description="Tipo" [abstractControl]="getField('type')"></app-label>
+          <p-selectButton [options]="options" fluid formControlName="type" (onChange)="onChangeType($event)"></p-selectButton>
         </div>
       </div>
     </form>
   </div>
   <div class="w-full">
-    <p-table [value]="filteredEntities" dataKey="id" size="small" paginator="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" sortField="birthday" [sortOrder]="1" stripedRows="true">
-      <ng-template #header>
+    <p-table [value]="filteredValues" [columns]="displayColumns" dataKey="id" size="small" paginator="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" sortField="birthday" [sortOrder]="1" stripedRows="true">
+      <ng-template #header let-columns>
         <tr>
-          <th pSortableColumn="name">
-            <div class="flex justify-content-center align-items-center gap-2">
-              Nome
-              <p-sortIcon field="name"></p-sortIcon>
-            </div>
-          </th>
-          <th pSortableColumn="birthday">
-            <div class="flex justify-content-center align-items-center gap-2">
-              Aniversário
-              <p-sortIcon field="birthday"></p-sortIcon>
-            </div>
-          </th>
+          @for (column of columns; track $index) {
+            <th [pSortableColumn]="column.field">
+              <div class="flex justify-content-center align-items-center gap-2">
+                {{column.label}}
+                <p-sortIcon [field]="column.field"></p-sortIcon>
+              </div>
+            </th>
+          }
         </tr>
       </ng-template>
-      <ng-template #body let-result>
+      <ng-template #body let-result let-columns="columns">
         <tr>
-          <td>{{result.name}}</td>
-          <td>{{transformDate(result.birthday)}}</td>
+          @for (column of columns; track $index) {
+            <td>
+              @if (column.displayColumnType == 3) {
+                {{showDateValue(result[column.field])}}
+              }
+              @else if (column.displayColumnType == 4) {
+                {{showObejctValue(result, column.field)}}
+              }
+              @else {
+                {{showDefaultValue(result[column.field])}}
+              }
+            </td>
+          }
         </tr>
       </ng-template>
       <ng-template #emptymessage>
         <tr>
-          <td colspan="2">Nenhum registro foi encontrado</td>
+          <td [colSpan]="displayColumns.length">Nenhum registro foi encontrado</td>
         </tr>
       </ng-template>
     </p-table>
