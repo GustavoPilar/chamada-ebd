@@ -99,7 +99,7 @@ export class CrudListComponent implements OnInit, AfterViewInit {
       return this.showEmptyValue();
     }
 
-    return new Date(date!).toLocaleDateString();
+    return new Date(date!).toDateString();
   }
 
   public showEmptyValue(): string {
