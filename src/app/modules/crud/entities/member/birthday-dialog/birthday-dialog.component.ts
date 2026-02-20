@@ -259,7 +259,7 @@ export class BirthdayDialogComponent implements OnInit {
    * @returns string
    */
   public showDateValue(date?: string) {
-    return new Date(date!).toDateString();
+    return new Date(date!).toLocaleDateString("pt-BR");
   }
 
   //#endregion

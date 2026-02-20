@@ -33,6 +33,7 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from "primeng/toast";
 import { SkeletonModule } from "primeng/skeleton";
 import { BirthdayDialogComponent } from "./entities/member/birthday-dialog/birthday-dialog.component";
+import { WeedingDateComponent } from "./entities/weedingDate/weedingDate.component";
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { BirthdayDialogComponent } from "./entities/member/birthday-dialog/birth
     BirthdayDialogComponent,
 
     MemberComponent,
+    WeedingDateComponent
   ],
   imports: [
     CommonModule,

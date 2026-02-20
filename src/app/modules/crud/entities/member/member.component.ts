@@ -20,7 +20,7 @@ import { BirthdayDialogComponent } from "./birthday-dialog/birthday-dialog.compo
 export class MemberComponent extends CrudBaseComponent implements OnInit {
 
   //#region Fields
-  public classes: any;
+  public classes!: any[];
 
   public birthdayDialog!: DynamicDialogRef<BirthdayDialogComponent> | null;
   //#endregion
@@ -62,7 +62,6 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
       birthday = new Date();
     }
 
-    console.log(this.selectedEntity);
     return this.formBuilder.group({
       name: [
         this.selectedEntity?.name ?? null,

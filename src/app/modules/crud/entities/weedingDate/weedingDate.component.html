@@ -1,0 +1,23 @@
+@if (isForm && selectedEntity) {
+  <form [formGroup]="entityForm">
+    <div class="grid">
+      <div class="field col-12 md:col-6">
+        <app-label description="Esposo" [abstractControl]="getField('husband')"></app-label>
+        <p-select [options]="members" optionLabel="name" formControlName="husband" fluid></p-select>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Esposa" [abstractControl]="getField('wife')"></app-label>
+        <p-select [options]="members" optionLabel="name" formControlName="wife" fluid></p-select>
+      </div>
+
+      <div class="field col-12 md:col-6">
+        <app-label description="Data de casamento" [abstractControl]="getField('weedingDateTime')"></app-label>
+        <p-datePicker id="weedingDateTime" inputId="weedingDateTime" formControlName="weedingDateTime" dateFormat="dd/mm/yy" fluid showIcon="true" showClear="true" placeholder="Selecione a data de nascimento" (onSelect)="onChangeWeedingDate($event)" (onClear)="onChangeWeedingDate($event)"></p-datePicker>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Tempo juntos" [abstractControl]="getField('totalTime')"></app-label>
+        <p-inputNumber id="totalTime" inputId="totalTime" formControlName="totalTime" fluid showButtons="true" [min]="0" showClear="false" placeholder="Tempo juntos" [disabled]="true"></p-inputNumber>
+      </div>
+    </div>
+  </form>
+}
