@@ -58,6 +58,7 @@ export class WeedingDateComponent extends CrudBaseComponent implements OnInit {
       weedingDateTime = new Date();
     }
 
+    console.log(this.selectedEntity);
     return this.formBuilder.group({
       husband: [
         this.selectedEntity?.husband ?? null,

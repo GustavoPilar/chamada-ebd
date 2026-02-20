@@ -3,11 +3,11 @@
     <div class="grid">
       <div class="field col-12 md:col-6">
         <app-label description="Esposo" [abstractControl]="getField('husband')"></app-label>
-        <p-select [options]="members" optionLabel="name" formControlName="husband" fluid></p-select>
+        <p-select [options]="members" dataKey="name" optionLabel="name" formControlName="husband" fluid filter></p-select>
       </div>
       <div class="field col-12 md:col-6">
         <app-label description="Esposa" [abstractControl]="getField('wife')"></app-label>
-        <p-select [options]="members" optionLabel="name" formControlName="wife" fluid></p-select>
+        <p-select [options]="members" dataKey="name" optionLabel="name" formControlName="wife" fluid filter></p-select>
       </div>
 
       <div class="field col-12 md:col-6">
