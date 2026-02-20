@@ -24,6 +24,7 @@ export class BirthdayDialogComponent implements OnInit {
     { id: 0, label: "Individual" },
     { id: 1, label: "Casamento" }
   ];
+  public selectedType: any = this.options[0];
   public alreadyLoad: boolean = false;
   public displayColumns!: DisplayColumn[]
   //#endregion
@@ -69,6 +70,10 @@ export class BirthdayDialogComponent implements OnInit {
   //#endregion
 
   //#region Members
+  /**
+   * @description Inicia o formulário
+   * @returns void
+   */
   public initForm(): void {
     let currentIndexMonth: number = this.months.findIndex(x => x.id == new Date().getMonth());
 
@@ -77,43 +82,84 @@ export class BirthdayDialogComponent implements OnInit {
         this.months[currentIndexMonth],
         Validators.required
       ],
-      type: [
-        this.options[0],
+      isIndividual: [
+        true,
         Validators.required
       ]
     });
   }
 
+  /**
+   * @description Retorna o campo especificado do formulário
+   * @param field Campo do formulário
+   * @returns AbstractControl
+   */
   public getField(field: string): AbstractControl {
     return this.form.get(field) as AbstractControl;
   }
 
+  //#endregion
+
+  //#region Filters
+
+  /**
+   * @description Filtra os membros
+   * @returns void
+   */
   public filterEntities(): void {
     let month: number = this.form.get('month')?.value.id;
     this.filteredValues = this.entities.filter(x => new Date(x.birthday).getMonth() == month);
   }
 
+  /**
+   * @description Filtra os casamentos
+   * @returns void
+   */
   public filterWeedings(): void {
     let month: number = this.form.get('month')?.value.id;
     this.filteredValues = this.weedings.filter(x => new Date(x.weedingDateTime).getMonth() == month);
   }
 
-  public transformDate(date: Date): string {
-    return date.toLocaleDateString();
+  //#endregion
+
+  //#region OnChange
+
+  /**
+   * @description Altera o valor do mês junto com as entidades
+   * @returns void
+   */
+  public onChangeMonth(): void {
+    if (this.selectedType.id == 0) {
+      this.filterEntities();
+    }
+    else {
+      this.filterWeedings();
+    }
   }
 
+  /**
+   * @description Altera o tipo de aniversários e as entidades
+   * @param event Evento disparado
+   * @returns void
+   */
   public onChangeType(event: any): void {
     this.filteredValues = [];
-    if (event.value.id == 0) {
+
+    if (event.checked) {
+      this.selectedType = this.options[0];
+      this.getColumns();
+
       this.filterEntities();
       this.changeDetectorRef.detectChanges();
     }
     else {
+      this.selectedType = this.options[1];
+      this.getColumns();
+
       if (!this.alreadyLoad) {
         this.loadWeedings().then((result) => {
           if (result) {
             this.alreadyLoad = true;
-            this.getColumns();
             this.filterWeedings();
             this.changeDetectorRef.detectChanges();
           }
@@ -127,6 +173,7 @@ export class BirthdayDialogComponent implements OnInit {
           });
 
           this.form.get("type")?.setValue(this.options[0]);
+          this.filterEntities();
         });
       }
       else {
@@ -136,26 +183,16 @@ export class BirthdayDialogComponent implements OnInit {
     }
   }
 
-  public loadWeedings(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        this.apiService.getEntities("weedingDate").then((result: any) => {
-          if (result) {
-            this.weedings = result;
-            resolve(result);
-          }
-        }, (error: any) => {
-          reject(error);
-        });
-      } catch (error) {
-        console.log(error);
-        reject(error);
-      }
-    })
-  }
+  //#endregion
 
+  //#region Utils
+
+  /**
+   * @description Altera as colunas da tabela de acordo com o tipo de aniversário escolhido
+   * @returns void
+   */
   public getColumns(): void {
-    if (this.form.get("type")?.value.id == 0) {
+    if (this.selectedType.id == 0) {
       this.displayColumns = [
         {
           label: "Nome",
@@ -190,6 +227,12 @@ export class BirthdayDialogComponent implements OnInit {
     }
   }
 
+  /**
+   * @description Retorna o valor do campo do objeto
+   * @param entity Entidade
+   * @param columnField Campos
+   * @returns any
+   */
   public showObejctValue(entity: any, columnField: string): any {
     let fields: string[] = columnField.split(".");
     let currentValue: any = entity;
@@ -201,21 +244,50 @@ export class BirthdayDialogComponent implements OnInit {
     return currentValue;
   }
 
+  /**
+   * @description Retorna o valor padrão
+   * @param value Valor
+   * @returns any
+   */
   public showDefaultValue(value?: string): any {
     return value;
   }
 
+  /**
+   * @description Retorna a data em forma de string
+   * @param date Data
+   * @returns string
+   */
   public showDateValue(date?: string) {
     return new Date(date!).toLocaleDateString();
   }
 
-  public onChangeMonth(): void {
-    if (this.form.get('type')?.value.id == 0) {
-      this.filterEntities();
-    }
-    else {
-      this.filterWeedings();
-    }
-  }
   //#endregion
+
+  //#region Resources
+
+  /**
+   * @description Carrega os aniversários de casamento
+   * @returns Promise
+   */
+  public loadWeedings(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        this.apiService.getEntities("weedingDate").then((result: any) => {
+          if (result) {
+            this.weedings = result;
+            resolve(result);
+          }
+        }, (error: any) => {
+          reject(error);
+        });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  //#endregion
+
 }
