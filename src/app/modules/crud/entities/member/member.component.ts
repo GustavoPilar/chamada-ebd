@@ -43,7 +43,7 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
       { field: "age", label: "Idade", displayColumnType: DisplayColumnType.NUMERIC },
       { field: "birthday", label: "Data Nasc.", displayColumnType: DisplayColumnType.DATE },
       { field: "status", label: "Ativo", displayColumnType: DisplayColumnType.BOOLEAN },
-      { field: "class", label: "Classe", displayColumnType: DisplayColumnType.TEXT }
+      { field: "class.name", label: "Classe", displayColumnType: DisplayColumnType.OBJECT }
     ];
   }
 
@@ -100,6 +100,8 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
     let currentYear: number = this.currentDate.getFullYear();
     let selectedeYear: number = event.getFullYear();
     let age: number = currentYear - selectedeYear;
+
+    
 
     this.entityForm.get('age')?.setValue(age);
   }

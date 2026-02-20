@@ -153,8 +153,12 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
                 this.entities = entities;
                 resolve(entities);
               }
+            }, (error) => {
+              reject(error);
             });
           }
+        }, (error) => {
+          reject(error);
         })
       } catch (error) {
         console.log(error);

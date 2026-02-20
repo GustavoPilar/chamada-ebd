@@ -98,6 +98,8 @@ export class CrudManager {
           if (result) {
             resolve(result);
           }
+        }, (error) => {
+          reject(error);
         });
       } catch (error) {
         console.log(error);

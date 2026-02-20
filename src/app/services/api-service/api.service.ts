@@ -126,7 +126,7 @@ export class ApiService {
     return new Promise<any>((resolve, reject) => {
       try {
         this.spinner.show();
-        let first: number = ids[0]; // 1
+        let first: number = ids[0] - 1;
         let last: number = ids.length == 1 ? ids[ids.length - 1] : ids[ids.length - 1] + 1
         let range: number[] = [first, last];
 
@@ -146,6 +146,9 @@ export class ApiService {
             this.spinner.hide();
             resolve(result);
           }
+        }, (error: any) => {
+          this.spinner.hide();
+          reject(error);
         });
       } catch (error) {
         console.log(error);

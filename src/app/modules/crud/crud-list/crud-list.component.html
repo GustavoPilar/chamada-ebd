@@ -1,5 +1,8 @@
+<p-toast />
+<p-confirmDialog></p-confirmDialog>
+
 @if (crudBaseComponent) {
-  <p-table [value]="crudBaseComponent.entities" [columns]="crudBaseComponent.getDisplayColumns()" size="small" stripedRows="true" rowHover="true" selectionMode="multiple" [(selection)]="crudBaseComponent.selectedEntities" dataKey="id" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20]" [selectionPageOnly]="true">
+  <p-table [value]="crudBaseComponent.entities" [sortField]="crudBaseComponent.getDisplayColumns()[0].field" [sortOrder]="1" [columns]="crudBaseComponent.getDisplayColumns()" size="small" stripedRows="true" rowHover="true" selectionMode="multiple" [(selection)]="crudBaseComponent.selectedEntities" dataKey="id" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20]" [selectionPageOnly]="true">
     <ng-template #caption>
       <p-toolbar>
         <ng-template #start>
@@ -24,9 +27,25 @@
           <p-tableHeaderCheckbox />
         </th>
         @for (column of columns; track $index) {
-          <th>{{column.label}}</th>
+          <th [pSortableColumn]="column.field">
+            <div class="flex justify-content-center align-items-center gap-2">
+              {{column.label}}
+              <p-sortIcon [field]="column.field"></p-sortIcon>
+            </div>
+          </th>
         }
         <th>Ações</th>
+      </tr>
+      <tr>
+        <th></th>
+        @for (column of columns; track $index) {
+          <th>
+            <div class="flex justify-content-center align-items-center gap-2">
+              <p-columnFilter [type]="getColumnType(column.displayColumnType)" [field]="column.field" [placeholder]="'Pesquise pelo(a) ' + column.label" filterOn="input"></p-columnFilter>
+            </div>
+          </th>
+        }
+        <th></th>
       </tr>
     </ng-template>
     <ng-template #body let-result let-columns="columns">
@@ -46,13 +65,12 @@
               {{showObejctValue(result, column.field)}}
             }
             @else {
-              {{result[column.field]}}
+              {{showDefaultValue(result[column.field])}}
             }
           </td>
         }
         <td>
           <p-button icon="pi pi-pencil" [rounded]="true" (onClick)="openEdit(result.id)"></p-button>
-          <!-- <p-button icon="pi pi-trash" severity="danger" [rounded]="true"></p-button> -->
         </td>
       </tr>
     </ng-template>

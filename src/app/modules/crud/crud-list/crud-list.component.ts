@@ -1,7 +1,8 @@
+import { DisplayColumnType } from './../../../models/crud/display-column-type';
 import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewContainerRef } from "@angular/core";
 import { CrudBaseComponent } from "../base/crud-base";
 import { Router } from "@angular/router";
-import { DisplayColumnType } from "../../../models/crud/display-column-type";
+import { ConfirmationService, MessageService, PrimeIcons } from "primeng/api";
 
 @Component({
   selector: "app-crud-list",
@@ -21,7 +22,9 @@ export class CrudListComponent implements OnInit, AfterViewInit {
   constructor(
     private viewRef: ViewContainerRef,
     private changeDetectorRef: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
 
   }
@@ -77,28 +80,78 @@ export class CrudListComponent implements OnInit, AfterViewInit {
     return currentValue;
   }
 
-  public showDateValue(date?: string) {
-    if (date == undefined) {
-      return "--/--/--";
-    }
+  public showDefaultValue(value?: string): any {
+    if (value == undefined) return this.showEmptyValue();
 
-    return new Date(date).toLocaleDateString();
+    return value;
   }
 
-  public deleteEntities(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
+  public showDateValue(date?: string) {
+    if (date == undefined) {
+      return this.showEmptyValue();
+    }
+
+    return new Date(date!).toLocaleDateString();
+  }
+
+  public showEmptyValue(): string {
+    return "-"
+  }
+
+  public deleteEntities(): void {
+    if (this.crudBaseComponent.entities.length <= 1 || this.crudBaseComponent.selectedEntities.length == this.crudBaseComponent.entities.length) {
+      this.messageService.add({
+        summary: "Erro ao excluir",
+        detail: "Deixe apenas um registro, então edite-o",
+        life: 3000,
+        closable: true,
+        severity: "error",
+      });
+
+      return; 
+    }
+
+    this.confirmationService.confirm({
+      header: "Confirmar exclusão",
+      icon: PrimeIcons.QUESTION_CIRCLE,
+      message: "Deseja mesmo excluir os registros selecionados?",
+      accept: () => {
         this.crudBaseComponent.deleteEntities().then((result: any) => {
           if (result) {
             this.getRefresh();
-            resolve(result);
           }
-        })
-      } catch (error) {
-        console.log(error);
-        reject(error);
+        }, (error) => {
+          console.log(error);
+          this.messageService.add({
+            summary: "Erro ao excluir",
+            detail: "Ocorreu um erro durante a exclusão do(s) registro(s)",
+            life: 3000,
+            closable: true,
+            severity: "error"
+          })
+        });
       }
-    })
+    });
+  }
+
+  public getColumnType(displayColumnType: DisplayColumnType): string {
+    let type: string = "";
+
+    switch(displayColumnType) {
+      case DisplayColumnType.NUMERIC:
+        type = "numeric"
+        break;
+      case DisplayColumnType.BOOLEAN:
+        type = "boolean";
+        break;
+      case DisplayColumnType.DATE:
+        type = "date";
+        break;
+      default:
+        type = "text"
+    }
+
+    return type;
   }
   //#endregion
 }

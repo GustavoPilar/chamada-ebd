@@ -21,7 +21,7 @@ import { InputIconModule } from "primeng/inputicon";
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from "primeng/api";
+import { ConfirmationService, MessageService } from "primeng/api";
 import { LabelComponent } from "./components/label/label.component";
 import { SelectModule } from "primeng/select";
 import { CheckboxModule } from "primeng/checkbox";
@@ -30,6 +30,8 @@ import { OrganizationChartModule } from 'primeng/organizationchart';
 import { DialogModule } from 'primeng/dialog';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DatePickerModule } from 'primeng/datepicker';
+import { ToastModule } from "primeng/toast";
+import { SkeletonModule } from "primeng/skeleton";
 
 @NgModule({
   declarations: [
@@ -66,11 +68,14 @@ import { DatePickerModule } from 'primeng/datepicker';
     OrganizationChartModule,
     DialogModule,
     DynamicDialogModule,
-    DatePickerModule
+    DatePickerModule,
+    ToastModule,
+    SkeletonModule
   ],
   providers: [
     ConfirmationService,
-    DialogService
+    DialogService,
+    MessageService
   ]
 })
 export class CrudModule { }
