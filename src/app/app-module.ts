@@ -65,6 +65,20 @@ import { CrudModule } from './modules/crud/crud.module';
           "Novembro",
           "Dezembro"
         ],
+        monthNamesShort: [
+          "Jan",
+          "Fev",
+          "Mar",
+          "Abr",
+          "Mai",
+          "Jun",
+          "Jul",
+          "Ago",
+          "Set",
+          "Out",
+          "Nov",
+          "Dez"
+        ],
         before: "Anter",
         after: "Depois",
         cancel: "Cancelar",
@@ -101,7 +115,7 @@ import { CrudModule } from './modules/crud/crud.module';
         emptySearchMessage: "Nenhum resultado encontrado",
         is: "É",
         isNot: "Não é",
-        today: "Hoje" 
+        today: "Hoje"
       },
       ripple: true
     })

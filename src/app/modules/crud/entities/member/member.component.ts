@@ -103,15 +103,16 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
   //#region OnChange
   public onChangeBirthday(event: Date) {
     if (event == null) {
-      this.entityForm.get('age')?.setValue(0);
+      this.entityForm.get('age')?.setValue(null);
       return;
     }
 
-    let currentYear: number = this.currentDate.getFullYear();
-    let selectedeYear: number = event.getFullYear();
-    let age: number = currentYear - selectedeYear;
-
-
+    let birthDate: Date = new Date(event);
+    let age: number = this.currentDate.getFullYear() - birthDate.getFullYear();
+    const m: number = this.currentDate.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && this.currentDate.getDate() < birthDate.getDate())) {
+      age--;
+    }
 
     this.entityForm.get('age')?.setValue(age);
   }
