@@ -7,11 +7,11 @@ import { DisplayColumn } from "../../../../../models/crud/display-column";
 import { DisplayColumnType } from "../../../../../models/crud/display-column-type";
 
 @Component({
-  selector: "app-birthday-dialog",
-  templateUrl: "./birthday-dialog.component.html",
+  selector: "app-birth-date-dialog",
+  templateUrl: "./birth-date-dialog.component.html",
   standalone: false
 })
-export class BirthdayDialogComponent implements OnInit {
+export class BirthDateDialogComponent implements OnInit {
 
   //#region Fields
   public entities!: any[];
@@ -201,7 +201,7 @@ export class BirthdayDialogComponent implements OnInit {
         },
         {
           label: "Aniversário",
-          field: "birthday",
+          field: "birthDate",
           displayColumnType: DisplayColumnType.DATE
         }
       ]

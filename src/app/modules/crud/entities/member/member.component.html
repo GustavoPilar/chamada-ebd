@@ -13,8 +13,8 @@
         <p-toggleButton id="status" formControlName="status" onLabel="Ativo" offLabel="Inativo" fluid></p-toggleButton>
       </div>
       <div class="field col-12 md:col-6">
-        <app-label description="Data de nascimento" [abstractControl]="getField('birthday')"></app-label>
-        <p-datePicker id="birthday" inputId="birthday" formControlName="birthday" dateFormat="dd/mm/yy" fluid showIcon="true" showClear="true" placeholder="Selecione a data de nascimento" (onSelect)="onChangeBirthday($event)" (onClear)="onChangeBirthday($event)"></p-datePicker>
+        <app-label description="Data de nascimento" [abstractControl]="getField('birthDate')"></app-label>
+        <p-datePicker id="birthDate" inputId="birthDate" formControlName="birthDate" dateFormat="dd/mm/yy" fluid showIcon="true" showClear="true" placeholder="Selecione a data de nascimento" (onSelect)="onChangeBirthDate($event)" (onClear)="onChangeBirthDate($event)"></p-datePicker>
       </div>
       <div class="field col-12 md:col-6">
         <app-label description="Idade" [abstractControl]="getField('age')"></app-label>

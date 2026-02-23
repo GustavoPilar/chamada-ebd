@@ -9,7 +9,7 @@ import { DisplayColumnType } from "../../../../models/crud/display-column-type";
 import { TypeDescription } from "../../../../models/crud/type-description";
 import { ApiService } from "../../../../services/api-service/api.service";
 import { SpecialOption } from "../../../../models/crud/special-option";
-import { BirthdayDialogComponent } from "./birthday-dialog/birthday-dialog.component";
+import { BirthDateDialogComponent } from "./birth-date-dialog/birth-date-dialog.component";
 
 @Component({
   selector: "app-Member",
@@ -22,7 +22,7 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
   //#region Fields
   public classes!: any[];
 
-  public birthdayDialog!: DynamicDialogRef<BirthdayDialogComponent> | null;
+  public birthDateDialog!: DynamicDialogRef<BirthDateDialogComponent> | null;
   //#endregion
 
   //#region Constructor
@@ -45,7 +45,7 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
     return [
       { field: "name", label: "Nome", displayColumnType: DisplayColumnType.TEXT },
       { field: "age", label: "Idade", displayColumnType: DisplayColumnType.NUMERIC },
-      { field: "birthday", label: "Data Nasc.", displayColumnType: DisplayColumnType.DATE },
+      { field: "birthDate", label: "Data Nasc.", displayColumnType: DisplayColumnType.DATE },
       { field: "status", label: "Ativo", displayColumnType: DisplayColumnType.BOOLEAN },
       { field: "class.name", label: "Classe", displayColumnType: DisplayColumnType.OBJECT }
     ];
@@ -57,9 +57,9 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
 
   public override getForm(): FormGroup {
 
-    let birthday: Date | null = new Date(this.selectedEntity?.birthday);
-    if (birthday.toString() == "Invalid Date") {
-      birthday = null;
+    let birthDate: Date | null = new Date(this.selectedEntity?.birthDate);
+    if (birthDate.toString() == "Invalid Date") {
+      birthDate = null;
     }
 
     return this.formBuilder.group({
@@ -70,8 +70,8 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
       age: [
         this.selectedEntity?.age ?? 0
       ],
-      birthday: [
-        birthday
+      birthDate: [
+        birthDate
       ],
       status: [
         this.selectedEntity?.status ?? true,
@@ -94,14 +94,14 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
     return [
       {
         buttonIcon: PrimeIcons.GIFT,
-        buttonAction: () => this.openBirthdayDialog()
+        buttonAction: () => this.openBirthDateDialog()
       }
     ]
   }
   //#endregion
 
   //#region OnChange
-  public onChangeBirthday(event: Date) {
+  public onChangeBirthDate(event: Date) {
     if (event == null) {
       this.entityForm.get('age')?.setValue(null);
       return;
@@ -139,9 +139,9 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
   //#endregion
 
   //#region Dynamic Dialog
-  public openBirthdayDialog(): void {
+  public openBirthDateDialog(): void {
 
-    this.birthdayDialog = this.dialogService.open(BirthdayDialogComponent, {
+    this.birthDateDialog = this.dialogService.open(BirthDateDialogComponent, {
       data: {
         entities: this.entities
       },
@@ -152,7 +152,7 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
       styleClass: "w-11 h-full overflow-visible",
     });
 
-    this.birthdayDialog?.onClose.subscribe((result) => {
+    this.birthDateDialog?.onClose.subscribe((result) => {
 
     });
   }

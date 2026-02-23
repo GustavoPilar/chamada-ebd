@@ -9,7 +9,6 @@ import { SpecialOption } from "../../../../models/crud/special-option";
 import { TypeDescription } from "../../../../models/crud/type-description";
 import { ApiService } from "../../../../services/api-service/api.service";
 import { CrudManager } from "../../base/crud-manager.service";
-import { BirthdayDialogComponent } from "../member/birthday-dialog/birthday-dialog.component";
 
 @Component({
   selector: "app-weeding-date",
