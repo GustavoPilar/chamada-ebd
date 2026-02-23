@@ -53,12 +53,11 @@ export class WeedingDateComponent extends CrudBaseComponent implements OnInit {
 
   public override getForm(): FormGroup {
 
-    let weedingDateTime: Date = new Date(this.selectedEntity?.weedingDateTime);
+    let weedingDateTime: Date | null = new Date(this.selectedEntity?.weedingDateTime);
     if (weedingDateTime.toString() == "Invalid Date") {
-      weedingDateTime = new Date();
+      weedingDateTime = null
     }
 
-    console.log(this.selectedEntity);
     return this.formBuilder.group({
       husband: [
         this.selectedEntity?.husband ?? null,
@@ -91,11 +90,12 @@ export class WeedingDateComponent extends CrudBaseComponent implements OnInit {
       return;
     }
 
-    let currentYear: number = this.currentDate.getFullYear();
-    let selectedeYear: number = event.getFullYear();
-    let totalTime: number = currentYear - selectedeYear;
-
-
+    let birthDate: Date = new Date(event);
+    let totalTime: number = this.currentDate.getFullYear() - birthDate.getFullYear();
+    const m: number = this.currentDate.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && this.currentDate.getDate() < birthDate.getDate())) {
+      totalTime--;
+    }
 
     this.entityForm.get('totalTime')?.setValue(totalTime);
   }

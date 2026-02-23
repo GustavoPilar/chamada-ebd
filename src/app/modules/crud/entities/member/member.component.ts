@@ -57,9 +57,9 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
 
   public override getForm(): FormGroup {
 
-    let birthday: Date = new Date(this.selectedEntity?.birthday);
+    let birthday: Date | null = new Date(this.selectedEntity?.birthday);
     if (birthday.toString() == "Invalid Date") {
-      birthday = new Date();
+      birthday = null;
     }
 
     return this.formBuilder.group({
