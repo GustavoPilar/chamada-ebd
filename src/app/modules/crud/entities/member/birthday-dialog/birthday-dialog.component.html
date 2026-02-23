@@ -14,7 +14,7 @@
     </form>
   </div>
   <div class="w-full">
-    <p-table [value]="filteredValues" [columns]="displayColumns" dataKey="id" size="small" paginator="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" sortField="weedingDateTime" [sortOrder]="1" stripedRows="true">
+    <p-table #dt [value]="filteredValues" [columns]="displayColumns" dataKey="id" size="small" paginator="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50]" sortField="weedingDateTime" [sortOrder]="1" stripedRows="true" [exportFilename]="selectedType.label" >
       <ng-template #header let-columns>
         <tr>
           @for (column of columns; track $index) {

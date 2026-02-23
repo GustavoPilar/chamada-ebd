@@ -32,14 +32,20 @@ export class CrudComponent implements OnInit {
         label: "Geral",
         icon: PrimeIcons.USERS,
         target: "member",
-        title: "Cadastre ou remova um membro da EBD"
+        title: "Cadastre ou remova membros da EBD"
       },
       {
         label: "Casamentos",
         icon: PrimeIcons.GIFT,
         target: "weedingDate",
-        title: "Cadastre ou remova um aniversário de casamento"
-      }
+        title: "Cadastre ou remova aniversários de casamento"
+      },
+      // {
+      //   label: "Classes",
+      //   icon: PrimeIcons.OBJECTS_COLUMN,
+      //   target: "class",
+      //   title: "Cadastre ou remova classes da EBD"
+      // }
     ]
   }
 

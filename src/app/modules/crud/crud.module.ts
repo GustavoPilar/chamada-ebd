@@ -34,6 +34,8 @@ import { ToastModule } from "primeng/toast";
 import { SkeletonModule } from "primeng/skeleton";
 import { BirthdayDialogComponent } from "./entities/member/birthday-dialog/birthday-dialog.component";
 import { WeedingDateComponent } from "./entities/weedingDate/weedingDate.component";
+import { classComponent } from "./entities/class/class.component";
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { WeedingDateComponent } from "./entities/weedingDate/weedingDate.compone
     BirthdayDialogComponent,
 
     MemberComponent,
-    WeedingDateComponent
+    WeedingDateComponent,
+    classComponent
   ],
   imports: [
     CommonModule,
@@ -74,7 +77,8 @@ import { WeedingDateComponent } from "./entities/weedingDate/weedingDate.compone
     DynamicDialogModule,
     DatePickerModule,
     ToastModule,
-    SkeletonModule
+    SkeletonModule,
+    MessageModule
   ],
   providers: [
     ConfirmationService,

@@ -1,0 +1,11 @@
+@if (isForm && selectedEntity) {
+  <form [formGroup]="entityForm">
+    <div class="grid">
+      <div class="field col-12 md:col-6">
+        <app-label description="Nome" [abstractControl]="getField('name')"></app-label>
+        <input type="text" pInputText id="name" inputId="name" formControlName="name" fluid placeholder="Digite o nome da classe" autocomplete="off">
+        <p-message [severity]="severityName" size="small" class="my-2">{{getDescriptionMessage()}}</p-message>
+      </div>
+    </div>
+  </form>
+}
