@@ -37,7 +37,7 @@ export class BirthDateDialogComponent implements OnInit {
     private messageService: MessageService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
-    this.entities = this.config.data.entities.filter((x: any) => x.birthday != null).map((x: any) => x = { name: x.name, birthday: new Date(x.birthday) });
+    this.entities = this.config.data.entities.filter((x: any) => x.birthDate != null).map((x: any) => x = { name: x.name, birthDate: new Date(x.birthDate) });
   }
   //#endregion
 
@@ -108,7 +108,7 @@ export class BirthDateDialogComponent implements OnInit {
    */
   public filterEntities(): void {
     let month: number = this.form.get('month')?.value.id;
-    this.filteredValues = this.entities.filter(x => new Date(x.birthday).getMonth() == month);
+    this.filteredValues = this.entities.filter(x => new Date(x.birthDate).getMonth() == month);
   }
 
   /**
