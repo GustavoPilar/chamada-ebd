@@ -3,13 +3,12 @@
     <div class="grid">
       <div class="field col-12 md:col-6">
         <app-label description="Esposo" [abstractControl]="getField('husband')"></app-label>
-        <p-select [options]="members" dataKey="name" optionLabel="name" formControlName="husband" fluid filter></p-select>
+        <p-select [options]="members" dataKey="name" optionLabel="name" formControlName="husband" fluid filter editable></p-select>
       </div>
       <div class="field col-12 md:col-6">
         <app-label description="Esposa" [abstractControl]="getField('wife')"></app-label>
-        <p-select [options]="members" dataKey="name" optionLabel="name" formControlName="wife" fluid filter></p-select>
+        <p-select [options]="members" dataKey="name" optionLabel="name" formControlName="wife" fluid filter editable></p-select>
       </div>
-
       <div class="field col-12 md:col-6">
         <app-label description="Data de casamento" [abstractControl]="getField('weedingDateTime')"></app-label>
         <p-datePicker id="weedingDateTime" inputId="weedingDateTime" formControlName="weedingDateTime" dateFormat="dd/mm/yy" fluid showIcon="true" showClear="true" placeholder="Selecione a data de nascimento" (onSelect)="onChangeWeedingDate($event)" (onClear)="onChangeWeedingDate($event)"></p-datePicker>

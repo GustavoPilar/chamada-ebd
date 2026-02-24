@@ -120,15 +120,17 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
 
   public prepareEntityToSave(): any {
     let entity = this.entityForm.value;
-    entity.id = this.selectedEntity.id;
     return entity;
   }
 
   public save(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        if (this.selectedEntity.id > 0) {
-          this.crudManager.updateEntity(this.prepareEntityToSave()).then((result: any) => {
+        let entity: any = this.prepareEntityToSave();
+        entity.id = this.selectedEntity.id;
+
+        if (entity.id > 0) {
+          this.crudManager.updateEntity(entity).then((result: any) => {
             if (result) {
               resolve(result);
             }
@@ -137,7 +139,7 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
           });
         }
         else {
-          this.crudManager.createEntity(this.prepareEntityToSave()).then((result: any) => {
+          this.crudManager.createEntity(entity).then((result: any) => {
             if (result) {
               resolve(result);
             }

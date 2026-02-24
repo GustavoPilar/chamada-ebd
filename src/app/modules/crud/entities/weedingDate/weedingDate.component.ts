@@ -80,6 +80,22 @@ export class WeedingDateComponent extends CrudBaseComponent implements OnInit {
       this.loadMembers()
     ]);
   }
+
+  public override prepareEntityToSave(): any {
+    let entity = this.entityForm.value;
+
+    if (typeof(entity.husband) == "string") {
+      let husbandName: string = entity.husband;
+      entity.husband = { id: 0, name: husbandName }
+    }
+
+    if (typeof(entity.wife) == "string") {
+      let wifeName: string = entity.wife;
+      entity.wife = { id: 0, name: wifeName }
+    }
+
+    return entity;
+  }
   //#endregion
 
   //#region OnChange
