@@ -1,0 +1,14 @@
+@if (isForm && selectedEntity) {
+  <form [formGroup]="entityForm">
+    <div class="grid">
+      <div class="field col-12 md:col-6">
+        <app-label description="Membro" [abstractControl]="getField('member')"></app-label>
+        <p-select [options]="members" dataKey="name" optionLabel="name" formControlName="member" fluid filter></p-select>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Classe" [abstractControl]="getField('class')"></app-label>
+        <p-select [options]="classes" dataKey="id" optionLabel="name" formControlName="class" fluid filter></p-select>
+      </div>
+    </div>
+  </form>
+}

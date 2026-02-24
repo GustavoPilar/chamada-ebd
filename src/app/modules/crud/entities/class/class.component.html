@@ -4,7 +4,10 @@
       <div class="field col-12 md:col-6">
         <app-label description="Nome" [abstractControl]="getField('name')"></app-label>
         <input type="text" pInputText id="name" inputId="name" formControlName="name" fluid placeholder="Digite o nome da classe" autocomplete="off">
-        <p-message [severity]="severityName" size="small" class="my-2">{{getDescriptionMessage()}}</p-message>
+      </div>
+      <div class="field col-12 md:col-6">
+        <app-label description="Descrição" [abstractControl]="getField('description')"></app-label>
+        <input type="text" pInputText id="description" inputId="description" formControlName="description" fluid placeholder="Digite a descrição da classe" autocomplete="off">
       </div>
     </div>
   </form>

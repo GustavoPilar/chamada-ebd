@@ -40,12 +40,18 @@ export class CrudComponent implements OnInit {
         target: "weedingDate",
         title: "Cadastre ou remova aniversários de casamento"
       },
-      // {
-      //   label: "Classes",
-      //   icon: PrimeIcons.OBJECTS_COLUMN,
-      //   target: "class",
-      //   title: "Cadastre ou remova classes da EBD"
-      // }
+      {
+        label: "Classes",
+        icon: PrimeIcons.OBJECTS_COLUMN,
+        target: "class",
+        title: "Cadastre ou remova classes da EBD"
+      },
+      {
+        label: "Professor",
+        icon: PrimeIcons.ID_CARD,
+        target: "teacher",
+        title: "Cadastre ou remova professores da EBD"
+      }
     ]
   }
 

@@ -14,12 +14,9 @@ import { PrimeIcons } from "primeng/api";
   templateUrl: "./class.component.html",
   standalone: false
 })
-export class classComponent extends CrudBaseComponent implements OnInit {
+export class ClassComponent extends CrudBaseComponent implements OnInit {
 
   //#region Fields
-  public classes!: any[];
-  public validating: boolean = false;
-  public severityName: "error" | "success"  = "error";
   //#endregion
 
   //#region Constructor
@@ -41,7 +38,10 @@ export class classComponent extends CrudBaseComponent implements OnInit {
   public override getDisplayColumns(): DisplayColumn[] {
     return [
       {
-        field: "name", label: "Nome", displayColumnType: DisplayColumnType.TEXT
+        field: "name", label: "Nome", displayColumnType: DisplayColumnType.TEXT,
+      },
+      {
+        field: "description", label: "Descrição", displayColumnType: DisplayColumnType.TEXT,
       }
     ];
   }
@@ -56,72 +56,14 @@ export class classComponent extends CrudBaseComponent implements OnInit {
         this.selectedEntity?.name ?? null,
         Validators.required
       ],
-      validateName: [
-        false,
-        [
-          Validators.required,
-          Validators.requiredTrue
-        ]
+      description: [
+        this.selectedEntity?.description ?? null,
+        Validators.required
       ]
     });
-  }
-
-  public override loadResources(): Promise<any> {
-    return Promise.all([
-      this.loadClasses()
-    ]);
-  }
-  //#endregion
-
-  //#region utils
-  public validateName(): void {
-    this.validating = true;
-    let name: string = this.entityForm.get("name")?.value;
-    let classesName: string[] = this.classes.map((x: any) => x.name.toLocaleLowerCase());
-
-    if (name == null || classesName.includes(name.toLocaleLowerCase())) {
-      this.entityForm.get("name")?.setValue(null);
-      this.validating = false;
-      return
-    }
-
-    this.entityForm.get("validateName")?.setValue(true);
-    this.validating = false;
-  }
-
-  public getDescriptionMessage(): string {
-    let name: string = this.entityForm.get("name")?.value?.trim();
-    let classesName: string[] = this.classes.map((x: any) => x.name.toLocaleLowerCase());
-
-    if (name == null || name == "" || classesName.includes(name.toLocaleLowerCase())) {
-      this.entityForm.get("validateName")?.setValue(false);
-      this.severityName = "error";
-      return "Nome inválido";
-    }
-
-    this.entityForm.get("validateName")?.setValue(true);
-    this.severityName = "success";
-    return `${name} é valido`;
   }
   //#endregion
 
   //#region Resources
-  public loadClasses(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        this.apiService.getEntities("class").then((result: any) => {
-          if (result) {
-            this.classes = result;
-            resolve(result);
-          }
-        }, (error) => {
-          reject(error);
-        });
-      } catch (error) {
-        console.log(error);
-        reject(error);
-      }
-    });
-  }
   //#endregion
 }
