@@ -1,13 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { CrudBaseComponent } from "../../base/crud-base";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DialogService } from "primeng/dynamicdialog";
+import { DialogService, DynamicDialog, DynamicDialogRef } from "primeng/dynamicdialog";
 import { DisplayColumn } from "../../../../models/crud/display-column";
 import { DisplayColumnType } from "../../../../models/crud/display-column-type";
 import { TypeDescription } from "../../../../models/crud/type-description";
 import { ApiService } from "../../../../services/api-service/api.service";
 import { CrudManager } from "../../base/crud-manager.service";
 import { PrimeIcons } from "primeng/api";
+import { TransferClassDialogComponent } from "./transfer-class-dialog/transfer-class-dialog.component";
 
 @Component({
   selector: "app-class",
@@ -17,6 +18,17 @@ import { PrimeIcons } from "primeng/api";
 export class ClassComponent extends CrudBaseComponent implements OnInit {
 
   //#region Fields
+  public students!: any[];
+  public studentColumns!: DisplayColumn[];
+
+  public teachers!: any[];
+  public teacherColumns!: DisplayColumn[];
+
+  public members!: any[];
+  public columns!: DisplayColumn[];
+
+  public transferClassDialog!: DynamicDialogRef<TransferClassDialogComponent> | null;
+  public isTeacher!: boolean;
   //#endregion
 
   //#region Constructor
@@ -30,6 +42,8 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
 
   //#region OnInit
   public override ngOnInit(): void {
+    this.intializeColumns();
+
     super.ngOnInit();
   }
   //#endregion
@@ -62,8 +76,118 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
       ]
     });
   }
+
+  public override loadResources(): Promise<any> {
+    return Promise.all([
+      this.loadMembersByClass(),
+      this.loadTeacherByClass()
+    ]);
+  }
   //#endregion
 
   //#region Resources
+  public loadMembersByClass(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        if (this.entityId == 0) {
+          resolve([]);
+        }
+        else {
+          this.apiService.getEntities(`member/byClass/${this.entityId}`).then((result: any) => {
+            if (result) {
+              this.students = result;
+              this.members = result;
+              resolve(result);
+            }
+          }, (error: any) => {
+            console.log(error);
+            reject(error);
+          })
+        }
+      }
+      catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+
+  public loadTeacherByClass(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      try {
+        if (this.entityId == 0) {
+          resolve([]);
+        }
+        else {
+          this.apiService.getEntities(`teacher/byClass/${this.entityId}`).then((result: any) => {
+            if (result) {
+              this.teachers = result.map((x: any) => x.member);
+              resolve(result);
+            }
+          }, (error: any) => {
+            console.log(error);
+            reject(error);
+          })
+        }
+      }
+      catch (error) {
+        console.log(error);
+        reject(error);
+      }
+    })
+  }
+  //#endregion
+
+  //#region Members()
+
+  public onChangeMembers(members: any[], columns: DisplayColumn[]): void {
+    this.members = members;
+    this.columns = columns;
+    this.isTeacher = !this.isTeacher;
+  }
+
+  public intializeColumns(): void {
+    this.studentColumns = [
+      { field: "name", label: "Aluno", displayColumnType: DisplayColumnType.TEXT },
+      { field: "age", label: "Idade", displayColumnType: DisplayColumnType.NUMERIC }
+    ];
+
+    this.teacherColumns = [
+      { field: "name", label: "Professor", displayColumnType: DisplayColumnType.OBJECT }
+    ];
+
+    this.columns = this.studentColumns;
+    this.isTeacher = false;
+  }
+
+  public getValue(entity: any, column: DisplayColumn): string {
+    if (column.displayColumnType == DisplayColumnType.OBJECT) {
+      let fields: string[] = column.field.split(".");
+      let currentValue: any = entity;
+
+      fields.forEach((field: string) => {
+        currentValue = currentValue[field];
+      });
+
+      return currentValue;
+    }
+
+    return entity[column.field]
+  }
+
+  public openTransferClassDialog(): void {
+    this.transferClassDialog = this.dialogService.open(TransferClassDialogComponent, {
+      data: {
+        entities: this.members,
+        currentClass: this.selectedEntity,
+        isTeacher: this.isTeacher
+      },
+      styleClass: "md:w-auto w-11 h-full overflow-visible",
+      header: "Tranferência de sala",
+      closable: true,
+      closeOnEscape: false,
+      draggable: false,
+    });
+  }
   //#endregion
 }

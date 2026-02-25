@@ -1,0 +1,30 @@
+<div class="fluid">
+  @if (form) {
+    <form [formGroup]="form">
+      <div class="grid">
+        <div class="field col-12 col-6">
+          <app-label description="Membro" [abstractControl]="getField('member')"></app-label>
+          <p-select [options]="members" optionLabel="name" formControlName="member" fluid placeholder="Selecione o membro para o remanejamento"></p-select>
+        </div>
+        <div class="field col-12 col-6">
+          <app-label description="Classe atual" [abstractControl]="getField('currentClass')"></app-label>
+          <!-- <input type="text" pInputText id="currentClass" inputId="currentClass" formControlName="currentClass" fluid placeholder="Classe atual" [disabled]="true"> -->
+          <div class="bg-gray-200 p-2 border-round">
+            {{this.currentClass.name}}
+          </div>
+        </div>
+        <div class="field col-12 col-6">
+          <app-label description="Remanejar para" [abstractControl]="getField('redeploy')"></app-label>
+          <p-select [options]="classes" optionLabel="name" formControlName="redeploy" fluid placeholder="Selecione a classe desejada"></p-select>
+        </div>
+      </div>
+    </form>
+  }
+
+  <div class="fluid">
+    <div class="flex justify-content-between center align-items-center">
+      <p-button label="Voltar" icon="pi pi-undo" variant="text" size="small"></p-button>
+      <p-button label="Remanejar" icon="pi pi-send" size="small"></p-button>
+    </div>
+  </div>
+</div>

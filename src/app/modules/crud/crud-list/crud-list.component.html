@@ -2,7 +2,7 @@
 <p-confirmDialog></p-confirmDialog>
 
 @if (crudBaseComponent) {
-  <p-table [value]="crudBaseComponent.entities" [sortField]="crudBaseComponent.getDisplayColumns()[0].field" [sortOrder]="1" [columns]="crudBaseComponent.getDisplayColumns()" size="small" stripedRows="true" rowHover="true" selectionMode="multiple" [(selection)]="crudBaseComponent.selectedEntities" dataKey="id" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20, 50, 100, 200]" [selectionPageOnly]="true">
+  <p-table [value]="crudBaseComponent.entities" [sortField]="crudBaseComponent.getDisplayColumns()[0].field" [sortOrder]="1" [columns]="crudBaseComponent.getDisplayColumns()" size="small" stripedRows="true" rowHover="true" selectionMode="multiple" [(selection)]="crudBaseComponent.selectedEntities" dataKey="id" paginator [rows]="10" [rowsPerPageOptions]="[5, 10, 20, 50, 100, 200]" [selectionPageOnly]="true">
     <ng-template #caption>
       <p-toolbar>
         <ng-template #start>
