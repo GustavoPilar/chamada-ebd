@@ -7,7 +7,7 @@ import { DisplayColumnType } from "../../../../models/crud/display-column-type";
 import { TypeDescription } from "../../../../models/crud/type-description";
 import { ApiService } from "../../../../services/api-service/api.service";
 import { CrudManager } from "../../base/crud-manager.service";
-import { PrimeIcons } from "primeng/api";
+import { MessageService, PrimeIcons } from "primeng/api";
 import { TransferClassDialogComponent } from "./transfer-class-dialog/transfer-class-dialog.component";
 
 @Component({
@@ -35,8 +35,9 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
   constructor(public override crudManager: CrudManager,
     protected override apiService: ApiService,
     protected override formBuilder: FormBuilder,
-    protected override dialogService: DialogService) {
-    super(crudManager, apiService, formBuilder, dialogService);
+    protected override dialogService: DialogService,
+    protected override messageService: MessageService) {
+    super(crudManager, apiService, formBuilder, dialogService, messageService);
   }
   //#endregion
 
@@ -121,7 +122,7 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
         else {
           this.apiService.getEntities(`teacher/byClass/${this.entityId}`).then((result: any) => {
             if (result) {
-              this.teachers = result.map((x: any) => x.member);
+              this.teachers = result;
               resolve(result);
             }
           }, (error: any) => {
@@ -153,7 +154,7 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
     ];
 
     this.teacherColumns = [
-      { field: "name", label: "Professor", displayColumnType: DisplayColumnType.OBJECT }
+      { field: "member.name", label: "Professor", displayColumnType: DisplayColumnType.OBJECT }
     ];
 
     this.columns = this.studentColumns;
@@ -182,11 +183,44 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
         currentClass: this.selectedEntity,
         isTeacher: this.isTeacher
       },
-      styleClass: "md:w-auto w-11 h-full overflow-visible",
+      styleClass: "md:w-auto w-11 h-full flex flex-column",
       header: "Tranferência de sala",
+      position: "top",
       closable: true,
       closeOnEscape: false,
       draggable: false,
+    });
+
+    this.transferClassDialog?.onClose.subscribe({
+      next: (result: any) => {
+        if (result) {
+          if (this.isTeacher) {
+            this.teachers = this.teachers.filter((x: any) => x.id != result.id);
+            this.members = this.teachers;
+          }
+          else {
+            this.students = this.students.filter((x: any) => x.id != result.id);
+            this.members = this.students;
+          }
+
+          this.messageService.add({
+            summary: `${this.isTeacher ? "Professor" : "Aluno"} remanejado!`,
+            detail: `${result.name} foi remanjado para ${result.class.name}`,
+            life: 3000,
+            severity: "success",
+            closable: true
+          });
+        }
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.messageService.add({
+          summary: "Erro!",
+          detail: "Um erro inesperado ocorreu: " + error.message,
+          life: 3000,
+          severity: "error"
+        });
+      }
     });
   }
   //#endregion

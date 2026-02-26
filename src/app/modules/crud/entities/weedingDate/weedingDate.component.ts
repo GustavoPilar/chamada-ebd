@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { CrudBaseComponent } from "../../base/crud-base";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { PrimeIcons } from "primeng/api";
+import { MessageService, PrimeIcons } from "primeng/api";
 import { DialogService } from "primeng/dynamicdialog";
 import { DisplayColumn } from "../../../../models/crud/display-column";
 import { DisplayColumnType } from "../../../../models/crud/display-column-type";
@@ -25,8 +25,9 @@ export class WeedingDateComponent extends CrudBaseComponent implements OnInit {
   constructor(public override crudManager: CrudManager,
     protected override apiService: ApiService,
     protected override formBuilder: FormBuilder,
-    protected override dialogService: DialogService) {
-    super(crudManager, apiService, formBuilder, dialogService);
+    protected override dialogService: DialogService,
+    protected override messageService: MessageService) {
+    super(crudManager, apiService, formBuilder, dialogService, messageService);
   }
   //#endregion
 
@@ -84,12 +85,12 @@ export class WeedingDateComponent extends CrudBaseComponent implements OnInit {
   public override prepareEntityToSave(): any {
     let entity = this.entityForm.value;
 
-    if (typeof(entity.husband) == "string") {
+    if (typeof (entity.husband) == "string") {
       let husbandName: string = entity.husband;
       entity.husband = { id: 0, name: husbandName }
     }
 
-    if (typeof(entity.wife) == "string") {
+    if (typeof (entity.wife) == "string") {
       let wifeName: string = entity.wife;
       entity.wife = { id: 0, name: wifeName }
     }

@@ -6,6 +6,7 @@ import { CrudManager } from "./crud-manager.service";
 import { SpecialOption } from "../../../models/crud/special-option";
 import { DialogService } from "primeng/dynamicdialog";
 import { ApiService } from "../../../services/api-service/api.service";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-crud-base",
@@ -35,7 +36,8 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
   constructor(public crudManager: CrudManager,
     protected apiService: ApiService,
     protected formBuilder: FormBuilder,
-    protected dialogService: DialogService) {
+    protected dialogService: DialogService,
+    protected messageService: MessageService) {
 
   }
   //#endregion
