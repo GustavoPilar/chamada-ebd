@@ -1,0 +1,20 @@
+<div class="fluid flex flex-column h-full">
+  @if (form) {
+    <form [formGroup]="form" style="flex: 1">
+      <div class="grid">
+        <div class="field col-12">
+          <app-label description="Membro" [abstractControl]="getField('member')"></app-label>
+          <p-select [options]="members" optionLabel="name" formControlName="member" fluid placeholder="Selecione um membro"></p-select>
+        </div>
+      </div>
+    </form>
+  }
+
+  <div class="fluid">
+    <div class="flex justify-content-between align-items-center">
+      <p-button size="small" variant="text" label="Voltar" icon="pi pi-undo" iconPos="right" severity="danger"></p-button>
+      <p-button size="small" label="Adicionar" icon="pi pi-send" severity="success"></p-button>
+    </div>
+  </div>
+
+</div>

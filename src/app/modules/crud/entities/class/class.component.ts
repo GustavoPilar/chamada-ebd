@@ -9,6 +9,7 @@ import { ApiService } from "../../../../services/api-service/api.service";
 import { CrudManager } from "../../base/crud-manager.service";
 import { MessageService, PrimeIcons } from "primeng/api";
 import { TransferClassDialogComponent } from "./transfer-class-dialog/transfer-class-dialog.component";
+import { AddMemberClassDialogComponent } from "./add-member-class-dialog/add-member-class-dialog.component";
 
 @Component({
   selector: "app-class",
@@ -27,6 +28,7 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
   public members!: any[];
   public columns!: DisplayColumn[];
 
+  public addMemberClassDialog!: DynamicDialogRef<AddMemberClassDialogComponent> | null;
   public transferClassDialog!: DynamicDialogRef<TransferClassDialogComponent> | null;
   public isTeacher!: boolean;
   //#endregion
@@ -83,6 +85,24 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
       this.loadMembersByClass(),
       this.loadTeacherByClass()
     ]);
+  }
+
+  public override beforeDelete(): { canDelete: boolean; errorMessage: string; } {
+    let classNames: string[] = this.selectedEntities.map((x: any) => x.name);
+
+    if (classNames.includes("SEM CLASSE")) {
+      return { canDelete: false, errorMessage: "Não pode excluir a classe 'SEM CLASSE'." }
+    }
+
+    return super.beforeDelete();
+  }
+
+  public override canSave(): boolean {
+    if (this.selectedEntity?.name == "SEM CLASSE") {
+      return false;
+    }
+
+    return super.canSave();
   }
   //#endregion
 
@@ -141,10 +161,17 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
 
   //#region Members()
 
-  public onChangeMembers(members: any[], columns: DisplayColumn[]): void {
-    this.members = members;
-    this.columns = columns;
-    this.isTeacher = !this.isTeacher;
+  public onChangeMembers(event: any): void {
+    this.isTeacher = event.checked;
+
+    if (event.checked) {
+      this.members = this.teachers;
+      this.columns = this.teacherColumns;
+    }
+    else {
+      this.members = this.students;
+      this.columns = this.studentColumns;
+    }
   }
 
   public intializeColumns(): void {
@@ -210,6 +237,36 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
             severity: "success",
             closable: true
           });
+        }
+      },
+      error: (error: any) => {
+        console.log(error);
+        this.messageService.add({
+          summary: "Erro!",
+          detail: "Um erro inesperado ocorreu: " + error.message,
+          life: 3000,
+          severity: "error"
+        });
+      }
+    });
+  }
+
+  public openAddMemberClassDialog(): void {
+    this.addMemberClassDialog = this.dialogService.open(AddMemberClassDialogComponent, {
+      data: {
+        currentClass: this.selectedEntity
+      },
+      styleClass: "md:w-6 w-11 h-full flex flex-column",
+      header: "Adicionar " + this.isTeacher ? "professor" : "Aluno",
+      position: "center",
+      closable: true,
+      closeOnEscape: false,
+      draggable: false,
+    });
+
+    this.addMemberClassDialog?.onClose.subscribe({
+      next: (result: any) => {
+        if (result) {
         }
       },
       error: (error: any) => {

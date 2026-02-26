@@ -17,10 +17,10 @@
       <ng-template #caption>
         <p-toolbar>
           <ng-template #start>
-            <p-button size="small" severity="info" label="Alunos" (onClick)="onChangeMembers(students, studentColumns)" [disabled]="!isTeacher"></p-button>
+            <p-button size="small" severity="info" icon="pi pi-plus" (onClick)="openAddMemberClassDialog()"></p-button>
           </ng-template>
           <ng-template #end>
-            <p-button size="small" severity="help" label="Professores" (onClick)="onChangeMembers(teachers, teacherColumns)" [disabled]="isTeacher"></p-button>
+            <p-toggleButton fluid onLabel="Professor" offLabel="Alunos" (onChange)="onChangeMembers($event)"></p-toggleButton>
           </ng-template>
         </p-toolbar>
       </ng-template>

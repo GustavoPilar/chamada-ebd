@@ -159,26 +159,44 @@ export abstract class CrudBaseComponent implements OnInit, AfterViewInit {
   public deleteEntities(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       try {
-        this.crudManager.deleteEntities(this.selectedEntities.map(x => x.id)).then((result: any) => {
-          if (result) {
-            this.selectedEntities = [];
-            this.crudManager.getEntities().then((entities: any) => {
-              if (entities) {
-                this.entities = entities;
-                resolve(entities);
-              }
-            }, (error) => {
-              reject(error);
-            });
-          }
-        }, (error) => {
-          reject(error);
-        })
+        let result = this.beforeDelete();
+
+        if (result.canDelete) {
+          this.crudManager.deleteEntities(this.selectedEntities.map(x => x.id)).then((result: any) => {
+            if (result) {
+              this.selectedEntities = [];
+              this.crudManager.getEntities().then((entities: any) => {
+                if (entities) {
+                  this.entities = entities;
+                  resolve(entities);
+                }
+              }, (error) => {
+                reject(error);
+              });
+            }
+          }, (error) => {
+            reject(error);
+          });
+        }
+        else {
+          this.messageService.add({
+            summary: "Erro!",
+            detail: result.errorMessage,
+            life: 3000,
+            closable: true,
+            severity: "error"
+          });
+        }
+
       } catch (error) {
         console.log(error);
         reject(error);
       }
     })
+  }
+
+  public beforeDelete(): { canDelete: boolean, errorMessage: string } {
+    return { canDelete: true, errorMessage: "" }
   }
   //#endregion
 }

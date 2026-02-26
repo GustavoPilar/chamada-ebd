@@ -38,6 +38,7 @@ import { MessageModule } from 'primeng/message';
 import { BirthDateDialogComponent } from "./entities/member/birth-date-dialog/birth-date-dialog.component";
 import { TeacherComponent } from "./entities/teacher/teacher.component";
 import { TransferClassDialogComponent } from "./entities/class/transfer-class-dialog/transfer-class-dialog.component";
+import { AddMemberClassDialogComponent } from "./entities/class/add-member-class-dialog/add-member-class-dialog.component";
 
 @NgModule({
   declarations: [
@@ -47,10 +48,13 @@ import { TransferClassDialogComponent } from "./entities/class/transfer-class-di
     CrudFormManagerComponent,
     CrudFormComponent,
 
+    // Others
     LabelComponent,
     BirthDateDialogComponent,
     TransferClassDialogComponent,
+    AddMemberClassDialogComponent,
 
+    // Entities
     MemberComponent,
     WeedingDateComponent,
     ClassComponent,
