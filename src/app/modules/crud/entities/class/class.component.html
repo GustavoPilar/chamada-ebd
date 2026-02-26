@@ -40,18 +40,18 @@
       </ng-template>
       <ng-template #emptymessage let-columns>
         <tr>
-          <td [colSpan]="columns.length">Nenhum resultado foi encontrado</td>
+          <td [colSpan]="columns?.length">Nenhum resultado foi encontrado</td>
         </tr>
       </ng-template>
       <ng-template #footer let-columns>
         <tr>
-          <td [colSpan]="columns.length">
+          <td [colSpan]="columns?.length">
             <p-toolbar>
               <ng-template #start>
                 <p-button severity="warn" label="Remanejar" (onClick)="openTransferClassDialog()" size="small"></p-button>
               </ng-template>
               <ng-template #end>
-                Total de {{isTeacher ? "professores" : "alunos"}}: {{members.length}}
+                Total de {{isTeacher ? "professores" : "alunos"}}: {{members?.length}}
               </ng-template>
             </p-toolbar>
           </td>
