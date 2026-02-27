@@ -21,6 +21,8 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
 
   //#region Fields
   public classes!: any[];
+  public showInformation: boolean = false;
+  public classRoute!: string;
 
   public birthDateDialog!: DynamicDialogRef<BirthDateDialogComponent> | null;
   //#endregion
@@ -63,6 +65,10 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
       birthDate = null;
     }
 
+    if (this.selectedEntity.class) {
+      this.classRoute = `/manager/edit/class/${this.selectedEntity.class.id}`;
+    }
+
     return this.formBuilder.group({
       name: [
         this.selectedEntity?.name ?? null,
@@ -79,9 +85,8 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
         Validators.required
       ],
       class: [
-        this.selectedEntity?.class ?? null,
-        Validators.required
-      ],
+        this.selectedEntity?.class ?? null
+      ]
     })
   }
 
@@ -98,6 +103,17 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
         buttonAction: () => this.openBirthDateDialog()
       }
     ]
+  }
+
+  public override prepareEntityToSave(): any {
+    let entity = this.entityForm.value;
+
+    if (entity.class == null) {
+      let index: number = this.classes.findIndex((x: any) => x.name == "SEM CLASSE");
+      entity.class = this.classes[index];
+    }
+
+    return entity;
   }
   //#endregion
 
@@ -116,6 +132,11 @@ export class MemberComponent extends CrudBaseComponent implements OnInit {
     }
 
     this.entityForm.get('age')?.setValue(age);
+  }
+
+  public informationMessage(): void {
+    if (!this.showInformation)
+      this.showInformation = true;
   }
   //#endregion
 

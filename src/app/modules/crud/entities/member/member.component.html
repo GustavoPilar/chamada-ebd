@@ -21,8 +21,9 @@
         <p-inputNumber id="age" inputId="age" formControlName="age" fluid showButtons="true" [min]="0" showClear="false" placeholder="Digite a idade" [disabled]="true"></p-inputNumber>
       </div>
       <div class="field col-12 md:col-6">
-        <app-label description="Classe" [abstractControl]="getField('class')"></app-label>
-        <p-select [options]="classes" dataKey="name" optionLabel="name" formControlName="class" fluid></p-select>
+        <i class="pi pi-question-circle text-blue-500 cursor-pointer" [hidden]="entityId == 0" (click)="informationMessage()"></i> <app-label description="Classe" [abstractControl]="getField('class')"></app-label>
+        <p-select [options]="classes" dataKey="name" optionLabel="name" formControlName="class" fluid [disabled]="entityId > 0"></p-select>
+        <p-message size="small" severity="info" class="my-2" [hidden]="!showInformation">Para atualizar a classe, use o cadastro da classe <a [routerLink]="classRoute" class="underline">{{this.selectedEntity?.class?.name}}</a>.</p-message>
       </div>
     </div>
   </form>
