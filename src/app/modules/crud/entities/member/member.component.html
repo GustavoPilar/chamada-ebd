@@ -1,30 +1,26 @@
-@if (isForm && selectedEntity) {
-  <form [formGroup]="entityForm">
-    <div class="grid">
-      <div class="field col-12 md:col-6">
-        <app-label description="Nome" [abstractControl]="getField('name')"></app-label>
-        <p-iconField>
-          <input type="text" pInputText id="name" formControlName="name" fluid placeholder="Digite o nome"/>
-          <p-inputIcon class="pi pi-user"></p-inputIcon>
-        </p-iconField>
-      </div>
-      <div class="field col-12 md:col-6">
-        <app-label description="Status" [abstractControl]="getField('status')"></app-label>
-        <p-toggleButton id="status" formControlName="status" onLabel="Ativo" offLabel="Inativo" fluid></p-toggleButton>
-      </div>
-      <div class="field col-12 md:col-6">
-        <app-label description="Data de nascimento" [abstractControl]="getField('birthDate')"></app-label>
-        <p-datePicker id="birthDate" inputId="birthDate" formControlName="birthDate" dateFormat="dd/mm/yy" fluid showIcon="true" showClear="true" placeholder="Selecione a data de nascimento" (onSelect)="onChangeBirthDate($event)" (onClear)="onChangeBirthDate($event)"></p-datePicker>
-      </div>
-      <div class="field col-12 md:col-6">
-        <app-label description="Idade" [abstractControl]="getField('age')"></app-label>
-        <p-inputNumber id="age" inputId="age" formControlName="age" fluid showButtons="true" [min]="0" showClear="false" placeholder="Digite a idade" [disabled]="true"></p-inputNumber>
-      </div>
-      <div class="field col-12 md:col-6">
-        <i class="pi pi-question-circle text-blue-500 cursor-pointer" [hidden]="entityId == 0" (click)="informationMessage()"></i> <app-label description="Classe" [abstractControl]="getField('class')"></app-label>
-        <p-select [options]="classes" dataKey="name" optionLabel="name" formControlName="class" fluid [disabled]="entityId > 0"></p-select>
-        <p-message size="small" severity="info" class="my-2" [hidden]="!showInformation">Para atualizar a classe, use o cadastro da classe <a [routerLink]="classRoute" class="underline">{{this.selectedEntity?.class?.name}}</a>.</p-message>
-      </div>
-    </div>
-  </form>
+@if(isForm && form) {
+    <form [formGroup]="form">
+        <div class="grid p-2">
+            <div class="field col-12 md:col-6">
+                <app-label description="Nome" [abstractControl]="getField('name')"></app-label>
+                <input type="text" pInputText id="name" formControlName="name" placeholder="Digite o nome do membro" fluid>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Status?" [abstractControl]="getField('isActive')"></app-label>
+                <p-toggleButton formControlName="isActive" onLabel="Ativo" offLabel="Inátivo" [onIcon]="'pi pi-check'" [offIcon]="'pi pi-times'" iconPos="right" fluid></p-toggleButton>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Gênero" [abstractControl]="getField('isMale')"></app-label>
+                <p-toggleButton formControlName="isMale" onLabel="Homem" offLabel="Mulher" [onIcon]="'pi pi-mars'" [offIcon]="'pi pi-venus'" iconPos="right" fluid></p-toggleButton>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Data de nascimento" [abstractControl]="getField('birthDate')"></app-label>
+                <p-datepicker formControlName="birthDate" [maxDate]="currentDate" showClear fluid (onSelect)="onChangeBirthDate($event)" (onClear)="onClearBirthDate()"></p-datepicker>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Idade" [abstractControl]="getField('age')"></app-label>
+                <p-inputNumber id="age" formControlName="age" placeholder="Digite a idade" fluid [disabled]="true"></p-inputNumber>
+            </div>
+        </div>
+    </form>
 }

@@ -1,57 +1,59 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Member, WeddingDate } from "../../../../../models/entities";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { ApiService } from "../../../../../services/api-service/api.service";
+import { NgxSpinnerService } from "ngx-spinner";
+import { Observable } from "rxjs";
+import { ApiService } from "../../../../../services/communication/api.service";
 import { MessageService } from "primeng/api";
-import { DisplayColumn } from "../../../../../models/crud/display-column";
-import { DisplayColumnType } from "../../../../../models/crud/display-column-type";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { DisplayColumn } from "../../../../../models/utils/display-column";
+import { DisplayColumnTypeEnum } from "../../../../../models/utils/display-column-type";
+
+export class Month {
+  id!: number;
+  name!: string;
+}
 
 @Component({
   selector: "app-birth-date-dialog",
-  templateUrl: "./birth-date-dialog.component.html",
-  standalone: false
+  standalone: false,
+  templateUrl: "./birth-date-dialog.component.html"
 })
 export class BirthDateDialogComponent implements OnInit {
 
   //#region Fields
-  public entities!: any[];
-  public weedings!: any[];
-  public filteredValues!: any[];
 
+  /** Lista de membros */
+  public members: Member[];
+
+  /** Lista de casamentos */
+  public weddingDates!: WeddingDate[];
+
+  /** Lista das entidades filtradas */
+  public entitiesFiltered!: any[];
+
+  /** Meses */
+  public months!: Month[];
+
+  /** Mês selecionado */
+  public monthSelected!: Month;
+
+  /** Formulário */
   public form!: FormGroup;
-  public months!: any[];
-  public options: any[] = [
-    { id: 0, label: "Individual" },
-    { id: 1, label: "Casamento" }
-  ];
-  public selectedType: any = this.options[0];
-  public alreadyLoad: boolean = false;
-  public displayColumns!: DisplayColumn[]
+
   //#endregion
 
   //#region Constructor
   constructor(private config: DynamicDialogConfig,
     private viewRef: DynamicDialogRef,
-    private formBuilder: FormBuilder,
     private apiService: ApiService,
+    private loaderService: NgxSpinnerService,
     private messageService: MessageService,
-    private changeDetectorRef: ChangeDetectorRef
+    private formBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {
-    this.entities = this.config.data.entities.filter((x: any) => x.birthDate != null).map((x: any) => x = { name: x.name, birthDate: new Date(x.birthDate) });
-  }
-  //#endregion
+    let data = this.config.data;
 
-  //#endregion OnInit
-  public ngOnInit(): void {
-    this.initNameMonths();
-    this.initForm();
-    this.getColumns();
-    this.filterEntities();
-  }
-  //#endregion
-
-  //#region Resources
-  public initNameMonths(): void {
     this.months = [
       { id: 0, name: "Janeiro" },
       { id: 1, name: "Fevereiro" },
@@ -65,229 +67,118 @@ export class BirthDateDialogComponent implements OnInit {
       { id: 9, name: "Outubro" },
       { id: 10, name: "Novembro" },
       { id: 11, name: "Dezembro" },
-    ]
+    ];
+
+    this.monthSelected = this.months[new Date().getMonth()];
+
+    this.members = data.members;
+    this.onFilterEntities(this.members, "birthDate");
+  }
+  //#endregion
+
+  //#region OnInit
+  public ngOnInit(): void {
+    this.loadMembers();
   }
   //#endregion
 
   //#region Members
-  /**
-   * @description Inicia o formulário
-   * @returns void
-   */
-  public initForm(): void {
-    let currentIndexMonth: number = this.months.findIndex(x => x.id == new Date().getMonth());
 
-    this.form = this.formBuilder.group({
-      month: [
-        this.months[currentIndexMonth],
-        Validators.required
-      ],
-      isIndividual: [
-        true,
-        Validators.required
-      ]
-    });
-  }
+  /** Carrega os aniversários de casamentos */
+  public loadMembers(): void {
+    this.loaderService.show();
 
-  /**
-   * @description Retorna o campo especificado do formulário
-   * @param field Campo do formulário
-   * @returns AbstractControl
-   */
-  public getField(field: string): AbstractControl {
-    return this.form.get(field) as AbstractControl;
-  }
-
-  //#endregion
-
-  //#region Filters
-
-  /**
-   * @description Filtra os membros
-   * @returns void
-   */
-  public filterEntities(): void {
-    let month: number = this.form.get('month')?.value.id;
-    this.filteredValues = this.entities.filter(x => new Date(x.birthDate).getMonth() == month);
-  }
-
-  /**
-   * @description Filtra os casamentos
-   * @returns void
-   */
-  public filterWeedings(): void {
-    let month: number = this.form.get('month')?.value.id;
-    this.filteredValues = this.weedings.filter(x => new Date(x.weedingDateTime).getMonth() == month);
-  }
-
-  //#endregion
-
-  //#region OnChange
-
-  /**
-   * @description Altera o valor do mês junto com as entidades
-   * @returns void
-   */
-  public onChangeMonth(): void {
-    if (this.selectedType.id == 0) {
-      this.filterEntities();
-    }
-    else {
-      this.filterWeedings();
-    }
-  }
-
-  /**
-   * @description Altera o tipo de aniversários e as entidades
-   * @param event Evento disparado
-   * @returns void
-   */
-  public onChangeType(event: any): void {
-    this.filteredValues = [];
-
-    if (event.checked) {
-      this.selectedType = this.options[0];
-      this.getColumns();
-
-      this.filterEntities();
-      this.changeDetectorRef.detectChanges();
-    }
-    else {
-      this.selectedType = this.options[1];
-      this.getColumns();
-
-      if (!this.alreadyLoad) {
-        this.loadWeedings().then((result) => {
-          if (result) {
-            this.alreadyLoad = true;
-            this.filterWeedings();
-            this.changeDetectorRef.detectChanges();
-          }
-        }, (error) => {
-          this.messageService.add({
-            summary: "Erro ao carregar",
-            detail: "Ocorreu um erro ao carregar os casamentos.\nTente novamente.",
-            life: 3000,
-            closable: true,
-            severity: "error"
-          });
-
-          this.form.get("type")?.setValue(this.options[0]);
-          this.filterEntities();
-        });
-      }
-      else {
-        this.filterWeedings();
-        this.changeDetectorRef.detectChanges();
-      }
-    }
-  }
-
-  //#endregion
-
-  //#region Utils
-
-  /**
-   * @description Altera as colunas da tabela de acordo com o tipo de aniversário escolhido
-   * @returns void
-   */
-  public getColumns(): void {
-    if (this.selectedType.id == 0) {
-      this.displayColumns = [
-        {
-          label: "Nome",
-          field: "name",
-          displayColumnType: DisplayColumnType.TEXT
-        },
-        {
-          label: "Aniversário",
-          field: "birthDate",
-          displayColumnType: DisplayColumnType.DATE
-        }
-      ]
-    }
-    else {
-      this.displayColumns = [
-        {
-          label: "Esposo",
-          field: "husband.name",
-          displayColumnType: DisplayColumnType.OBJECT
-        },
-        {
-          label: "Esposa",
-          field: "wife.name",
-          displayColumnType: DisplayColumnType.OBJECT
-        },
-        {
-          label: "Aniversário",
-          field: "weedingDateTime",
-          displayColumnType: DisplayColumnType.DATE
-        }
-      ]
-    }
-  }
-
-  /**
-   * @description Retorna o valor do campo do objeto
-   * @param entity Entidade
-   * @param columnField Campos
-   * @returns any
-   */
-  public showObejctValue(entity: any, columnField: string): any {
-    let fields: string[] = columnField.split(".");
-    let currentValue: any = entity;
-
-    fields.forEach((field: string) => {
-      currentValue = currentValue[field];
-    });
-
-    return currentValue;
-  }
-
-  /**
-   * @description Retorna o valor padrão
-   * @param value Valor
-   * @returns any
-   */
-  public showDefaultValue(value?: string): any {
-    return value;
-  }
-
-  /**
-   * @description Retorna a data em forma de string
-   * @param date Data
-   * @returns string
-   */
-  public showDateValue(date: string) {
-    return new Date(date!).toLocaleDateString("pt-BR");
-  }
-
-  //#endregion
-
-  //#region Resources
-
-  /**
-   * @description Carrega os aniversários de casamento
-   * @returns Promise
-   */
-  public loadWeedings(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        this.apiService.getEntities("weedingDate").then((result: any) => {
-          if (result) {
-            this.weedings = result;
-            resolve(result);
-          }
-        }, (error: any) => {
-          reject(error);
-        });
-      } catch (error) {
-        console.log(error);
-        reject(error);
+    this.apiService.getEntities<WeddingDate>("weddingDate").subscribe({
+      next: (result) => {
+        this.weddingDates = result.filter(x => x.weddingDateTime != null);
+        this.createForm();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: "error",
+          summary: "Erro",
+          detail: "Houve um erro durante o carregamento dos aniversários de casamento",
+          life: 3000,
+          closable: true
+        })
+      },
+      complete: () => {
+        this.loaderService.hide();
       }
     })
   }
 
-  //#endregion
+  /** Cria os formulários */
+  public createForm(): void {
+    this.form = this.formBuilder.group({
+      month: [
+        this.monthSelected
+      ],
+      isWedding: [
+        false
+      ]
+    });
+  }
+
+  /** Retorna as colunas */
+  public getColumns(): DisplayColumn[] {
+    if (!this.form || !this.form!.get('isWedding')!.value) {
+      return [
+        { label: "Nome", field: "name", type: DisplayColumnTypeEnum.TEXT },
+        { label: "Aniversário", field: "birthDate", type: DisplayColumnTypeEnum.DATE }
+      ];
+    }
+
+    return [
+      { label: "Marido", field: "husband", type: DisplayColumnTypeEnum.TEXT },
+      { label: "Esposa", field: "wife", type: DisplayColumnTypeEnum.TEXT },
+      { label: "Aniversário", field: "weddingDateTime", type: DisplayColumnTypeEnum.DATE }
+    ]
+  }
+
+  /** Retorna o valor da coluna em formato de string
+   * @param entity registro
+   * @param field campo do registro
+   * @param fieldType tipo do campo
+   * @returns O valor do campo no registro
+   */
+  public getColumnValue(entity: any, field: string, fieldType: DisplayColumnTypeEnum): string {
+    if (fieldType == DisplayColumnTypeEnum.DATE) {
+      return new Date(entity[field]).toLocaleDateString();
+    }
+
+    return entity[field];
+  }
+
+  /** Altera o mês selecionado e filtra
+   * @param evnt Event disparado => Mês selecionado
+   * @returns void
+   */
+  public onChangeMonth(evnt: any): void {
+    this.monthSelected = evnt.value;
+    this.onChangeToggleButton(this.form.get('isWedding')!.value);
+  }
+
+  /** Transforma as entidades filtradas
+   * true => WeddingDates
+   * false => Members
+   * @param evnt Evento disparado => valor booleano
+   * @returns void
+   */
+  public onChangeToggleButton(evnt: boolean): void {
+    this.onFilterEntities(evnt ? this.weddingDates : this.members, evnt ? "weddingDateTime" : "birthDate");
+  }
+
+  /** Filtra as entidades com o array e pelo campo passados
+   * @param array array alvo
+   * @param campo campo alvo
+   * @returns void
+   */
+  public onFilterEntities(array: any[], field: string): void {
+    this.entitiesFiltered = array.filter((x: any) => new Date(x[field]).getMonth() == this.monthSelected.id)
+      .sort((x, y) => new Date(x[field]).getDate() - new Date(y[field]).getDate());
+  }
+  // #endregion
 
 }

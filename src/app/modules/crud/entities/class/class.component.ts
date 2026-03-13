@@ -1,73 +1,103 @@
-import { Component, OnInit } from "@angular/core";
-import { CrudBaseComponent } from "../../base/crud-base";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { DialogService, DynamicDialog, DynamicDialogRef } from "primeng/dynamicdialog";
-import { DisplayColumn } from "../../../../models/crud/display-column";
-import { DisplayColumnType } from "../../../../models/crud/display-column-type";
-import { TypeDescription } from "../../../../models/crud/type-description";
-import { ApiService } from "../../../../services/api-service/api.service";
-import { CrudManager } from "../../base/crud-manager.service";
-import { MessageService, PrimeIcons } from "primeng/api";
-import { TransferClassDialogComponent } from "./transfer-class-dialog/transfer-class-dialog.component";
-import { AddMemberClassDialogComponent } from "./add-member-class-dialog/add-member-class-dialog.component";
+import { MessageService } from 'primeng/api';
+import { ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
+import { CrudBaseComponent } from "../../base/crud-base.component";
+import { Attendance, Class, ClassRoll, Member, WeddingDate } from "../../../../models/entities";
+import { ApiService } from "../../../../services/communication/api.service";
+import { DisplayColumn } from "../../../../models/utils/display-column";
+import { DisplayColumnTypeEnum } from "../../../../models/utils/display-column-type";
+import { DescriptionType } from "../../../../models/utils/description-type";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { forkJoin, Observable, tap } from 'rxjs';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ClassRollDialogComponent } from './class-roll-dialog/class-roll-dialog..component';
+import { TransferClassDialogComponent } from './trasnfer-class-dialog/transfer-class-dialog.component';
 
 @Component({
   selector: "app-class",
-  templateUrl: "./class.component.html",
-  standalone: false
+  standalone: false,
+  templateUrl: "./class.component.html"
 })
-export class ClassComponent extends CrudBaseComponent implements OnInit {
+export class classComponent extends CrudBaseComponent<Class> implements OnInit {
 
-  //#region Fields
-  public students!: any[];
-  public studentColumns!: DisplayColumn[];
+  //#region fields
+  public override isValid: boolean = false;
 
-  public teachers!: any[];
-  public teacherColumns!: DisplayColumn[];
+  public classes!: string[];
+  public classRolls!: ClassRoll[];
 
-  public members!: any[];
-  public columns!: DisplayColumn[];
-
-  public addMemberClassDialog!: DynamicDialogRef<AddMemberClassDialogComponent> | null;
+  public classRollDialog!: DynamicDialogRef<ClassRollDialogComponent> | null;
   public transferClassDialog!: DynamicDialogRef<TransferClassDialogComponent> | null;
-  public isTeacher!: boolean;
   //#endregion
 
   //#region Constructor
-  constructor(public override crudManager: CrudManager,
-    protected override apiService: ApiService,
+  constructor(@Inject(ApiService) protected override apiService: ApiService,
+    protected override cdr: ChangeDetectorRef,
     protected override formBuilder: FormBuilder,
-    protected override dialogService: DialogService,
-    protected override messageService: MessageService) {
-    super(crudManager, apiService, formBuilder, dialogService, messageService);
+    protected override messageService: MessageService,
+    protected override loaderService: NgxSpinnerService,
+    protected override dialogService: DialogService
+  ) {
+    super(apiService, cdr, formBuilder, messageService, loaderService, dialogService);
   }
+  //#endregion
+
+  //#endregion Fields
+
   //#endregion
 
   //#region OnInit
   public override ngOnInit(): void {
-    this.intializeColumns();
 
-    super.ngOnInit();
   }
   //#endregion
 
-  //#region CrudBaseComponent Methods
+  //#region CrudBaseComponent
+  public override getEntityName(): string {
+    return "class";
+  }
+
+  public override getEntityDescription(): DescriptionType {
+    return { singular: "Classe", plural: "Classes", isFamale: true };
+  }
+
   public override getDisplayColumns(): DisplayColumn[] {
     return [
-      {
-        field: "name", label: "Nome", displayColumnType: DisplayColumnType.TEXT,
-      },
-      {
-        field: "description", label: "Descrição", displayColumnType: DisplayColumnType.TEXT,
-      }
+      { field: "name", label: "Nome", type: DisplayColumnTypeEnum.TEXT },
+      { field: "description", label: "Descrição", type: DisplayColumnTypeEnum.TEXT },
+      { field: "startDate", label: "Data de início", type: DisplayColumnTypeEnum.DATE },
+      { field: "endDate", label: "Data de término", type: DisplayColumnTypeEnum.DATE }
     ];
   }
 
-  public override getTypeDescription(): TypeDescription {
-    return new TypeDescription("Classe", "Classes", false);
+  public override getColumnValue(entity: Class, column: DisplayColumn): string {
+    switch (column.type) {
+      case DisplayColumnTypeEnum.TEXT:
+        if (column.field == "name")
+          return entity.name;
+        if (column.field == "description")
+          return entity.description;
+        break;
+      case DisplayColumnTypeEnum.DATE:
+        if (entity.startDate != null) {
+          return new Date(Date.parse(entity.startDate.toString())).toLocaleDateString();
+        }
+    }
+
+    return "-";
   }
 
-  public override getForm(): FormGroup {
+  public override createForm(): FormGroup {
+    let startDate: Date | null = null;
+
+    if (this.selectedEntity.startDate != null)
+      startDate = new Date(Date.parse(this.selectedEntity.startDate.toString()));
+
+    let endDate: Date | null = null;
+
+    if (this.selectedEntity.endDate != null)
+      endDate = new Date(Date.parse(this.selectedEntity.endDate.toString()));
+
     return this.formBuilder.group({
       name: [
         this.selectedEntity?.name ?? null,
@@ -76,209 +106,131 @@ export class ClassComponent extends CrudBaseComponent implements OnInit {
       description: [
         this.selectedEntity?.description ?? null,
         Validators.required
+      ],
+      startDate: [
+        startDate,
+        Validators.required
+      ],
+      endDate: [
+        endDate,
+        Validators.required
       ]
     });
   }
 
-  public override loadResources(): Promise<any> {
-    return Promise.all([
-      this.loadMembersByClass(),
-      this.loadTeacherByClass()
-    ]);
+  public override prepareEntityToSave(): Class {
+    let entity = this.form.value;
+    entity.id = this.selectedEntity.id;
+
+    return entity;
   }
 
-  public override beforeDelete(): { canDelete: boolean; errorMessage: string; } {
-    let classNames: string[] = this.selectedEntities.map((x: any) => x.name);
-
-    if (classNames.includes("SEM CLASSE")) {
-      return { canDelete: false, errorMessage: "Não pode excluir a classe 'SEM CLASSE'." }
-    }
-
-    return super.beforeDelete();
+  public override loadResources(): Observable<any> {
+    return forkJoin({
+      classes: this.apiService.getEntities<Class>("class"),
+      classRoll: this.apiService.getEntities<ClassRoll>(`classroll/${this.selectedEntity?.name ?? "Sem classe"}`)
+    }).pipe(
+      tap(({ classes, classRoll }) => {
+        this.classes = classes.map(x => x.name.toLowerCase());
+        this.classRolls = classRoll;
+        this.cdr.detectChanges();
+      })
+    );
   }
 
-  public override canSave(): boolean {
-    if (this.selectedEntity?.name == "SEM CLASSE") {
-      return false;
+  public change(): void {
+
+    if (this.selectedEntity.id > 0) {
+      this.isValid = true;
+      return;
     }
 
-    return super.canSave();
+    let className: string = this.form.get('name')?.value.trim().toLowerCase();
+    if (className == "" || className == null || this.classes.includes(className)) {
+      this.isValid = false;
+    }
+    else{
+      this.isValid = true;
+    }
   }
   //#endregion
 
-  //#region Resources
-  public loadMembersByClass(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        if (this.entityId == 0) {
-          resolve([]);
-        }
-        else {
-          this.apiService.getEntities(`member/byClass/${this.entityId}`).then((result: any) => {
-            if (result) {
-              this.students = result;
-              this.members = result;
-              resolve(result);
-            }
-          }, (error: any) => {
-            console.log(error);
-            reject(error);
-          })
-        }
-      }
-      catch (error) {
-        console.log(error);
-        reject(error);
+  //#region class roll methods
+
+  public openClassRollDialog(): void {
+    this.classRollDialog = this.dialogService.open(ClassRollDialogComponent, {
+      data: {
+        className: this.selectedEntity.name
+      },
+      header: "Adicionar aluno sem classe",
+      draggable: false,
+      closable: true,
+      styleClass: "w-11 h-full"
+    })
+
+    this.classRollDialog?.onClose.subscribe({
+      next: (result) => {
+        this.loaderService.show();
+        this.loadResources();
+      },
+      error: (err) => {
+        console.log(err);
+        this.messageService.add({
+          summary: "Erro",
+          detail: "Erro ao tentar carregar os recursos",
+          closable: true,
+          severity: "error"
+        });
+
+        this.loaderService.hide();
+      },
+      complete: () => {
+        this.loaderService.hide();
       }
     })
   }
 
-  public loadTeacherByClass(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        if (this.entityId == 0) {
-          resolve([]);
-        }
-        else {
-          this.apiService.getEntities(`teacher/byClass/${this.entityId}`).then((result: any) => {
-            if (result) {
-              this.teachers = result;
-              resolve(result);
-            }
-          }, (error: any) => {
-            console.log(error);
-            reject(error);
-          })
-        }
-      }
-      catch (error) {
-        console.log(error);
-        reject(error);
-      }
-    })
-  }
-  //#endregion
-
-  //#region Members()
-
-  public onChangeMembers(event: any): void {
-    this.isTeacher = event.checked;
-
-    if (event.checked) {
-      this.members = this.teachers;
-      this.columns = this.teacherColumns;
-    }
-    else {
-      this.members = this.students;
-      this.columns = this.studentColumns;
-    }
-  }
-
-  public intializeColumns(): void {
-    this.studentColumns = [
-      { field: "name", label: "Aluno", displayColumnType: DisplayColumnType.TEXT },
-      { field: "age", label: "Idade", displayColumnType: DisplayColumnType.NUMERIC }
-    ];
-
-    this.teacherColumns = [
-      { field: "member.name", label: "Professor", displayColumnType: DisplayColumnType.OBJECT }
-    ];
-
-    this.columns = this.studentColumns;
-    this.isTeacher = false;
-  }
-
-  public getValue(entity: any, column: DisplayColumn): string {
-    if (column.displayColumnType == DisplayColumnType.OBJECT) {
-      let fields: string[] = column.field.split(".");
-      let currentValue: any = entity;
-
-      fields.forEach((field: string) => {
-        currentValue = currentValue[field];
-      });
-
-      return currentValue;
-    }
-
-    return entity[column.field]
-  }
-
-  public openTransferClassDialog(): void {
+  public openTransferClassDialog(classRoll: ClassRoll): void {
     this.transferClassDialog = this.dialogService.open(TransferClassDialogComponent, {
       data: {
-        entities: this.members,
-        currentClass: this.selectedEntity,
-        isTeacher: this.isTeacher
+        originClass: this.selectedEntity,
+        classRoll: classRoll
       },
-      styleClass: "md:w-auto w-11 h-full flex flex-column",
-      header: "Tranferência de sala",
-      position: "top",
-      closable: true,
-      closeOnEscape: false,
+      header: "Adicionar aluno sem classe",
       draggable: false,
-    });
+      closable: true,
+      styleClass: "w-11 h-full"
+    })
 
     this.transferClassDialog?.onClose.subscribe({
-      next: (result: any) => {
-        if (result) {
-          if (this.isTeacher) {
-            this.teachers = this.teachers.filter((x: any) => x.id != result.id);
-            this.members = this.teachers;
-          }
-          else {
-            this.students = this.students.filter((x: any) => x.id != result.id);
-            this.members = this.students;
-          }
-
-          this.messageService.add({
-            summary: `${this.isTeacher ? "Professor" : "Aluno"} remanejado!`,
-            detail: `${result.name} foi remanjado para ${result.class.name}`,
-            life: 3000,
-            severity: "success",
-            closable: true
-          });
-        }
+      next: (result) => {
+        console.log(result);
+        this.loaderService.show();
+        this.loadResources();
       },
-      error: (error: any) => {
-        console.log(error);
+      error: (err) => {
+        console.log(err);
         this.messageService.add({
-          summary: "Erro!",
-          detail: "Um erro inesperado ocorreu: " + error.message,
-          life: 3000,
+          summary: "Erro",
+          detail: "Erro ao tentar carregar os recursos",
+          closable: true,
           severity: "error"
         });
+
+        this.loaderService.hide();
+      },
+      complete: () => {
+        this.loaderService.hide();
       }
-    });
+    })
   }
 
-  public openAddMemberClassDialog(): void {
-    this.addMemberClassDialog = this.dialogService.open(AddMemberClassDialogComponent, {
-      data: {
-        currentClass: this.selectedEntity
-      },
-      styleClass: "md:w-6 w-11 h-full flex flex-column",
-      header: "Adicionar " + this.isTeacher ? "professor" : "Aluno",
-      position: "center",
-      closable: true,
-      closeOnEscape: false,
-      draggable: false,
-    });
+  public getAttendance(attendances: Attendance[]): number {
+    if (attendances != null) return attendances.filter(x => x.isPresent && x.isPresent == true).length;
 
-    this.addMemberClassDialog?.onClose.subscribe({
-      next: (result: any) => {
-        if (result) {
-        }
-      },
-      error: (error: any) => {
-        console.log(error);
-        this.messageService.add({
-          summary: "Erro!",
-          detail: "Um erro inesperado ocorreu: " + error.message,
-          life: 3000,
-          severity: "error"
-        });
-      }
-    });
+    return 0;
   }
+
   //#endregion
+
 }

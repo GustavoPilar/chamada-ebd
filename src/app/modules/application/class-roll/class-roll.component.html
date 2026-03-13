@@ -1,0 +1,87 @@
+<p-toast></p-toast>
+
+<div class="fluid bg-white p-2 border-round">
+    @if (form) {
+        <form [formGroup]="form">
+            <div class="grid">
+                <div class="field col-12 md:col-6">
+                    <label for="class">Classe:</label>
+                    <p-select [options]="classes" optionLabel="name" dataKey="id" formControlName="class" placeholder="Escolha a classe" fluid></p-select>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label class="w-full">Fazer chamada:</label>
+                    <p-button label="Escolher o dia" icon="pi pi-calendar" iconPos="right" fluid [disabled]="!form.get('class')?.value" (onClick)="loadResources()"></p-button>
+                </div>
+            </div>
+        </form>
+    }
+
+    <div class="p-2 w-full">
+
+      @if (filtered) {
+        <p-table [value]="dates" dataKey="id" stripedRows size="small">
+          <ng-template #header>
+            <tr>
+              <th class="text-center">Data</th>
+              <th class="text-center">Ação</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-result let-expanded="expanded">
+            <tr>
+              <td class="text-center">{{result.date}}</td>
+              <td class="text-center">
+                <p-button type="button" [pRowToggler]="result" [severity]="expanded ? 'help' : 'info'" [rounded]="true" [label]="expanded ? 'Fechar chamada' : 'Fazer chamada'"></p-button>
+                 <!-- <p-button label="Adicionar" (onClick)="openDialog()"></p-button> -->
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="2">Nenhum registro encontrado</td>
+            </tr>
+          </ng-template>
+          <ng-template #expandedrow let-result>
+            <tr>
+              <td colspan="2">
+                <div class="p-4">
+                  <p-table [value]="getClassRollByDate(result.date)">
+                    <ng-template #header>
+                      <tr>
+                        <th class="text-center w-3">Aluno</th>
+                        <th class="text-center w-3">É professor?</th>
+                        <th class="text-center w-3">Presença</th>
+                        <th class="text-center w-3">Ação</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-classRoll>
+                      <tr>
+                        <td class="text-center">{{classRoll.memberName}}</td>
+                        <td class="text-center"><p-tag [class]="classRoll.isTeacher ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'">{{classRoll.isTeacher ? "Sim" : "Não"}}</p-tag></td>
+                        <td class="text-center">
+                          <p-tag
+                            [class]="getAttendanceClass(getAttendance(classRoll.attendances))"
+                            [icon]="getAttendanceIcon(getAttendance(classRoll.attendances))"
+                          >
+                            {{getAttendanceString(getAttendance(classRoll.attendances)!)}}
+                          </p-tag>
+                        </td>
+                        <td class="text-center">
+                          <button type="button" pButton label="Chamada" (click)="openDialog(classRoll, classRoll.attendances)"></button>
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #emptymessage>
+                      <tr>
+                        <td colspan="3" class="text-center">Nenhum registro encontrado.</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      }
+    </div>
+
+</div>

@@ -1,182 +1,169 @@
-import { Component, OnInit } from "@angular/core";
-import { CrudBaseComponent } from "../../base/crud-base";
-import { CrudManager } from "../../base/crud-manager.service";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { MessageService, PrimeIcons } from "primeng/api";
-import { DialogService, DynamicDialog, DynamicDialogRef } from "primeng/dynamicdialog";
-import { DisplayColumn } from "../../../../models/crud/display-column";
-import { DisplayColumnType } from "../../../../models/crud/display-column-type";
-import { TypeDescription } from "../../../../models/crud/type-description";
-import { ApiService } from "../../../../services/api-service/api.service";
-import { SpecialOption } from "../../../../models/crud/special-option";
-import { BirthDateDialogComponent } from "./birth-date-dialog/birth-date-dialog.component";
+import { MessageService, PrimeIcons } from 'primeng/api';
+import { ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
+import { CrudBaseComponent } from "../../base/crud-base.component";
+import { Member } from "../../../../models/entities";
+import { ApiService } from "../../../../services/communication/api.service";
+import { DisplayColumn } from "../../../../models/utils/display-column";
+import { DisplayColumnTypeEnum } from "../../../../models/utils/display-column-type";
+import { DescriptionType } from "../../../../models/utils/description-type";
+import { NgxSpinnerService } from 'ngx-spinner';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BirthDateDialogComponent } from './birth-date-dialog/birth-date-dialog.component';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { SpecialOption } from '../../../../models/utils/special-option';
 
 @Component({
-  selector: "app-Member",
-  templateUrl: "./member.component.html",
-  standalone: false,
-  providers: [CrudManager]
+    selector: "app-member",
+    standalone: false,
+    templateUrl: "./member.component.html"
 })
-export class MemberComponent extends CrudBaseComponent implements OnInit {
+export class MemberComponent extends CrudBaseComponent<Member> implements OnInit {
 
-  //#region Fields
-  public classes!: any[];
-  public showInformation: boolean = false;
-  public classRoute!: string;
+    //#region fields
+    public birthDateDialog!: DynamicDialogRef<BirthDateDialogComponent> | null;
+    //#endregion
 
-  public birthDateDialog!: DynamicDialogRef<BirthDateDialogComponent> | null;
-  //#endregion
+    //#region Constructor
+    constructor(@Inject(ApiService) protected override apiService: ApiService,
+        protected override cdr: ChangeDetectorRef,
+        protected override formBuilder: FormBuilder,
+        protected override messageService: MessageService,
+        protected override loaderService: NgxSpinnerService,
+        protected override dialogService: DialogService
+    ) {
+        super(apiService, cdr, formBuilder, messageService, loaderService, dialogService);
+    }
+    //#endregion
 
-  //#region Constructor
-  constructor(public override crudManager: CrudManager,
-    protected override apiService: ApiService,
-    protected override formBuilder: FormBuilder,
-    protected override dialogService: DialogService,
-    protected override messageService: MessageService) {
-    super(crudManager, apiService, formBuilder, dialogService, messageService);
-  }
-  //#endregion
+    //#endregion Fields
 
-  //#region OnInit
-  public override ngOnInit(): void {
-    super.ngOnInit();
-  }
-  //#endregion
+    //#endregion
 
-  //#region CrudBaseComponent Methods
-  public override getDisplayColumns(): DisplayColumn[] {
-    return [
-      { field: "name", label: "Nome", displayColumnType: DisplayColumnType.TEXT },
-      { field: "age", label: "Idade", displayColumnType: DisplayColumnType.NUMERIC },
-      { field: "birthDate", label: "Data Nasc.", displayColumnType: DisplayColumnType.DATE },
-      { field: "status", label: "Ativo", displayColumnType: DisplayColumnType.BOOLEAN },
-      { field: "class.name", label: "Classe", displayColumnType: DisplayColumnType.OBJECT }
-    ];
-  }
+    //#region OnInit
+    public override ngOnInit(): void {
 
-  public override getTypeDescription(): TypeDescription {
-    return new TypeDescription("Membro", "Membros", false);
-  }
+    }
+    //#endregion
 
-  public override getForm(): FormGroup {
-
-    let birthDate: Date | null = new Date(this.selectedEntity?.birthDate);
-    if (birthDate.toString() == "Invalid Date") {
-      birthDate = null;
+    //#region CrudBaseComponent
+    public override getEntityName(): string {
+      return "member";
     }
 
-    if (this.selectedEntity.class) {
-      this.classRoute = `/manager/edit/class/${this.selectedEntity.class.id}`;
+    public override getEntityDescription(): DescriptionType {
+        return { singular: "Membro", plural: "Membros", isFamale: false };
     }
 
-    return this.formBuilder.group({
-      name: [
-        this.selectedEntity?.name ?? null,
-        Validators.required
-      ],
-      age: [
-        this.selectedEntity?.age ?? 0
-      ],
-      birthDate: [
-        birthDate
-      ],
-      status: [
-        this.selectedEntity?.status ?? true,
-        Validators.required
-      ],
-      class: [
-        this.selectedEntity?.class ?? null
-      ]
-    })
-  }
-
-  public override loadResources(): Promise<any> {
-    return Promise.all([
-      this.loadClasses()
-    ]);
-  }
-
-  public override getSpecialOptions(): SpecialOption[] {
-    return [
-      {
-        buttonIcon: PrimeIcons.GIFT,
-        buttonAction: () => this.openBirthDateDialog()
-      }
-    ]
-  }
-
-  public override prepareEntityToSave(): any {
-    let entity = this.entityForm.value;
-
-    if (entity.class == null) {
-      let index: number = this.classes.findIndex((x: any) => x.name == "SEM CLASSE");
-      entity.class = this.classes[index];
+    public override getDisplayColumns(): DisplayColumn[] {
+        return [
+            { field: "name", label: "Nome", type: DisplayColumnTypeEnum.TEXT },
+            { field: "birthDate", label: "Data de nasc.", type: DisplayColumnTypeEnum.DATE },
+            { field: "age", label: "Idade.", type: DisplayColumnTypeEnum.NUMERIC },
+            { field: "isActive", label: "Status", type: DisplayColumnTypeEnum.BOOLEAN },
+            { field: "isMale", label: "Gênero", type: DisplayColumnTypeEnum.BOOLEAN }
+        ];
     }
 
-    return entity;
-  }
-  //#endregion
+    public override getColumnValue(entity: Member, column: DisplayColumn): string {
+        switch (column.type) {
+            case DisplayColumnTypeEnum.TEXT:
+                return entity.name;
+            case DisplayColumnTypeEnum.NUMERIC:
+                return entity.age?.toString() ?? "-"
+            case DisplayColumnTypeEnum.BOOLEAN:
+                if (column.field == "isMale") {
+                    return entity.isMale ? "Homem" : "Mulher"
+                }
 
-  //#region OnChange
-  public onChangeBirthDate(event: Date) {
-    if (event == null) {
-      this.entityForm.get('age')?.setValue(null);
-      return;
+                return entity.isActive ? "Ativo" : "Inativo";
+            case DisplayColumnTypeEnum.DATE:
+                if (entity.birthDate != null) {
+                    return new Date(Date.parse(entity.birthDate.toString())).toLocaleDateString();
+                }
+        }
+
+        return "-";
     }
 
-    let birthDate: Date = new Date(event);
-    let age: number = this.currentDate.getFullYear() - birthDate.getFullYear();
-    const m: number = this.currentDate.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && this.currentDate.getDate() < birthDate.getDate())) {
-      age--;
+    public override getTagBackground(result: boolean, field: string): string {
+        if (field == "isMale") {
+            return result ? "bg-green-200 text-green-600" : "bg-purple-200 text-purple-600";
+        }
+
+        return super.getTagBackground(result, field);
     }
 
-    this.entityForm.get('age')?.setValue(age);
-  }
+    public override createForm(): FormGroup {
+        let date: Date | null = null;
 
-  public informationMessage(): void {
-    if (!this.showInformation)
-      this.showInformation = true;
-  }
-  //#endregion
+        if (this.selectedEntity.birthDate != null)
+            date = new Date(Date.parse(this.selectedEntity.birthDate.toString()));
 
-  //#region Resources
-  public loadClasses(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      try {
-        this.apiService.getEntities("class").then((result: any) => {
-          if (result) {
-            this.classes = result;
-            resolve(result);
-          }
-        }, (error) => {
-          reject(error);
+        return this.formBuilder.group({
+            name: [
+                this.selectedEntity?.name ?? null,
+                Validators.required
+            ],
+            isActive: [
+                this.selectedEntity?.isActive ?? false,
+                Validators.required
+            ],
+            isMale: [
+                this.selectedEntity?.isMale ?? true,
+                Validators.required
+            ],
+            birthDate: [
+                date
+            ],
+            age: [
+                this.selectedEntity?.age ?? null
+            ]
         });
-      } catch (error) {
-        console.log(error);
-        reject(error);
-      }
-    })
-  }
-  //#endregion
+    }
 
-  //#region Dynamic Dialog
-  public openBirthDateDialog(): void {
+    public onChangeBirthDate(event: Date): void {
+        let birthDate: Date = event
+        let age: number = this.currentDate.getFullYear() - birthDate.getFullYear();
+        const m: number = this.currentDate.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && this.currentDate.getDate() < birthDate.getDate())) {
+            age--;
+        }
 
-    this.birthDateDialog = this.dialogService.open(BirthDateDialogComponent, {
-      data: {
-        entities: this.entities
-      },
-      header: "Aniversários",
-      closable: true,
-      closeOnEscape: false,
-      draggable: false,
-      styleClass: "w-11 h-full overflow-visible",
-    });
+        this.form.get('age')?.setValue(age);
+    }
 
-    this.birthDateDialog?.onClose.subscribe((result) => {
+    public onClearBirthDate(): void {
+        this.form.get("age")?.setValue(null);
+    }
 
-    });
-  }
-  //#endregion
+    public override prepareEntityToSave(): Member {
+        let entity = this.form.value;
+        entity.id = this.selectedEntity.id;
+
+        return entity;
+    }
+
+    public override createSpecialOptions(): SpecialOption[] {
+      return [
+        { command: () => { this.openBirthDateDialog() }, icon: PrimeIcons.GIFT, severity: "info" }
+      ]
+    }
+    //#endregion
+
+    //#region OpenDialog
+
+    public openBirthDateDialog(): void {
+      this.birthDateDialog = this.dialogService.open(BirthDateDialogComponent, {
+        data: {
+          members: this.entities.filter((x: Member) => x.isActive && x.birthDate != null)
+        },
+        header: "Aniversários",
+        styleClass: "w-11 h-full",
+        closable: true,
+        draggable: false
+      });
+    }
+
+    //#endregion
+
 }

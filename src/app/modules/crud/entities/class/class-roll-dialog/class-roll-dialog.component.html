@@ -1,0 +1,35 @@
+<div class="fluid">
+  <p-table [value]="classRolls" size="small">
+    <ng-template #caption>
+      <p-toolbar size="small">
+        <ng-template #start>
+          <div class="grid">
+            <div class="field col-12">
+              <label class="w-full">É professor?</label>
+              <p-toggleSwitch [(ngModel)]="isTeacher"></p-toggleSwitch>
+            </div>
+          </div>
+        </ng-template>
+      </p-toolbar>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th>Membro</th>
+        <th>Ação</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-result>
+      <tr>
+        <td>{{result.memberName}}</td>
+        <td>
+          <p-button icon="pi pi-plus" rounded (onClick)="confirmAddMemberToClass(result)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="2">Nenhum registro encontrado.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

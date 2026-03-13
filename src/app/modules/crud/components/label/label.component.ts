@@ -9,8 +9,13 @@ import { AbstractControl, Validators } from "@angular/forms";
 export class LabelComponent {
 
   //#region Fields
+
+  /** Descrição visível da label */
   @Input() public description!: string;
+
+  /** Controlle abstrato */
   @Input() public abstractControl!: AbstractControl;
+
   //#endregion
 
   //#region Constructor
@@ -19,6 +24,9 @@ export class LabelComponent {
   }
   //#endregion
 
+  /** Retorna o valor boolean para a verifiação de requisição do campo para o formulário
+   * @returns Valor boolean
+   */
   isRequired(): boolean {
     if (this.abstractControl) return this.abstractControl.hasValidator(Validators.required);
 

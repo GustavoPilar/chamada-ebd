@@ -1,0 +1,23 @@
+<div class="fluid">
+  <p-table [value]="classes" size="small">
+    <ng-template #header>
+      <tr>
+        <th>Classe</th>
+        <th>Transferência</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-result>
+      <tr>
+        <td>{{result.name}}</td>
+        <td>
+          <p-button icon="pi pi-plus" rounded (onClick)="confirmAddMemberToClass(result)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="2">Nenhum registro encontrado.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

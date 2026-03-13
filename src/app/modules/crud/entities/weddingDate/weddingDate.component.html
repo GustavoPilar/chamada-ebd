@@ -1,0 +1,22 @@
+@if(isForm && form) {
+    <form [formGroup]="form">
+        <div class="grid p-2">
+            <div class="field col-12 md:col-6">
+                <app-label description="Marido" [abstractControl]="getField('husband')"></app-label>
+                <p-select [options]="husbands" formControlName="husband" fluid placeholder="Selecione ou digite o marido"></p-select>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Esposa" [abstractControl]="getField('wife')"></app-label>
+                <p-select [options]="wifes" formControlName="wife" fluid placeholder="Selecione ou digite a esposa"></p-select>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Data de nascimento" [abstractControl]="getField('weddingDatetime')"></app-label>
+                <p-datepicker formControlName="weddingDatetime" [maxDate]="currentDate" showClear fluid (onSelect)="onChangeWeddingDateTime($event)" (onClear)="onClearWeddingDateTime()"></p-datepicker>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Tempo casados" [abstractControl]="getField('totalYears')"></app-label>
+                <p-inputNumber id="totalYears" formControlName="totalYears" placeholder="Digite o tempo" fluid [disabled]="true"></p-inputNumber>
+            </div>
+        </div>
+    </form>
+}

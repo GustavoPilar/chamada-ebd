@@ -1,62 +1,62 @@
-@if (isForm && selectedEntity) {
-  <form [formGroup]="entityForm">
-    <div class="grid">
-      <div class="field col-12 md:col-6">
-        <app-label description="Nome" [abstractControl]="getField('name')"></app-label>
-        <input type="text" pInputText id="name" inputId="name" formControlName="name" fluid placeholder="Digite o nome da classe" autocomplete="off">
-      </div>
-      <div class="field col-12 md:col-6">
-        <app-label description="Descrição" [abstractControl]="getField('description')"></app-label>
-        <input type="text" pInputText id="description" inputId="description" formControlName="description" fluid placeholder="Digite a descrição da classe" autocomplete="off">
-      </div>
-    </div>
-  </form>
+@if(isForm && form) {
+    <form [formGroup]="form">
+        <div class="grid p-2">
+            <div class="field col-12 md:col-6">
+                <app-label description="Nome" [abstractControl]="getField('name')"></app-label>
+                <input type="text" pInputText id="name" formControlName="name" placeholder="Digite o nome da classe" fluid (input)="change()">
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Descrição" [abstractControl]="getField('description')"></app-label>
+                <input type="text" pInputText id="description" formControlName="description" placeholder="Digite a descrição da classe" fluid>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Data de início" [abstractControl]="getField('startDate')"></app-label>
+                <p-datepicker formControlName="startDate" placeholder="Escolha uma data inicial" fluid></p-datepicker>
+            </div>
+            <div class="field col-12 md:col-6">
+                <app-label description="Data de término" [abstractControl]="getField('endDate')"></app-label>
+                <p-datepicker formControlName="endDate" placeholder="Escolha uma data final" [minDate]="form.get('startDate')?.value" fluid [disabled]="!form.get('startDate')?.value"></p-datepicker>
+            </div>
+            <div class="field col-12" [hidden]="selectedEntity.id > 0">
+              <p-message [severity]="isValid ? 'success' : 'error'" >'{{form.get('name')?.value ?? "vazio"}}'  é um nome é {{isValid ? 'válido' : 'inválido.'}}</p-message>
+            </div>
+        </div>
+    </form>
 
-  <div class="fluid" [ngClass]="entityId == 0 ? 'hidden' : ''">
-    <p-table [value]="members" [columns]="columns" size="small" stripedRows rowHover class="text-xs md:text-sm lg:text-base" paginator [rows]="20" [rowsPerPageOptions]="[5, 10, 20, 50, 100, 200]">
-      <ng-template #caption>
-        <p-toolbar>
-          <ng-template #start>
-            <p-button size="small" severity="info" icon="pi pi-plus" (onClick)="openAddMemberClassDialog()"></p-button>
-          </ng-template>
-          <ng-template #end>
-            <p-toggleButton fluid onLabel="Professor" offLabel="Alunos" (onChange)="onChangeMembers($event)"></p-toggleButton>
-          </ng-template>
-        </p-toolbar>
-      </ng-template>
-      <ng-template #header let-columns>
-        <tr>
-          @for (column of columns; track $index) {
-            <th>{{column.label}}</th>
-          }
-        </tr>
-      </ng-template>
-      <ng-template #body let-result let-columns="columns">
-        <tr>
-          @for (column of columns; track $index) {
-            <td>{{getValue(result, column)}}</td>
-          }
-        </tr>
-      </ng-template>
-      <ng-template #emptymessage let-columns>
-        <tr>
-          <td [colSpan]="columns?.length">Nenhum resultado foi encontrado</td>
-        </tr>
-      </ng-template>
-      <ng-template #footer let-columns>
-        <tr>
-          <td [colSpan]="columns?.length">
-            <p-toolbar>
-              <ng-template #start>
-                <p-button severity="warn" label="Remanejar" (onClick)="openTransferClassDialog()" size="small"></p-button>
-              </ng-template>
-              <ng-template #end>
-                Total de {{isTeacher ? "professores" : "alunos"}}: {{members?.length}}
-              </ng-template>
-            </p-toolbar>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+    <div class="fluid p-2" [hidden]="!(selectedEntity.id > 0)">
+      <p-table [value]="classRolls" size="small">
+        <ng-template #caption>
+          <p-toolbar>
+            <ng-template #start>
+              <p class="text-lg">Alunos da classe - {{this.selectedEntity.name}}</p>
+            </ng-template>
+            <ng-template #end>
+              <p-button icon="pi pi-plus" severity="info" (onClick)="openClassRollDialog()" [hidden]="this.selectedEntity.name == 'Sem classe'"></p-button>
+            </ng-template>
+          </p-toolbar>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th>Aluno</th>
+            <th>É professor?</th>
+            <th>Quantidade de presenças</th>
+            <th>Ações</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-result>
+          <tr>
+            <td>{{result.memberName}}</td>
+            <td><p-tag [class]="result.isTeacher ? 'bg-green-200 text-green-600' : 'bg-red-200 text-red-600'">{{result.isTeacher ? 'Sim' : 'Não'}}</p-tag></td>
+            <td>{{getAttendance(result.attendaces)}}</td>
+            <td><p-button icon="pi pi-arrow-right-arrow-left" (onClick)="openTransferClassDialog(result)"></p-button></td>
+          </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="3">Nenhum aluno registrado.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
 }

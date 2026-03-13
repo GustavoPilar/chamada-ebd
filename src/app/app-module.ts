@@ -5,8 +5,7 @@ import { provideAnimations } from "@angular/platform-browser/animations"
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { NgxSpinnerModule } from "ngx-spinner";
-import { ComponentsModule } from './components/components.module';
-import { PagesModule } from './pages/pages.module';
+import { ComponentsModule } from "./components/components.module";
 import { providePrimeNG } from 'primeng/config';
 import Aura from "@primeuix/themes/aura";
 import { CrudModule } from './modules/crud/crud.module';
@@ -19,7 +18,6 @@ import { CrudModule } from './modules/crud/crud.module';
     AppRoutingModule,
     NgxSpinnerModule.forRoot({type: "square-jelly-box"}),
     ComponentsModule,
-    PagesModule,
     CrudModule
   ],
   providers: [

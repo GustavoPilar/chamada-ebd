@@ -1,54 +1,40 @@
-<div class="fluid h-full">
-  <div class="w-full">
+<div class="fluid">
+
+  @if (form) {
     <form [formGroup]="form">
       <div class="grid">
         <div class="field col-12 md:col-6">
-          <app-label description="Mês" [abstractControl]="getField('month')"></app-label>
-          <p-select [options]="months" optionLabel="name" fluid placeholder="Selecione o mês do aniversário" formControlName="month" (onChange)="onChangeMonth()"></p-select>
+          <label for="month">Mês:</label>
+          <p-select [options]="months" optionLabel="name" formControlName="month" placeholder="Escolha o mês" fluid (onChange)="onChangeMonth($event)"></p-select>
         </div>
         <div class="field col-12 md:col-6">
-          <app-label description="Tipo" [abstractControl]="getField('type')"></app-label>
-           <p-toggleButton fluid onLabel="Individual" offLabel="Casamento" formControlName="isIndividual" (onChange)="onChangeType($event)"></p-toggleButton>
+          <label for="isWedding">Tipo de aniversário:</label>
+          <p-toggleButton formControlName="isWedding" onLabel="Casamento" [onIcon]="'pi pi-users'" offLabel="Individual" [offIcon]="'pi pi-user'" fluid (onChange)="onChangeToggleButton($event.checked)"></p-toggleButton>
         </div>
       </div>
     </form>
-  </div>
-  <div class="w-full">
-    <p-table #dt [value]="filteredValues" [columns]="displayColumns" dataKey="id" size="small" paginator="true" [rows]="10" [rowsPerPageOptions]="[10, 20, 50, 100, 200]" sortField="weedingDateTime" [sortOrder]="1" stripedRows="true" [exportFilename]="selectedType.label" >
-      <ng-template #header let-columns>
-        <tr>
-          @for (column of columns; track $index) {
-            <th [pSortableColumn]="column.field">
-              <div class="flex justify-content-center align-items-center gap-2">
-                {{column.label}}
-                <p-sortIcon [field]="column.field"></p-sortIcon>
-              </div>
-            </th>
-          }
-        </tr>
-      </ng-template>
-      <ng-template #body let-result let-columns="columns">
-        <tr>
-          @for (column of columns; track $index) {
-            <td>
-              @if (column.displayColumnType == 3) {
-                {{showDateValue(result[column.field])}}
-              }
-              @else if (column.displayColumnType == 4) {
-                {{showObejctValue(result, column.field)}}
-              }
-              @else {
-                {{showDefaultValue(result[column.field])}}
-              }
-            </td>
-          }
-        </tr>
-      </ng-template>
-      <ng-template #emptymessage>
-        <tr>
-          <td [colSpan]="displayColumns.length">Nenhum registro foi encontrado</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+  }
+
+  <p-table [value]="entitiesFiltered" [columns]="getColumns()" dataKey="id" stripedRows rowHover paginator [rows]="20" [rowsPerPageOptions]="[20, 50, 100, 200]">
+    <ng-template #header let-columns>
+      <tr>
+        @for (column of columns; track $index) {
+          <th>{{column.label}}</th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template #body let-result let-columns="columns">
+      <tr>
+        @for (column of columns; track $index) {
+          <td>{{getColumnValue(result, column.field, column.type)}}</td>
+        }
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage let-columns="columns">
+      <tr>
+        <td [colSpan]="columns.length">Nenhum registro encontrado</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
 </div>
