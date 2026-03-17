@@ -155,7 +155,11 @@ export class ClassRollComponent implements OnInit {
         ...x, attendances: att.filter(x => {
           let classDate = x.date;
 
-          return new Date(classDate).toLocaleDateString("pt-BR") == date;
+          return new Date(classDate).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric"
+          }) == date;
         })
       }
     });
