@@ -155,7 +155,7 @@ export class ClassRollComponent implements OnInit {
         ...x, attendances: att.filter(x => {
           let classDate = x.date;
 
-          return new Date(classDate).toLocaleDateString() == date;
+          return new Date(classDate).toLocaleDateString("pt-BR") == date;
         })
       }
     });
@@ -231,6 +231,12 @@ export class ClassRollComponent implements OnInit {
       error: (err) => {
         att.isPresent = att.isPresent != null ? !att.isPresent : undefined;
         console.log(err);
+        this.messageService.add({
+          summary: "Erro",
+          detail: "Ocorreu um erro ao tentar fazer a chamada",
+          severity: "error",
+          life: 1500
+        });
         this.loaderService.hide();
       },
       complete: () => { this.loaderService.hide(); }
