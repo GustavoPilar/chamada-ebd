@@ -87,7 +87,9 @@ export class ClassRollComponent implements OnInit {
       classRoll: this.apiService.getEntities<ClassRoll>(`classroll/${selectedClass.name}`)
     }).pipe(
       tap(({ dates, classRoll }) => {
-        this.dates = dates.map((x: any) => x = { id: dates.indexOf(x), date: x });
+        this.dates = dates.map((x: any) => {   
+          return { id: dates.indexOf(x), date: x }
+        });
         this.classRoll = classRoll;
       })
     ).subscribe({
@@ -113,7 +115,9 @@ export class ClassRollComponent implements OnInit {
 
     this.apiService.getEntities<any>(`classroll/${selectedClass.name}/dates`).subscribe({
       next: (result) => {
-        this.dates = result.map((x: any) => x = { id: result.indexOf(x), date: x });
+        this.dates = result.map((x: any) => {
+          return {id: result.indexOf(x), date: x }
+        });
         this.filtered = true;
         this.cdr.detectChanges();
       },
@@ -237,7 +241,7 @@ export class ClassRollComponent implements OnInit {
         console.log(err);
         this.messageService.add({
           summary: "Erro",
-          detail: "Ocorreu um erro ao tentar fazer a chamada",
+          detail: err.error,
           severity: "error",
           life: 1500
         });
