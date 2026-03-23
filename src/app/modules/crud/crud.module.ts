@@ -32,6 +32,8 @@ import { MessageModule } from "primeng/message";
 import { ClassRollDialogComponent } from "./entities/class/class-roll-dialog/class-roll-dialog..component";
 import { ToggleSwitchModule } from "primeng/toggleswitch";
 import { TransferClassDialogComponent } from "./entities/class/trasnfer-class-dialog/transfer-class-dialog.component";
+import { CardModule } from "primeng/card";
+import { CarouselModule } from 'primeng/carousel';
 
 @NgModule({
   imports: [
@@ -52,7 +54,9 @@ import { TransferClassDialogComponent } from "./entities/class/trasnfer-class-di
     DatePickerModule,
     InputNumberModule,
     SelectModule,
-    MessageModule
+    MessageModule,
+    CardModule,
+    CarouselModule
   ],
   declarations: [
     CrudComponent,

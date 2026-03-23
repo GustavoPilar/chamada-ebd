@@ -23,9 +23,9 @@ export class CrudComponent implements OnInit {
     //#region OnInit()
     public ngOnInit(): void {
         this.items = [
-            { label: "Membros", target: "member", icon: PrimeIcons.USER },
-            { label: "Casamentos", target: "weddingDate", icon: PrimeIcons.GIFT },
-            { label: "Classes", target: "class", icon: PrimeIcons.OBJECTS_COLUMN },
+            { title: "Membros", label: "Adicione ou remova membros", target: "member", icon: PrimeIcons.USER },
+            { title: "Casamentos", label: "Adicione ou remova aniversários de casamento", target: "weddingDate", icon: PrimeIcons.GIFT },
+            { title: "Classes", label: "Adicione, remova ou atualize classes", target: "class", icon: PrimeIcons.OBJECTS_COLUMN },
         ];
     }
     //#endregion
@@ -34,4 +34,9 @@ export class CrudComponent implements OnInit {
     public navigateTo(target: string): void {
         this.router.navigate(["manager/list", target]);
     }
+
+    public getLower(label: string): string {
+      return label.toLowerCase();
+    }
+    //#endregion
 }
