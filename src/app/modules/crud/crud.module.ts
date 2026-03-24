@@ -35,6 +35,7 @@ import { TransferClassDialogComponent } from "./entities/class/trasnfer-class-di
 import { CardModule } from "primeng/card";
 import { CarouselModule } from 'primeng/carousel';
 import { ComponentsModule } from "../../components/components.module";
+import { PanelModule } from "primeng/panel";
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { ComponentsModule } from "../../components/components.module";
     SelectModule,
     MessageModule,
     CardModule,
-    CarouselModule
+    CarouselModule,
+    PanelModule
   ],
   declarations: [
     CrudComponent,

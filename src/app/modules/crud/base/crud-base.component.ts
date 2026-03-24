@@ -115,7 +115,7 @@ export abstract class CrudBaseComponent<T = EntityBase> implements OnInit {
     this.apiService.getEntityById<T>(this.entityName, this.entityId).pipe(
       switchMap((result: T) => {
         this.selectedEntity = result,
-        this.form = this.createForm();
+          this.form = this.createForm();
         return this.loadResources();
       })
     ).subscribe({
@@ -264,6 +264,20 @@ export abstract class CrudBaseComponent<T = EntityBase> implements OnInit {
 
   public createSpecialOptions(): SpecialOption[] {
     return [];
+  }
+
+  //#endregion
+
+  //#region Version 2
+
+  public getDisplayColumnsPanel(): DisplayColumn[] { return [] };
+
+  public getPanelTitle(entity: T): string { return "Nome" };
+
+  public getTagValue(entity: T, field: string): string {
+    let e: any = entity;
+
+    return e[field] ? 'bg-blue-200 text-blue-500' : "bg-red-200 text-red-500";
   }
 
   //#endregion
