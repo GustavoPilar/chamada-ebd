@@ -34,11 +34,13 @@ import { ToggleSwitchModule } from "primeng/toggleswitch";
 import { TransferClassDialogComponent } from "./entities/class/trasnfer-class-dialog/transfer-class-dialog.component";
 import { CardModule } from "primeng/card";
 import { CarouselModule } from 'primeng/carousel';
+import { ComponentsModule } from "../../components/components.module";
 
 @NgModule({
   imports: [
     CommonModule,
     CrudRoutingModule,
+    ComponentsModule,
     ButtonModule,
     TableModule,
     TagModule,

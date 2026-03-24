@@ -4,7 +4,7 @@ import { MenuItem, PrimeIcons } from "primeng/api";
 @Component({
     selector: "app-menu",
     standalone: false,
-    template: `<p-menubar [model]="values"></p-menubar>`
+    templateUrl: "./menu.component.html"
 })
 export class MenuComponent implements OnInit {
 

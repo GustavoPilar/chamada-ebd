@@ -1,0 +1,31 @@
+<div class="fluid">
+  <!-- Start Header -->
+  <div class="grid">
+    <div class="col-12 text-center">
+      <h1 class="text-4xl">Escola Bíblica Dominical</h1>
+      <div class="mt-3">
+        <p class="text-base">Gerenciamento de:</p>
+        <p-carousel [value]="['Alunos', 'Aniversários', 'Classes', 'Chamadas', 'Relatórios']" [numVisible]="3" [circular]="true" [responsiveOptions]="[ { breakpoint: '1400px', numVisible: 2, numScroll: 1 },{ breakpoint: '1199px',numVisible: 3, numScroll: 1 }, { breakpoint: '767px', numVisible: 2, numScroll: 1 }, { breakpoint: '575px', numVisible: 1, numScroll: 1 } ]" [autoplayInterval]="5000" class="mt-4">
+          <ng-template #item let-item>
+            {{item}}
+          </ng-template>
+        </p-carousel>
+      </div>
+    </div>
+  </div>
+  <!-- End Header -->
+  <hr class="my-5">
+  <!-- Start Body -->
+  <div class="fluid">
+    <!-- Start Manager -->
+    <h2 class="text-4xl text-center my-5 rounded w-80 m-auto"><i class="pi pi-list text-3xl"></i> Cadastros</h2>
+    <app-cards [items]="managerItems" prevRouterLink="manager/list/"></app-cards>
+    <!-- End Manager -->
+    <hr>
+    <!-- Start Manager -->
+    <h2 class="text-4xl text-center my-5 rounded w-80 m-auto"><i class="pi pi-mobile text-3xl"></i> Aplicação</h2>
+    <app-cards [items]="applicationItems" prevRouterLink="application/"></app-cards>
+    <!-- End Manager -->
+  </div>
+  <!-- End Body -->
+</div>
