@@ -7,6 +7,7 @@ import { CardModule } from "primeng/card";
 import { CarouselModule } from "primeng/carousel";
 import { CardsComponent } from "./cards/cards.component";
 import { ApplicationRoutingModule } from "../modules/application/application-routing.module";
+import { CardsCarouselComponent } from "./cards-carousel/cards-carousel.component";
 
 @NgModule({
     imports: [
@@ -19,11 +20,13 @@ import { ApplicationRoutingModule } from "../modules/application/application-rou
 ],
     declarations: [
         MenuComponent,
-        CardsComponent
+        CardsComponent,
+        CardsCarouselComponent
     ],
     exports: [
         MenuComponent,
-        CardsComponent
+        CardsComponent,
+        CardsCarouselComponent
     ],
     providers: [
 

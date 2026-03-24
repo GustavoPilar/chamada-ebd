@@ -11,11 +11,9 @@ export class CardsComponent implements OnInit {
 
     //#region Fields
 
+    /** Items para o card */
     @Input()
     public items!: MenuItem[];
-
-    @Input()
-    public prevRouterLink!: string;
 
     //#endregion
 
@@ -27,15 +25,26 @@ export class CardsComponent implements OnInit {
 
     //#region OnInit()
     public ngOnInit(): void {
-        
+
     }
     //#endregion
 
     //#region Members
+
+    /**
+     * @description Navega para o alvo
+     * @param target Alvo
+     * @returns {void} Vazio
+     */
     public navigateTo(target: string): void {
-        this.router.navigate([this.prevRouterLink, target]);
+        this.router.navigate([target]);
     }
 
+    /**
+     * @description Transforma o texto em minúsculo
+     * @param label Texto
+     * @returns {string} Texto
+     */
     public getLower(label: string): string {
         return label.toLowerCase();
     }

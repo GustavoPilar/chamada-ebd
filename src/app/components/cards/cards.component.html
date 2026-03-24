@@ -2,15 +2,15 @@
     @for (item of items; track $index) {
     <p-card [style]="{overflow: 'hidden' }" class="w-80 gap-4">
         <ng-template #header>
-            <img [src]="'assets/images/' + getLower(item.title!) + '.jpg'" class="w-full" [style]="{'height':'200px'}">
+            <img [src]="'assets/images/' + getLower(item.label!) + '.jpg'" class="w-full" [style]="{'height':'200px'}">
         </ng-template>
-        <ng-template #title> {{item.title}} </ng-template>
+        <ng-template #title> {{item.label}} </ng-template>
         <ng-template #content>
-        <p>{{item.label}}</p>
+        <p>{{item.title}}</p>
         </ng-template>
         <ng-template #footer>
             <div class="mt-1">
-                <p-button label="Acessar" fluid (onClick)="navigateTo(item.target!)"></p-button>
+                <p-button label="Acessar" fluid [routerLink]="item.routerLink"></p-button>
             </div>
         </ng-template>
     </p-card>

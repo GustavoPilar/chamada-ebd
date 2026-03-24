@@ -1,48 +1,47 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, HostListener, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { MenuItem, PrimeIcons } from "primeng/api";
+import { MenuSelectionService } from "../../services/utils/menu-selection.service";
 
 @Component({
-    selector: "app-home",
-    standalone: false,
-    templateUrl: "./home.component.html"
+  selector: "app-home",
+  standalone: false,
+  templateUrl: "./home.component.html"
 })
 export class HomeComponent implements OnInit {
 
-    //#region Fields
-    public managerItems!: MenuItem[];
+  //#region Fields
 
-    public applicationItems!: MenuItem[];
-    //#endregion
+  /** Opções de gerenciamento */
+  public responsiveOptions!: any[];
 
-    //#region Constructor
-    constructor(private router: Router) {
+  /** Items de cadastro */
+  public managerItems!: MenuItem[];
 
-    }
-    //#endregion
+  /** Items de aplicação */
+  public applicationItems!: MenuItem[];
 
-    //#region OnInit()
-    public ngOnInit(): void {
-        this.managerItems = [
-            { title: "Membros", label: "Adicione, remova ou atualize membros", target: "member", icon: PrimeIcons.USER },
-            { title: "Casamentos", label: "Adicione, remova ou atualize aniversários de casamento", target: "weddingDate", icon: PrimeIcons.GIFT },
-            { title: "Classes", label: "Adicione, remova ou atualize classes", target: "class", icon: PrimeIcons.OBJECTS_COLUMN },
-        ];
+  //#endregion
 
-        this.applicationItems = [
-            { title: "Chamada", label: "Faça a chamada de uma classe", target: "class-roll", icon: PrimeIcons.TICKET }
-        ]
-    }
-    //#endregion
+  //#region Constructor
+  constructor(
+    private menuSelectionService: MenuSelectionService
+  ) {
 
-    //#region Members
-    public navigateTo(target: string): void {
-        this.router.navigate(["manager/list", target]);
-    }
+  }
+  //#endregion
 
-    public getLower(label: string): string {
-        return label.toLowerCase();
-    }
-    //#endregion
+  //#region OnInit()
+  public ngOnInit(): void {
+    this.managerItems = this.menuSelectionService.GetManagerOption().items!;
+    this.applicationItems = this.menuSelectionService.GetApplicationOption().items!;
+
+    this.responsiveOptions = [
+      { breakpoint: '1400px', numVisible: 2, numScroll: 1 },
+      { breakpoint: '1199px', numVisible: 3, numScroll: 1 },
+      { breakpoint: '767px', numVisible: 2, numScroll: 1 },
+      { breakpoint: '575px', numVisible: 1, numScroll: 1 } ]
+  }
+  //#endregion
 
 }
