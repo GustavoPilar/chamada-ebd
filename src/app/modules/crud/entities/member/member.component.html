@@ -6,20 +6,22 @@
                 <input type="text" pInputText id="name" formControlName="name" placeholder="Digite o nome do membro" fluid>
             </div>
             <div class="field col-12 md:col-6">
+              <app-label description="Gênero" [abstractControl]="getField('isMale')"></app-label>
+              <p-toggleButton formControlName="isMale" onLabel="Homem" offLabel="Mulher" [onIcon]="'pi pi-mars'" [offIcon]="'pi pi-venus'" iconPos="right" fluid [ngClass]="form.get('isMale')?.value ? 'bg-blue-200 text-blue-500' : 'bg-purple-200 text-purple-500'"></p-toggleButton>
+            </div>
+            <div class="field col-12 md:col-6">
+              <app-label description="Data de nascimento" [abstractControl]="getField('birthDate')"></app-label>
+              <p-datepicker formControlName="birthDate" [maxDate]="currentDate" showClear fluid (onSelect)="onChangeBirthDate($event)" (onClear)="onClearBirthDate()"></p-datepicker>
+            </div>
+            <div class="field col-12 md:col-3">
+              <app-label description="Idade" [abstractControl]="getField('age')"></app-label>
+              <p-inputNumber id="age" formControlName="age" placeholder="Digite a idade" fluid [disabled]="true"></p-inputNumber>
+            </div>
+            <div class="field col-12 md:col-3 text-center">
                 <app-label description="Status?" [abstractControl]="getField('isActive')"></app-label>
-                <p-toggleButton formControlName="isActive" onLabel="Ativo" offLabel="Inátivo" [onIcon]="'pi pi-check'" [offIcon]="'pi pi-times'" iconPos="right" fluid></p-toggleButton>
-            </div>
-            <div class="field col-12 md:col-6">
-                <app-label description="Gênero" [abstractControl]="getField('isMale')"></app-label>
-                <p-toggleButton formControlName="isMale" onLabel="Homem" offLabel="Mulher" [onIcon]="'pi pi-mars'" [offIcon]="'pi pi-venus'" iconPos="right" fluid></p-toggleButton>
-            </div>
-            <div class="field col-12 md:col-6">
-                <app-label description="Data de nascimento" [abstractControl]="getField('birthDate')"></app-label>
-                <p-datepicker formControlName="birthDate" [maxDate]="currentDate" showClear fluid (onSelect)="onChangeBirthDate($event)" (onClear)="onClearBirthDate()"></p-datepicker>
-            </div>
-            <div class="field col-12 md:col-6">
-                <app-label description="Idade" [abstractControl]="getField('age')"></app-label>
-                <p-inputNumber id="age" formControlName="age" placeholder="Digite a idade" fluid [disabled]="true"></p-inputNumber>
+                <div class="flex align-items-center gap-2 justify-content-center">
+                  <p-toggleSwitch [dt]="amberSwitch" formControlName="isActive"></p-toggleSwitch> {{form.get('isActive')?.value ? 'Ativo' : 'Inativo'}}
+                </div>
             </div>
         </div>
     </form>

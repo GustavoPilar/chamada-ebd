@@ -19,7 +19,7 @@ export class MenuSelectionService {
    * @returns {MenuItem} Opção de cadastros
    */
   public GetManagerOption(): MenuItem {
-    const rootLink: string = "manager/list";
+    const rootLink: string = "/manager/list";
 
     const root: MenuItem = {
       label: "Cadastros",

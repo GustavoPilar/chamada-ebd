@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MenuItem, PrimeIcons } from "primeng/api";
 import { MenuSelectionService } from "../../services/utils/menu-selection.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-menu",
@@ -15,6 +16,7 @@ export class MenuComponent implements OnInit {
 
   //#region Constructor
   constructor(
+    private router: Router,
     private menuService: MenuSelectionService
   ) {
 
@@ -27,4 +29,12 @@ export class MenuComponent implements OnInit {
   }
   //#endregion
 
+  //#region Members
+  public navigateTo(routerLink: string): void {
+    if (routerLink) {
+      console.log(routerLink);
+      this.router.navigateByUrl(routerLink);
+    }
+  }
+  //#endregion
 }

@@ -32,7 +32,7 @@ export class WeddingDateComponent extends CrudBaseComponent<WeddingDate> impleme
   //#endregion
 
   //#region Constructor
-  constructor(@Inject(ApiService) protected override apiService: ApiService,
+  constructor(protected override apiService: ApiService,
     protected override cdr: ChangeDetectorRef,
     protected override formBuilder: FormBuilder,
     protected override messageService: MessageService,
@@ -56,6 +56,10 @@ export class WeddingDateComponent extends CrudBaseComponent<WeddingDate> impleme
   //#region CrudBaseComponent
   public override getEntityName(): string {
     return "weddingDate";
+  }
+
+  public override getDescription(entity: WeddingDate): string {
+    return entity.husband.split(" ")[0] + " e " + entity.wife.split(" ")[0];
   }
 
   public override getEntityDescription(): DescriptionType {

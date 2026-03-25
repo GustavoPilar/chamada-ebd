@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewContainerRef } from "@angular/core";
-import { Class, ClassRoll, Member } from "../../../../../models/entities";
+import { ClassRoll } from "../../../../../models/entities";
 import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { ApiService } from "../../../../../services/communication/api.service";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -22,10 +22,10 @@ export class ClassRollDialogComponent implements OnInit, OnDestroy {
   //#region Constructor
   constructor(private config: DynamicDialogConfig,
     private viewRef: DynamicDialogRef,
-    @Inject(ApiService) private apiService: ApiService,
-    @Inject(NgxSpinnerService) private loaderService: NgxSpinnerService,
-    @Inject(MessageService) private messageService: MessageService,
-    @Inject(ConfirmationService) private confirmationService: ConfirmationService,
+    private apiService: ApiService,
+    private loaderService: NgxSpinnerService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     private cdr: ChangeDetectorRef
   ) {
     let data = this.config.data;

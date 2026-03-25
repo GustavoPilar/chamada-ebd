@@ -15,16 +15,39 @@ import { SpecialOption } from '../../../../models/utils/special-option';
 @Component({
   selector: "app-member",
   standalone: false,
-  templateUrl: "./member.component.html"
+  templateUrl: "./member.component.html",
+  styleUrl: "./member.component.css"
 })
 export class MemberComponent extends CrudBaseComponent<Member> implements OnInit {
 
   //#region fields
   public birthDateDialog!: DynamicDialogRef<BirthDateDialogComponent> | null;
+
+  amberSwitch = {
+    root: {
+      borderRadius: '4px',
+
+      background: '{red.200}',
+      hoverBackground: '{red.300}',
+
+      checkedBackground: '{emerald.200}',
+      checkedHoverBackground: '{emerald.300}'
+    },
+    handle: {
+      borderRadius: '4px',
+
+      background: '{red.500}',
+      hoverBackground: '{red.600}',
+
+      checkedBackground: '{emerald.500}',
+      checkedHoverBackground: '{emerald.600}'
+    }
+  };
+
   //#endregion
 
   //#region Constructor
-  constructor(@Inject(ApiService) protected override apiService: ApiService,
+  constructor(protected override apiService: ApiService,
     protected override cdr: ChangeDetectorRef,
     protected override formBuilder: FormBuilder,
     protected override messageService: MessageService,
@@ -50,6 +73,10 @@ export class MemberComponent extends CrudBaseComponent<Member> implements OnInit
     return "member";
   }
 
+  public override getDescription(entity: Member): string {
+    return entity.name;
+  }
+
   public override getEntityDescription(): DescriptionType {
     return { singular: "Membro", plural: "Membros", isFamale: false };
   }
@@ -57,7 +84,7 @@ export class MemberComponent extends CrudBaseComponent<Member> implements OnInit
   public override getDisplayColumns(): DisplayColumn[] {
     return [
       { field: "name", label: "Nome", type: DisplayColumnTypeEnum.TEXT },
-      { field: "birthDate", label: "Data de nasc.", type: DisplayColumnTypeEnum.DATE },
+      { field: "birthDate", label: "Data de nasc.", type: DisplayColumnTypeEnum.DATE, styleClass: "hidden md:block" },
       { field: "age", label: "Idade.", type: DisplayColumnTypeEnum.NUMERIC },
       { field: "isActive", label: "Status", type: DisplayColumnTypeEnum.BOOLEAN },
       { field: "isMale", label: "Gênero", type: DisplayColumnTypeEnum.BOOLEAN }
@@ -85,12 +112,12 @@ export class MemberComponent extends CrudBaseComponent<Member> implements OnInit
     return "-";
   }
 
-  public override getTagBackground(result: boolean, field: string): string {
+  public override getTagBackground(entity: Member, field: string): string {
     if (field == "isMale") {
-      return result ? "bg-green-200 text-green-600" : "bg-purple-200 text-purple-600";
+      return entity.isMale ? "bg-blue-200 text-blue-600" : "bg-purple-200 text-purple-600";
     }
 
-    return super.getTagBackground(result, field);
+    return super.getTagBackground(entity, field);
   }
 
   public override createForm(): FormGroup {
@@ -163,30 +190,6 @@ export class MemberComponent extends CrudBaseComponent<Member> implements OnInit
       closable: true,
       draggable: false
     });
-  }
-
-  //#endregion
-
-  //#region Version 2
-
-  public override getDisplayColumnsPanel(): DisplayColumn[] {
-    return [
-      { field: "birthDate", label: "Data de nasc.", type: DisplayColumnTypeEnum.DATE },
-      { field: "age", label: "Idade.", type: DisplayColumnTypeEnum.NUMERIC, styleClass: "hidden md:block" },
-      { field: "isActive", label: "Status", type: DisplayColumnTypeEnum.BOOLEAN },
-      { field: "isMale", label: "Gênero", type: DisplayColumnTypeEnum.BOOLEAN }
-    ];
-  }
-
-  public override getPanelTitle(entity: any): string {
-    return entity.name;
-  }
-
-  public override getTagValue(entity: Member, field: string): string {
-    if (field == "isMale")
-      return entity.isMale ? "bg-green-200 text-green-600" : "bg-purple-200 text-purple-600"
-
-    return super.getTagValue(entity, field);
   }
 
   //#endregion

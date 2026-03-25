@@ -212,6 +212,8 @@ export abstract class CrudBaseComponent<T = EntityBase> implements OnInit {
    */
   abstract getEntityDescription(): DescriptionType;
 
+  public abstract getDescription(entity: T): string;
+
   /** Retorna o nome da entidade */
   abstract getEntityName(): string;
 
@@ -250,8 +252,9 @@ export abstract class CrudBaseComponent<T = EntityBase> implements OnInit {
    * @false => Vermelhor
    * @returns Uma classe de estilização
    */
-  public getTagBackground(result: boolean, field: string): string {
-    return result ? 'bg-blue-200 text-blue-500' : "bg-red-200 text-red-500";
+  public getTagBackground(entity: T, field: string): string {
+    let e: any = entity;
+    return e[field] ? 'bg-green-200 text-green-600' : "bg-red-200 text-red-600";
   }
 
   /** Retorna um Controle Abstrato do formulário
@@ -264,20 +267,6 @@ export abstract class CrudBaseComponent<T = EntityBase> implements OnInit {
 
   public createSpecialOptions(): SpecialOption[] {
     return [];
-  }
-
-  //#endregion
-
-  //#region Version 2
-
-  public getDisplayColumnsPanel(): DisplayColumn[] { return [] };
-
-  public getPanelTitle(entity: T): string { return "Nome" };
-
-  public getTagValue(entity: T, field: string): string {
-    let e: any = entity;
-
-    return e[field] ? 'bg-blue-200 text-blue-500' : "bg-red-200 text-red-500";
   }
 
   //#endregion

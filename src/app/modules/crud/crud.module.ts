@@ -27,15 +27,16 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { WeddingDateComponent } from "./entities/weddingDate/weddingDate.component";
 import { SelectModule } from "primeng/select";
 import { BirthDateDialogComponent } from "./entities/member/birth-date-dialog/birth-date-dialog.component";
-import { classComponent } from "./entities/class/class.component";
+import { ClassComponent } from "./entities/class/class.component";
 import { MessageModule } from "primeng/message";
 import { ClassRollDialogComponent } from "./entities/class/class-roll-dialog/class-roll-dialog..component";
 import { ToggleSwitchModule } from "primeng/toggleswitch";
-import { TransferClassDialogComponent } from "./entities/class/trasnfer-class-dialog/transfer-class-dialog.component";
+import { TransferClassDialogComponent } from "./entities/class/transfer-class-dialog/transfer-class-dialog.component";
 import { CardModule } from "primeng/card";
 import { CarouselModule } from 'primeng/carousel';
 import { ComponentsModule } from "../../components/components.module";
 import { PanelModule } from "primeng/panel";
+import { SelectButtonModule } from "primeng/selectbutton";
 
 @NgModule({
   imports: [
@@ -60,7 +61,8 @@ import { PanelModule } from "primeng/panel";
     MessageModule,
     CardModule,
     CarouselModule,
-    PanelModule
+    PanelModule,
+    SelectButtonModule
   ],
   declarations: [
     CrudComponent,
@@ -71,7 +73,7 @@ import { PanelModule } from "primeng/panel";
 
     MemberComponent,
     WeddingDateComponent,
-    classComponent,
+    ClassComponent,
 
     BirthDateDialogComponent,
     ClassRollDialogComponent,

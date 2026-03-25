@@ -11,14 +11,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { forkJoin, Observable, tap } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ClassRollDialogComponent } from './class-roll-dialog/class-roll-dialog..component';
-import { TransferClassDialogComponent } from './trasnfer-class-dialog/transfer-class-dialog.component';
+import { TransferClassDialogComponent } from './transfer-class-dialog/transfer-class-dialog.component';
 
 @Component({
   selector: "app-class",
   standalone: false,
   templateUrl: "./class.component.html"
 })
-export class classComponent extends CrudBaseComponent<Class> implements OnInit {
+export class ClassComponent extends CrudBaseComponent<Class> implements OnInit {
 
   //#region fields
   public override isValid: boolean = false;
@@ -31,7 +31,7 @@ export class classComponent extends CrudBaseComponent<Class> implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(@Inject(ApiService) protected override apiService: ApiService,
+  constructor(protected override apiService: ApiService,
     protected override cdr: ChangeDetectorRef,
     protected override formBuilder: FormBuilder,
     protected override messageService: MessageService,
@@ -57,16 +57,20 @@ export class classComponent extends CrudBaseComponent<Class> implements OnInit {
     return "class";
   }
 
+  public override getDescription(entity: Class): string {
+    return entity.name;
+  }
+
   public override getEntityDescription(): DescriptionType {
     return { singular: "Classe", plural: "Classes", isFamale: true };
   }
 
   public override getDisplayColumns(): DisplayColumn[] {
     return [
-      { field: "name", label: "Nome", type: DisplayColumnTypeEnum.TEXT },
+      { field: "name", label: "Nome", type: DisplayColumnTypeEnum.TEXT, styleClass: "hidden md:block" },
       { field: "description", label: "Descrição", type: DisplayColumnTypeEnum.TEXT },
-      { field: "startDate", label: "Data de início", type: DisplayColumnTypeEnum.DATE },
-      { field: "endDate", label: "Data de término", type: DisplayColumnTypeEnum.DATE }
+      { field: "startDate", label: "Data de início", type: DisplayColumnTypeEnum.DATE, styleClass: "hidden md:block" },
+      { field: "endDate", label: "Data de término", type: DisplayColumnTypeEnum.DATE, styleClass: "hidden md:block" }
     ];
   }
 

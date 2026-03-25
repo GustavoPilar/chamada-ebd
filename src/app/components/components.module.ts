@@ -7,29 +7,28 @@ import { CardModule } from "primeng/card";
 import { CarouselModule } from "primeng/carousel";
 import { CardsComponent } from "./cards/cards.component";
 import { ApplicationRoutingModule } from "../modules/application/application-routing.module";
-import { CardsCarouselComponent } from "./cards-carousel/cards-carousel.component";
+import { RouterModule } from "@angular/router";
 
 @NgModule({
-    imports: [
+  imports: [
     CommonModule,
     MenubarModule,
     ButtonModule,
     CardModule,
     CarouselModule,
-    ApplicationRoutingModule
-],
-    declarations: [
-        MenuComponent,
-        CardsComponent,
-        CardsCarouselComponent
-    ],
-    exports: [
-        MenuComponent,
-        CardsComponent,
-        CardsCarouselComponent
-    ],
-    providers: [
+    ApplicationRoutingModule,
+    RouterModule
+  ],
+  declarations: [
+    MenuComponent,
+    CardsComponent,
+  ],
+  exports: [
+    MenuComponent,
+    CardsComponent,
+  ],
+  providers: [
 
-    ]
+  ]
 })
 export class ComponentsModule { }
